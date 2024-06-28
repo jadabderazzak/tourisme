@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'Sohne';
+    src: url('../../public/template/font/quick.ttf') format('opentype'); /* Chemin vers le fichier de police woff */
+    /* Vous pouvez inclure d'autres formats de police si nécessaire */
+
+    
+}
+
+/* Utilisez la police Sohne dans le reste de votre fichier CSS en utilisant les classes de Tailwind CSS */
+/* Par exemple : */
+body {
+    font-family: 'Sohne', sans-serif;
+}
+
