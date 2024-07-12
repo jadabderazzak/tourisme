@@ -29,7 +29,7 @@
 				</span>
 				de "blog"
 			</blockquote>
-			{{ form_start(form) }}
+			{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
 
 			<div class="relative mb-4" data-te-input-wrapper-init>
 				<p class="text-md text-gray-900 mb-2">Titre</p>
@@ -46,6 +46,26 @@
 				{{ form_widget(form.description, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 ', 'rows': 8}}) }}
 				<span class="text-sm text-red-700">{{ form_errors(form.description) }}</span>
 			</div>
+			<div class="mb-6 mt-6">
+				<label for="nom" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image du blog</label>
+				<h5 class="block mb-4 font-sans text-sm antialiased font-semibold leading-snug tracking-normal text-gray-400">
+					L'image doit être en HD et de préférence les mêmes dimensions que les autres images des autres blogs
+				</h5>
+				<input type="file" name="imageFile" class="text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+
+
+			</div>
+			{% if action == 2 and blog.image != ""  %}
+			<div class="mb-6 mt-6">
+
+				{% set link = "template/uploadsAll/" ~ blog.image  %}
+				<div class="flex flex-col gap-4" id="image{{blog.id}}">
+					<img class="h-auto max-w-full rounded-lg" src="{{ asset(link) }}" alt="">
+					<a href="javascript:;" class="text-gray-900 hover:text-[#FF9119] underline" onclick="delete_image({{blog.id}})">Supprimer</a>
+				</div>
+
+			</div>
+			{% endif %}
 			<div class="relative mb-4 text-right" data-te-input-wrapper-init>
 				<button type="submit" class="text-white  bg-orange-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-700 rounded-sm text-lg">{{action == 1 ? "Sauvegarder" : "Mettre à jour" }}</button>
 			</div>
@@ -56,4 +76,31 @@
 	</div>
 
 
+{% endblock %}
+{% block javascripts %}
+	{{ parent()}}
+	
+
+	<script>
+		function delete_image(id) {
+			var divid = "#image"+id;
+			$.ajax({
+										url: '/blog/image/delete/'+id,
+										
+										type: "POST",
+											success: function (response) {
+												
+											
+											 $(divid).fadeOut(1000, function () {
+												$(this).remove();
+											});
+
+												
+											},
+											error: function(jqXHR, textStatus, errorThrown) {
+											alert(jqXHR.textStatus);
+											}
+										});
+		}
+	</script>
 {% endblock %}

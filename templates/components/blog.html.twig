@@ -10,7 +10,8 @@
 				<a href="#"></a>
 				<div class="relative">
 					<a href="#">
-						<img class="w-full" src="https://images.pexels.com/photos/257816/pexels-photo-257816.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;w=500" alt="Sunset in the mountains">
+					{% set link = blog.image != "" ? "template/uploadsAll/" ~ blog.image : "template/images/blog_min.jpg" %}
+						<img class="w-full h-48 object-cover" src="{{ asset(link) }}" alt="{{ blog.title | raw }}">
 						<div class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25"></div>
 					</a>
 					{% if blog.video != "" %}

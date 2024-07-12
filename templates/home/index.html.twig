@@ -72,7 +72,7 @@
 						</div>
 					</div>
 					<div>
-						<button type="button" class="text-white h-11 w-full justify-center bg-orange-500  hover:bg-[#F7BE38]/90 focus:ring-4 focus:outline-none focus:ring-[#F7BE38]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#F7BE38]/50 me-2 mb-2">
+						<button type="button" class="text-white h-11 w-full justify-center bg-orange-500  hover:bg-[#F7BE38]/90 focus:ring-4 focus:outline-none focus:ring-[#F7BE38]/50 font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#F7BE38]/50 me-2 mb-2">
 							<svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 								<path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
 							</svg>
@@ -105,5 +105,10 @@
 		'blogs' : blogs
 }
 %}
-{% include "components/partenaire.html.twig" %}
+{% include "components/partenaire.html.twig" with {
+		'partenaires' : partenaires
+} %}
+{% include "components/actionnaire.html.twig" with {
+		'actionnaires' : actionnaires
+} %}
 {% endblock %}

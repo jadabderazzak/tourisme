@@ -20,21 +20,26 @@
 					</p>
 
 					<p class=" text-sm leading-8 my-5">
-					{% if blog.video != "" %}
-						<div class="relative">
-							<video class="w-full" controls>
-								<source
-								src="{{ blog.video | raw }}" type="video/mp4">
-								
-								Your browser does not support the video tag.
-							</video>
-						</div>
+						{% if blog.video != "" %}
+							<div class="relative">
+								<video class="w-full" controls>
+									<source src="{{ blog.video | raw }}" type="video/mp4">
+
+									Your browser does not support the video tag.
+								</video>
+							</div>
+						{% endif %}
+						{% if blog.image != "" %}
+						{% set link = "template/uploadsAll/" ~ blog.image  %}
+							<div class="relative mt-6">
+								<img class="h-auto max-w-full rounded-lg" src="{{ asset(link) }}" alt="">
+							</div>
 						{% endif %}
 						<div class="mt-6 text-lg font-light">
-						{{ blog.description | raw | capitalize}}
+							{{ blog.description | raw | capitalize}}
 						</div>
 					</p>
-					
+
 
 					<div class="flex items-center justify-end gap-6 mt-6">
 						<a class="text-gray-700 hover:text-orange-600" aria-label="Visit TrendyMinds LinkedIn" href="https://www.linkedin.com/sharing/share-offsite/?url={{ app.request.uri }}" target="_blank">
@@ -55,7 +60,7 @@
 							</svg>
 						</a>
 					</div>
-	
+
 					<h1 href="#" class="text-gray-900 text-center font-bold text-md md:text-xl mb-2 mt-4 ">Leave a Comment</h1>
 
 
