@@ -1,0 +1,65 @@
+<h1 class=" text-xl text-center font-extrabold mt-6 md:mt-16 leading-none tracking-tight text-gray-900 md:text-4xl">
+	Blog et actualités
+</h1>
+<div class="max-w-screen  mx-6 md:mx-16 mt-6">
+	<div class="grid grid-cols-1 md:grid-cols-4 sm:grid-cols-2 gap-6">
+
+		{% for blog in blogs %}
+			<div class="overflow-hidden shadow-lg">
+
+				<a href="#"></a>
+				<div class="relative">
+					<a href="#">
+						<img class="w-full" src="https://images.pexels.com/photos/257816/pexels-photo-257816.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;w=500" alt="Sunset in the mountains">
+						<div class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25"></div>
+					</a>
+					{% if blog.video != "" %}
+						<span>
+							<div class="absolute bottom-0 left-0 bg-orange-500 px-4 py-2 text-white text-md shadow-xl rounded-t-xl transition duration-500 ease-in-out">
+								Vidéos
+							</div>
+						</span>
+					{% endif %}
+					<a href="!#">
+						<div class="text-sm absolute top-0 right-0 bg-gray-900/70 px-4 text-white rounded-full h-16 w-16 flex flex-col items-center justify-center mt-3 mr-3 hover:bg-white hover:text-gray-900 transition duration-500 ease-in-out">
+							<span class="font-bold">{{ blog.createdAt | date('d')}}</span>
+							<small class="font-bold">{{ blog.createdAt | date('M')}}</small>
+						</div>
+					</a>
+				</div>
+				<div class="px-6 py-4">
+
+					<a href="#" class="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">
+						{{ blog.title | raw | u.truncate(30,'...')}}
+					</a>
+					<p class="text-gray-500 text-sm">
+						{{ blog.description | raw | u.truncate(200,'...')}}
+					</p>
+				</div>
+				<div class="px-6 py-4 flex flex-row items-center justify-between">
+					<div>
+						<span href="#" class="py-1 text-sm font-regular text-gray-900 mr-1 flex flex-row justify-between items-center">
+							<svg height="13px" width="13px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewbox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+								<g>
+									<g>
+										<path d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M277.333,256 c0,11.797-9.536,21.333-21.333,21.333h-85.333c-11.797,0-21.333-9.536-21.333-21.333s9.536-21.333,21.333-21.333h64v-128 c0-11.797,9.536-21.333,21.333-21.333s21.333,9.536,21.333,21.333V256z"></path>
+									</g>
+								</g>
+							</svg>
+							<span class="ml-1">{{ blog.createdAt | ago(locale='fr') }}</span>
+						</span>
+					</div>
+					<div>
+						<a href="{{ path('page_blog_read',{slug:blog.slug})}}" class="inline-flex items-center justify-center p-2 text-base font-medium text-gray-500 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white">
+							<span class="w-full">Lire</span>
+							<svg class="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 10">
+								<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+							</svg>
+						</a>
+					</div>
+				</div>
+
+			</div>
+		{% endfor %}
+	</div>
+</div>

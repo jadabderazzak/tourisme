@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+		<title>
+			{% block title %}
+				SDR
+			{% endblock %}
+		</title>
+		<link
+		rel="icon" href="{{ asset('template/images/icon.png') }}"/>
+		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+			<link rel="stylesheet" href="{{ asset('template/css/dataTables.min.css')}}" crossorigin="anonymous"/>
+			<link rel="stylesheet" href="{{ asset('template/css/datatablesResponsive.css')}}" crossorigin="anonymous"/>
+			<link rel="stylesheet" href="{{ asset('template/css/datatablesrowReorder.css')}}" crossorigin="anonymous"/>
+		{% endblock %}
+
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+			<script src="{{asset('template/js/jquery.min.js')}}" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+			<script src="{{asset('template/js/dataTables.js')}}" crossorigin="anonymous"></script>
+			<script src="{{asset('template/js/dataTables.responsive.js')}}" crossorigin="anonymous"></script>
+			<script src="{{asset('template/js/dataTables.rowReorder.js')}}" crossorigin="anonymous"></script>
+			<script src="{{asset('template/js/rowReorder.dataTables.js')}}" crossorigin="anonymous"></script>
+			<script src="{{asset('template/js/responsive.dataTables.js')}}" crossorigin="anonymous"></script>
+		{% endblock %}
+	</head>
+	<body class="bg-gray-50">
+		{% for message in app.flashes('success') %}
+			<div class="p-4 mb-10 text-lg text-white text-center bg-green-400 dark:bg-green-800 dark:text-blue-400 border-b-2 shadow-lg shadow-gray-500/30 border-gray-400" role="alert">{{ message|raw }}</div>
+		{% endfor %}
+		{% for message in app.flashes('danger') %}
+			<div class="p-4 mb-10 text-lg text-white text-center bg-red-400 dark:bg-red-800 dark:text-blue-400 border-b-2 shadow-lg shadow-blue-gray/30 border-gray-400" role="alert">{{ message|raw }}</div>
+		{% endfor %}
+		{% for message in app.flashes('warning') %}
+			<div class="p-4 mb-10 text-lg text-black text-center bg-orange-300 dark:bg-orange-800 dark:text-blue-400 border-b-2 shadow-lg shadow-bgraylue-500/30 border-gray-400" role="alert">{{ message|raw }}</div>
+		{% endfor %}
+		{{ render(controller('App\\Controller\\MenuController::admin')) }}
+		{% block body %}{% endblock %}
+		{# {% include "components/footer.html.twig" %} #}
+	</body>
+</html>

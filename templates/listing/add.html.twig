@@ -1,0 +1,236 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent()}}
+
+	<link rel="stylesheet" href="{{ asset('template/css/select2.css')}}" crossorigin="anonymous"/>
+
+{% endblock %}
+
+{% block body %}
+
+<nav class="border-b-1 border-gray-100 sticky  shadow-sm z-20 top-0 start-0 ">
+
+		<ul class="flex justify-center items-center h-12 text-sm md:text-md">
+			<li class="mr-3">
+				<a class="inline-block  py-2 px-3 text-orange-500" href="{{ path('app_listing')}}">Liste des listings</a>
+			</li>
+			<li class="mr-3">
+				<a class="inline-block  py-2 px-3 text-orange-500" href="{{ path('app_listing_add')}}">Ajouter un listing</a>
+			</li>
+
+		</ul>
+	</nav>
+	<div class="flex w-full justify-center items-center h-full mt-20 mb-20">
+
+		<div class="px-4 md:px-0 w-full md:w-6/12">
+			<blockquote class="text-2xl font-semibold italic text-center text-slate-900 mb-10">
+				Formulaire
+				<span class="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-[#FA7127] relative inline-block ">
+					<span class="relative text-white">{{action == 1 ? "d'ajout" : " de mise à jour " }}</span>
+				</span>
+				de "listing"
+			</blockquote>
+			{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+			<div class="relative mb-4" data-te-input-wrapper-init>
+				<p class="text-md text-gray-900 mb-2">{{ action == 1 ? "Ajouter un nom de listing" : "Mettre à jour le nom du listing" }}</p>
+				{{ form_widget(form.name, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+				<span class="text-sm text-red-700">{{ form_errors(form.name) }}</span>
+			</div>
+			<div class="flex  flex-col md:flex-row w-full gap-4">
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Localité</p>
+					{{ form_widget(form.ville, {'attr': {'class': 'js-example-basic-multiple  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.ville) }}</span>
+				</div>
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Catégorie</p>
+					{{ form_widget(form.categorie, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.categorie) }}</span>
+				</div>
+			</div>
+
+			<div class="flex  flex-col md:flex-row w-full gap-4">
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Latitude</p>
+					{{ form_widget(form.latitude, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.latitude) }}</span>
+				</div>
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Longitude</p>
+					{{ form_widget(form.longitude, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.longitude) }}</span>
+				</div>
+			</div>
+
+			<div class="flex  flex-col md:flex-row w-full gap-4">
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Le prix est entre </p>
+					{{ form_widget(form.prixStart, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.prixStart) }}</span>
+				</div>
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">et</p>
+					{{ form_widget(form.prixEnd, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.prixEnd) }}</span>
+				</div>
+			</div>
+
+			<div class="flex  flex-col md:flex-row  w-full gap-4">
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Adresse Email</p>
+					{{ form_widget(form.email, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.email) }}</span>
+				</div>
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Type de pension</p>
+					{{ form_widget(form.pension, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.pension) }}</span>
+				</div>
+			</div>
+
+			<div class="flex  flex-col md:flex-row w-full gap-4">
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Adresse</p>
+					{{ form_widget(form.adresse, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.adresse) }}</span>
+				</div>
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">nb Couverts</p>
+					{{ form_widget(form.nbCouverts, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.nbCouverts) }}</span>
+				</div>
+			</div>
+			<div class="flex  flex-col md:flex-row w-full gap-4">
+
+
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">nb Chambres</p>
+					{{ form_widget(form.nbChambre, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.nbChambre) }}</span>
+				</div>
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">nb Lits</p>
+					{{ form_widget(form.nbLit, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.nbLit) }}</span>
+				</div>
+			</div>
+			<div class="flex  flex-col md:flex-row w-full gap-4">
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Site web</p>
+					{{ form_widget(form.siteweb, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.siteweb) }}</span>
+				</div>
+
+				<div class="relative mb-4  w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Téléphone</p>
+					{{ form_widget(form.telephone, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.telephone) }}</span>
+				</div>
+			</div>
+
+
+			<div class="relative mb-4" data-te-input-wrapper-init>
+				<p class="text-md text-gray-900 mb-2">Description</p>
+				{{ form_widget(form.description, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+				<span class="text-sm text-red-700">{{ form_errors(form.description) }}</span>
+			</div>
+			<div class="flex  flex-col md:flex-row w-full gap-4">
+				<div class="relative mb-4  w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">facebook</p>
+					{{ form_widget(form.facebook, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.facebook) }}</span>
+				</div>
+				<div class="relative mb-4  w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Instagram</p>
+					{{ form_widget(form.instagram, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.instagram) }}</span>
+				</div>
+			</div>
+			<div class="flex  flex-col md:flex-row w-full gap-4">
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Tiktok</p>
+					{{ form_widget(form.tiktok, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.tiktok) }}</span>
+				</div>
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Twitter</p>
+					{{ form_widget(form.twitter, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.twitter) }}</span>
+				</div>
+			</div>
+			<div class="flex  flex-col md:flex-row w-full gap-4">
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Youtube</p>
+					{{ form_widget(form.youtube, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.youtube) }}</span>
+				</div>
+				<div class="relative mb-4 w-full md:w-[50%] text-center" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Afficher ce listing ?</p>
+					{{ form_widget(form.afficher, {'attr': {'class': 'w-12 h-12 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 '}}) }}
+					<span class="text-sm text-red-700">{{ form_errors(form.afficher) }}</span>
+				</div>
+				
+			</div>
+			<div class="flex  flex-col md:flex-row w-full gap-4">
+			
+				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
+					<p class="text-md text-gray-900 mb-2">Choisir des Images JPG ou PNG qui soient de bonne qualité</p>
+					<input type="file" id="myDropzone" name="file[]" multiple/>
+				</div>
+			</div>
+
+			<div class="relative mb-4 text-right" data-te-input-wrapper-init>
+				<button type="submit" class="text-white  bg-blue-600 border-0 py-2 px-6 focus:outline-none hover:bg-blue-700 rounded-sm text-lg">{{action == 1 ? "Sauvegarder" : "Mettre à jour" }}</button>
+			</div>
+
+
+			{{ form_end(form)}}
+			{% if images != null %}
+
+
+				<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+					{% for image in images %}
+						{% set link = "template/uploads/" ~ image.chemin %}
+
+						<div class="flex flex-col gap-4" id="image{{image.id}}">
+							<img class="h-auto max-w-full rounded-lg" src="{{ asset(link) }}" alt="">
+							<a href="javascript:;" class="text-gray-900 hover:text-[#FF9119] underline" onclick="delete_image({{image.id}})">Supprimer</a>
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	{{ parent()}}
+	<script src="{{asset('template/js/select2.min.js')}}" crossorigin="anonymous"></script>
+
+	<script>
+	$(document).ready(function() {
+    $('.js-example-basic-multiple').select2();
+});
+		function delete_image(id) {
+			var divid = "#image"+id;
+			$.ajax({
+										url: '/listing/image/delete/'+id,
+										
+										type: "POST",
+											success: function (response) {
+												
+											console.log(response)	
+											 $(divid).fadeOut(1000, function () {
+												$(this).remove();
+											});
+
+												
+											},
+											error: function(jqXHR, textStatus, errorThrown) {
+											alert(jqXHR.textStatus);
+											}
+										});
+		}
+	</script>
+{% endblock %}

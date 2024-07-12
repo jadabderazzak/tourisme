@@ -1,0 +1,32 @@
+<div class=" text-white  py-8 md:py-0 mx-6 md:mx-16  ">
+	<div class="w-full mx-auto">
+		<h1 class="mb-6 text-xl text-center font-extrabold mt-8 md:mt-16  leading-none tracking-tight text-gray-900 md:text-4xl">Popular 
+		
+		Les catégories</h1>
+		<div class="grid lg:grid-cols-4 md:grid-cols-4 gap-6 max-md:max-w-lg mx-auto ">
+
+			{% for cat in categories %}
+				{% set chemin = cat.image != "" ? "template/uploadsAll/" ~ cat.image : 'template/images/home.jpg' %}
+				<div class="relative grid h-[15rem] w-full max-w-[28rem] flex-col items-end justify-center overflow-hidden  bg-white bg-clip-border text-center text-gray-700">
+					<div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent  bg-cover bg-clip-border bg-center text-gray-700 shadow-none blur-sm" style="background-image: url('{{asset(chemin) }}'); ">
+						<div class="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-t from-black/80 via-black/50"></div>
+					</div>
+					<div class="relative p-6 px-6 py-14 md:px-12">
+						<h2 class="mb-6 block text-4xl font-medium leading-[1.5] tracking-normal text-white antialiased">
+							{{ cat.nom | raw | capitalize}}
+						</h2>
+
+						<div class="p-0 mt-12">
+							<button class="select-none rounded-lg text-white border border-white hover:border-orange-500 py-3 px-6 text-center align-middle  text-xs font-bold uppercase  transition-all  focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+								Consulter
+							</button>
+						</div>
+					</div>
+
+				</div>
+			{% endfor %}
+
+
+		</div>
+	</div>
+</div>

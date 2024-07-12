@@ -4,15 +4,19 @@
 
 @font-face {
     font-family: 'Sohne';
-    src: url('../../public/template/font/quick.ttf') format('opentype'); /* Chemin vers le fichier de police woff */
-    /* Vous pouvez inclure d'autres formats de police si nécessaire */
-
+    src: url('../../public/template/font/sdr.ttf') format('opentype'); /* Chemin vers le fichier de police woff */
+    font-weight: 200; /* Poids plus léger pour une police fine */
+    font-style: normal; 
+    
     
 }
 
-/* Utilisez la police Sohne dans le reste de votre fichier CSS en utilisant les classes de Tailwind CSS */
-/* Par exemple : */
+
 body {
     font-family: 'Sohne', sans-serif;
+    /* font-size: 1.115rem; 
+    line-height: 1.75rem;  */
 }
+
+
 

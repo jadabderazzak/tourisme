@@ -1,0 +1,141 @@
+{% extends 'base_admin.html.twig' %}
+
+
+{% block body %}
+
+	<nav class="border-b-1 border-gray-100 sticky  shadow-sm z-20 top-0 start-0 ">
+
+		<ul class="flex justify-center items-center h-12 text-sm md:text-md">
+			<li class="mr-3">
+				<a class="inline-block  py-2 px-3 text-orange-500" href="{{ path('app_listing')}}">Liste des listings</a>
+			</li>
+			<li class="mr-3">
+				<a class="inline-block  py-2 px-3 text-orange-500" href="{{ path('app_listing_add')}}">Ajouter un listing</a>
+			</li>
+
+		</ul>
+	</nav>
+	<div class="flex w-full justify-center items-center h-full mt-10 mb-20">
+
+		<div class="px-4 md:px-0 w-full md:w-10/12  overflow-x-auto">
+			<blockquote class="text-2xl font-semibold italic text-center text-slate-900 mb-10">
+				Liste de
+				<span class="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-[#FA7127] relative inline-block ">
+					<span class="relative text-white">Listing</span>
+				</span>
+
+			</blockquote>
+
+			<table id="example" class="display w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+					<tr>
+						<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Nom
+						</th>
+						<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Catégorie</th>
+						<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Localité</th>
+						<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Latitude</th>
+						<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Longitude</th>
+						<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Province</th>
+						<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Affichage</th>
+						<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Actions</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					{% for list in listings %}
+						<tr class="odd:bg-white  even:bg-gray-50 even:dark:bg-gray-800 border-b">
+							<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ list.name | upper | raw }}</td>
+							<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ list.categorie.nom | upper | raw }}</td>
+							<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ list.ville.nom | upper | raw }}</td>
+							<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ list.ville.latitude  | raw }}</td>
+							<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ list.ville.longitude  | raw }}</td>
+							<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ list.ville.province.nom | upper  | raw }}</td>
+							<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">
+							{% set color = list.afficher == true ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %}
+							<span class="{{ color}} text-sm font-medium me-2 px-2.5 p-2 rounded " id="span{{list.id}}">
+							
+							{{ list.afficher == true ? 'Affichée' : 'Cachée' }}
+							</span>
+							</td>
+
+							<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">
+								<div class="flex gap-5 justify-center">
+
+									<a href="{{ path('app_listing_afficher',{slug :list.slug})}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Fiche</a>
+									|
+									<a href="{{ path('app_listing_update',{slug :list.slug})}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
+									|
+									<a href="javascript:;" id="link{{list.id}}" onclick="displays({{list.id}})"class="font-medium text-gray-900 dark:text-blue-500 hover:underline">{{list.afficher != true ? 'Afficher' : 'Cacher'}}</a>
+
+								</div>
+							</td>
+
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	{{ parent()}}
+
+	<script>
+		$(document).ready(function () {
+$('#example').DataTable({
+responsive: true,
+rowReorder: {
+selector: 'td:nth-child(2)'
+},
+"language": {
+"url": "{{ asset('template/js/fr.json') }}" // si vous souhaitez localiser DataTables en français
+},
+"order": [], // Désactive le tri par défaut
+
+
+});
+
+
+
+
+});
+
+function displays(id) {
+
+var lien = "#link"+id;
+var span = "#span"+id;
+			
+			$.ajax({
+										url: '/listing/display/'+id,
+										
+										type: "POST",
+											success: function (response) {
+											 $(lien).fadeOut(1000, function () {
+													var text = response == true ? 'Cacher' : 'Afficher';
+												   $(this).text(text).fadeIn(1000);
+											});	
+											 $(span).fadeOut(1000, function () {
+													var text = response == true ? 'Affichée' : 'Cachée';
+													$(this).text(text).fadeIn(1000);
+													if(response == true)
+													{
+													
+													$(this).removeClass('bg-red-100 text-red-800').addClass('bg-green-100 text-green-800');
+													}else{
+														$(this).removeClass('bg-green-100 text-green-800').addClass('bg-red-100 text-red-800');
+													}
+												   
+												   
+											});	
+											console.log(response)	
+											
+
+												
+											},
+											error: function(jqXHR, textStatus, errorThrown) {
+											alert(jqXHR.textStatus);
+											}
+										});
+		}
+	</script>
+{% endblock %}

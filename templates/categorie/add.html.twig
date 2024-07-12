@@ -1,0 +1,97 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Gestion des Catégories
+{% endblock %}
+
+{% block body %}
+
+	<nav class="border-b-1 border-gray-100 sticky  shadow-sm z-20 top-0 start-0 ">
+
+		<ul class="flex justify-center items-center h-12 text-sm md:text-md">
+			<li class="mr-3">
+				<a class="inline-block  py-2 px-3 text-orange-500" href="{{ path('app_categorie')}}">Liste des catégories</a>
+			</li>
+			<li class="mr-3">
+				<a class="inline-block  py-2 px-3 text-orange-500" href="{{ path('app_categorie_add')}}">Ajouter une catégorie</a>
+			</li>
+
+		</ul>
+	</nav>
+
+	<div class="flex w-full justify-center items-center h-full mt-10 mb-20">
+
+		<div class="px-4 md:px-0 w-full md:w-6/12">
+			<blockquote class="text-2xl font-semibold italic text-center text-slate-900 mb-10">
+				Formulaire
+				<span class="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-[#FA7127] relative inline-block ">
+					<span class="relative text-white">{{action == 1 ? "d'ajout" : " de mise à jour " }}</span>
+				</span>
+				de "catégorie"
+			</blockquote>
+			{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+			<div class="relative mb-4" data-te-input-wrapper-init>
+				<p class="text-md text-gray-900 mb-2">Nom</p>
+				{{ form_widget(form.nom, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+				<span class="text-sm text-red-700">{{ form_errors(form.nom) }}</span>
+			</div>
+			<div class="mb-6 mt-6">
+				<label for="nom" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image de la catégorie</label>
+				<h5 class="block mb-4 font-sans text-sm antialiased font-semibold leading-snug tracking-normal text-gray-400">
+					L'image doit etre en HD et de préférence les mêmes dimensions que les autres images des autres catégories
+				</h5>
+				<input type="file" name="imageFile" class="text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+
+
+			</div>
+			{% if action == 2 and categorie.image != ""  %}
+			<div class="mb-6 mt-6">
+
+				{% set link = "template/uploadsAll/" ~ categorie.image  %}
+				<div class="flex flex-col gap-4" id="image{{categorie.id}}">
+					<img class="h-auto max-w-full rounded-lg" src="{{ asset(link) }}" alt="">
+					<a href="javascript:;" class="text-gray-900 hover:text-[#FF9119] underline" onclick="delete_image({{categorie.id}})">Supprimer</a>
+				</div>
+
+			</div>
+			{% endif %}
+
+			<div class="relative mb-4 text-right" data-te-input-wrapper-init>
+				<button type="submit" class="text-white  bg-orange-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-700 rounded-sm text-lg">{{action == 1 ? "Sauvegarder" : "Mettre à jour" }}</button>
+			</div>
+
+
+			{{ form_end(form)}}
+		</div>
+	</div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent()}}
+	
+
+	<script>
+		function delete_image(id) {
+			var divid = "#image"+id;
+			$.ajax({
+										url: '/categorie/image/delete/'+id,
+										
+										type: "POST",
+											success: function (response) {
+												
+											
+											 $(divid).fadeOut(1000, function () {
+												$(this).remove();
+											});
+
+												
+											},
+											error: function(jqXHR, textStatus, errorThrown) {
+											alert(jqXHR.textStatus);
+											}
+										});
+		}
+	</script>
+{% endblock %}

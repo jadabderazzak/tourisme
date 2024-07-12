@@ -7,7 +7,11 @@ module.exports = {
      "./node_modules/tw-elements/js/**/*.js"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Poppins', 'Arial', 'sans-serif'], // Ajouter Arial comme police de secours
+      },
+    },
   },
   plugins: [
     require('flowbite/plugin'),

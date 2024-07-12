@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Authentification {% endblock %}
+
+{% block body %}
+<div class="flex mt-20 flex-col w-full justify-center items-center h-full ">
+
+
+<form method="post" class="">
+			{% if error %}
+				<div class=" px-2 text-red-500 text-lg font-bold mb-10 text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+			{% endif %}
+
+			{% if app.user %}
+				<div class="mb-3 ">
+					Vous êtes connectés en tant que
+					{{ app.user.userIdentifier }},
+					<a href="{{ path('app_logout') }}">Se déconnecter</a>
+				</div>
+			{% endif %}
+
+
+			<div class="flex flex-col gap-6 ">
+
+				<div class="flex gap-4  justify-center items-center">
+
+					<h1 class=" text-lg mb-4 font-semibold">Authentification</h1>
+				</div>
+				<div class="flex gap-4  flex-col md:flex-row justify-center items-center">
+
+					<label for="inputEmail">Adresse Email</label>
+					<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required>
+				</div>
+				<div class="flex gap-4 flex-col md:flex-row justify-center items-center">
+					<label for="inputPassword">Mot de passe</label>
+					<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+				</div>
+				<div class="flex justify-center md:justify-end items-center px-0">
+
+					<button class="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#E29990]/50 font-medium text-md px-5 py-2.5 text-center inline-flex items-center  me-2 mb-2" type="submit">
+						Se connecter
+					</button>
+				</div>
+			</div>
+		</form>
+
+</div>
+{% endblock %}
