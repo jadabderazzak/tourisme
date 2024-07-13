@@ -20,13 +20,22 @@ class HomeController extends AbstractController
         $listings = $repoList->getActiveListings(8);
         $partenaires = $repoPart->findAll();
         $actionnaires = $repoAct->findAll();
+        $categories_name = [];
+        foreach($categories as $cat )
+        {
+            $categories_name[] = mb_strtoupper($cat->getNom(), 'UTF-8');
+        }
+        $categories_names = json_encode( $categories_name, JSON_UNESCAPED_UNICODE);
+      
+       
         $blogs = $repoBlog->findBy([],['id' => 'DESC'],4);
         return $this->render('home/index.html.twig', [
             'categories' => $categories,
             'listings' => $listings,
             'blogs'=> $blogs,
             'partenaires' => $partenaires,
-            'actionnaires' => $actionnaires
+            'actionnaires' => $actionnaires,
+            'categories_name' => $categories_names
         ]);
     }
 }
