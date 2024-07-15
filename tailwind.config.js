@@ -4,7 +4,7 @@ module.exports = {
     "./assets/**/*.js",
     "./templates/**/*.html.twig",
     "./node_modules/flowbite/**/*.js",
-     "./node_modules/tw-elements/js/**/*.js"
+    
   ],
   theme: {
     extend: {
@@ -15,7 +15,7 @@ module.exports = {
   },
   plugins: [
     require('flowbite/plugin'),
-    require("tw-elements/dist/plugin")
+  
   ],
 }
 

@@ -5,80 +5,86 @@
 		.font-arial {
 			font-family: 'Poppins', sans-serif;
 		}
+
+		.hide-scrollbar::-webkit-scrollbar {
+			display: none;
+		}
+
+		.hide-scrollbar {
+			-ms-overflow-style: none; /* Internet Explorer 10+ */
+			scrollbar-width: none; /* Firefox */
+		}
 	</style>
 
 {% endblock %}
 {% block body %}
 
+	<nav class=" shadow-sm z-20 bg-blue-900 top-0 start-0">
 
-	<div class="flex w-full h-full  md:h-screen ">
+		<ul class="flex justify-start mx-3 md:justify-end items-center text-sm md:text-md overflow-x-auto whitespace-nowrap hide-scrollbar ">
+
+			{% for cat in categories %}
+				<li class="mr-3">
+					<a  href="javascript:;" class="flex flex-row gap-3 inline-block border border-gray-300 focus:outline-none hover:bg-gray-100/30 rounded-3xl  py-2 px-3 text-white text-lg">
+						<svg class="w-[26px] h-[26px] text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
+							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M8 6h8M6 10h12M8 14h8M6 18h12"/>
+						</svg>
+
+						{{ cat.nom | raw | capitalize}}
+					</a>
+				</li>
+			{% endfor %}
+
+		</ul>
+	</nav>
+	<div class="flex md:relative w-full h-[500px] md:h-[350px] ">
 
 		<div
-			class="w-full md:w-1/2 h-full flex mt-10 justify-center border-b-2 border-gray-100">
+			class="w-full  h-[500px] md:h-[300px] flex  bg-gradient-to-b to-blue-800 from-blue-900  justify-center border-b-2 border-gray-100 ">
 			<!-- Contenu de la première div gauche -->
 
-			<div class="text-center text-white px-6 md:py-0 md:px-16 ">
-				<h1 class="mb-4 md:mb-8 text-4xl font-extrabold text-gray-600 text-center md:text-left md:text-6xl font-arial tracking-widest">
-					<span class="mb-2 text-3xl md:text-5xl">TROUVEZ DES</span>
-					<span id="dynamic-text" class="text-transparent text-3xl md:text-5xl bg-clip-text bg-gradient-to-r to-blue-600 from-orange-400 tracking-widest">
-						ENDROITS
-					</span><br/>
-					<span class=" text-2xl md:text-4xl ">PRÈS DE CHEZ VOUS</span>
+			<div class="text-center text-blue-900 px-6 md:py-0 md:px-16 mt-12">
+				<h1 class="mb-4 md:mb-8 text-4xl font-extrabold text-gray-600 text-left md:text-6xl font-arial">
+					<span class="mb-2 text-3xl md:text-5xl text-white">Trouvez votre prochain séjour</span><br/>
+
+
 				</h1>
 
-				<p class="text-lg font-normal text-gray-900 mt-2 text-left">
-					<span class="inline-block border-b-2 border-orange-500">Découvrez Souss Massa</span>: Un voyage à travers la splendeur naturelle et le riche patrimoine.</p>
+				<p class="text-xl leading-8 text-white mt-2 text-left">
+					<span class="inline-block border-b-2 border-orange-500 ">Découvrez Souss Massa: </span>  Un voyage à travers la splendeur naturelle et le riche patrimoine.</p>
 			</span>
 		</p>
 		<!-- ************ Card for search -->
 
-{# style="background-image: url('{{ asset('template/images/search.jpg') }}'); " #}
-		<div class="w-full mt-6 p-4  border justify-end rounded-lg  sm:p-6 md:p-8 shadow-md bg-gradient-to-r to-blue-700 from-gray-900" >
+
+		<div class=" md:w-full mt-8 md:mt-20 p-4 justify-end rounded-lg  sm:p-6 md:p-4 shadow-md bg-gray-900/80">
 
 			<form class="space-y-8" action="#">
-				<div class="grid gap-3 md:grid-cols-1">
-
-					<div>
-
-						<div class="relative mb-3">
-							<div class="absolute inset-y-0 start-0 flex items-center ps-2.5 pointer-events-none">
-								<svg class="w-7 h-7 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewbox="0 0 24 24">
-									<path fill-rule="evenodd" d="M11.906 1.994a8.002 8.002 0 0 1 8.09 8.421 7.996 7.996 0 0 1-1.297 3.957.996.996 0 0 1-.133.204l-.108.129c-.178.243-.37.477-.573.699l-5.112 6.224a1 1 0 0 1-1.545 0L5.982 15.26l-.002-.002a18.146 18.146 0 0 1-.309-.38l-.133-.163a.999.999 0 0 1-.13-.202 7.995 7.995 0 0 1 6.498-12.518ZM15 9.997a3 3 0 1 1-5.999 0 3 3 0 0 1 5.999 0Z" clip-rule="evenodd"/>
-								</svg>
-							</div>
-							<input type="text" id="input-group-1" class="border border-gray-300 h-20 text-white bg-black/50 text-lg font-semibold rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full ps-14 p-2.5" placeholder="Destination">
+				<div class="flex flex-col md:flex-row items-center justify-center ">
+					<div class="relative w-full">
+						<div class="absolute inset-y-0 start-0 flex items-center ps-2.5 pointer-events-none me-4 text-gray-900">
+						<img src="{{ asset('template/images/search.png')}}" class="object-cover h-6"/>
 						</div>
-
-
+						<input type="text" id="input-group-1" class="border-none h-14 w-full text-gray-900 bg-white/90 text-lg font-semibold focus:ring-orange-500 focus:border-orange-500 block w-full ps-14 p-2.5" placeholder="Ex: food, services ...">
 					</div>
 
-					<div>
-
-						<div class="relative mb-3">
-							<ul class="grid w-full gap-2 md:grid-cols-4">
-								{% for categorie in categories %}
-									<li class="flex">
-										<input type="radio" id="{{ categorie.id}}" name="hosting" value="{{ categorie.id}}" class="hidden peer" required/>
-										<label for="{{ categorie.id}}" class="inline-flex items-center justify-between w-full placeholder-white p-3 text-white bg-black/50 border border-gray-200 rounded-lg cursor-pointer peer-checked:border-orange-500 peer-checked:text-orange-500  hover:bg-black/70  flex-1">
-											<div class="block w-full">
-												<div class="text-sm font-semibold  justify-center">{{ categorie.nom | raw | capitalize }}</div>
-											</div>
-										</label>
-									</li>
-								{% endfor %}
-							</ul>
+					<div class="relative w-full">
+						<div class="absolute inset-y-0 start-0 flex items-center ps-2.5 pointer-events-none me-4 text-gray-900">
+							<img src="{{ asset('template/images/category.png')}}" class="object-cover h-6"/>
 						</div>
+						<input type="text" id="input-group-1" class="border-none h-14 w-full text-gray-900 bg-white/90 text-lg font-semibold focus:ring-orange-500 focus:border-orange-500 block w-full ps-14 p-2.5" placeholder="Catégories">
 					</div>
 
 
-					<div class="w-full ">
-						<button type="button" class="text-white h-11 w-full justify-center bg-orange-500 hover:bg-[#F7BE38]/90 focus:ring-4 focus:outline-none focus:ring-[#F7BE38]/50 font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#F7BE38]/50 me-2 mb-2 space-x-3">
-							<svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
-								<path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>
-							</svg>
-							<span class="text-lg">Rechercher</span>
-						</button>
+					<div class="relative w-full">
+						<div class="absolute inset-y-0 start-0 flex items-center ps-3 text-gray-900 pointer-events-none">
+							<img src="{{ asset('template/images/map.png')}}" class="object-cover h-6"/>
+						</div>
+						<input type="search" id="default-search" class="border-none h-14 w-full text-gray-900 bg-white/90 text-lg font-semibold focus:ring-orange-500 focus:border-orange-500 block w-full ps-14 p-2.5" placeholder="Localité" required/>
+						<button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-normal  text-md px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
 					</div>
+
+
 				</div>
 
 			</form>
@@ -87,8 +93,7 @@
 
 		<!-- ************************************** -->
 	</div>
-</div>
-<div class="hidden md:block w-1/2 h-full bg-green-500 flex items-center justify-center bg-no-repeat bg-cover bg-center" style="background-image: url('{{ asset('template/images/back.jpg') }}'); "></div></div>{% include "components/categories.html.twig" with {
+</div></div>{% include "components/categories.html.twig" with {
 		'categories' : categories
 }
 %}{% include "components/places.html.twig" with {

@@ -1,7 +1,25 @@
-<h1 class=" text-xl text-center font-extrabold mt-6 md:mt-16 leading-none tracking-tight text-gray-900 md:text-4xl">
-	Blog et actualités
-</h1>
-<div class="max-w-screen  mx-6 md:mx-16 mt-6">
+
+<div class=" text-white  py-4 md:py-0 mx-6 md:mx-16 mb-6 ">
+	<div class="w-full mx-auto">
+		<div class="flex flex-row justify-between items-center w-full mt-8 md:mt-16 ">
+			<div class="mb-3 ">
+				<h1 class="text-xl text-center font-bold  leading-none tracking-tight text-gray-900 md:text-3xl">
+
+						Blog et actualités
+
+				</h1>
+			</div>
+			<div class="mb-3">
+				<a href="{{ path('page_blog')}}" class="inline-flex items-center font-medium text-blue-600  hover:underline">
+					Voir tous les blogs
+					<svg class="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 10">
+						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+					</svg>
+				</a>
+			</div>
+		</div>
+
+<div class="max-w-screen   mt-6">
 	<div class="grid grid-cols-1 md:grid-cols-4 sm:grid-cols-2 gap-6">
 
 		{% for blog in blogs %}
@@ -51,12 +69,10 @@
 						</span>
 					</div>
 					<div>
-						<a href="{{ path('page_blog_read',{slug:blog.slug})}}" class="inline-flex items-center justify-center p-2 text-base font-medium text-gray-500 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white">
-							<span class="w-full">Lire</span>
-							<svg class="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 10">
-								<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-							</svg>
-						</a>
+						
+							<a href="{{ path('page_blog_read',{slug:blog.slug})}}" class="text-white rounded-lg shadow-xl end-2.5 bottom-2.5 bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-normal  text-md px-4 py-2 " rel="noreferrer">
+                Lire
+                </a>
 					</div>
 				</div>
 
@@ -64,3 +80,5 @@
 		{% endfor %}
 	</div>
 </div>
+	</div>
+		</div>

@@ -11,7 +11,7 @@ class MenuController extends AbstractController
     #[Route('/menu', name: 'app_menu')]
     public function index(): Response
     {
-        return $this->render('components/_menu.html.twig', []);
+        return $this->render('components/_menu1.html.twig', []);
     }
     #[Route('/menu_admin', name: 'app_menu_admin')]
     public function admin(): Response

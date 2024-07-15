@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	{{ parent()}}
+	<style>
+		.font-arial {
+			font-family: 'Poppins', sans-serif;
+		}
+	</style>
+
+{% endblock %}
+{% block body %}
+
+
+	<div class="flex md:relative w-full h-full  md:h-screen object-cover" style="background-image: url('{{ asset('template/images/design1.png') }}');">
+
+		<div
+			class="w-full md:w-1/2 h-full flex mt-16 justify-center border-b-2 border-gray-100 ">
+			<!-- Contenu de la première div gauche -->
+
+			<div class="text-center text-white px-6 md:py-0 md:px-16 ">
+				<h1 class="mb-4 md:mb-8 text-4xl font-extrabold text-gray-600 text-center md:text-left md:text-6xl font-arial tracking-widest">
+					<span class="mb-2 text-3xl md:text-5xl">TROUVEZ DES</span>
+					<span id="dynamic-text" class="text-transparent text-3xl md:text-5xl bg-clip-text bg-gradient-to-r to-blue-600 from-orange-400 tracking-widest">
+						ENDROITS
+					</span><br/>
+					<span class=" text-2xl md:text-4xl ">PRÈS DE CHEZ VOUS</span>
+				</h1>
+
+				<p class="text-lg font-normal text-gray-900 mt-2 text-left">
+					<span class="inline-block border-b-2 border-orange-500">Découvrez Souss Massa</span>: Un voyage à travers la splendeur naturelle et le riche patrimoine.</p>
+			</span>
+		</p>
+		<!-- ************ Card for search -->
+
+
+		<div class="md:absolute md:w-[900px] mt-16 md:mt-24 p-4  border justify-end rounded-lg  sm:p-6 md:p-4 shadow-md bg-gray-500/60">
+
+			<form class="space-y-8" action="#">
+				<div class="flex flex-col md:flex-row items-center justify-center ">
+
+					<div class="relative w-full">
+						<div class="absolute inset-y-0 start-0 flex items-center ps-2.5 pointer-events-none me-2 text-gray-900">
+							What
+						</div>
+						<input type="text" id="input-group-1" class="border-none h-14 w-full text-gray-900 bg-white/80 text-lg font-semibold focus:ring-orange-500 focus:border-orange-500 block w-full ps-16 p-2.5" placeholder="Ex: food, services ...">
+					</div>
+
+
+					<div class="relative w-full">
+						<div class="absolute inset-y-0 start-0 flex items-center ps-3 text-gray-900 pointer-events-none">
+							Where
+						</div>
+						<input type="search" id="default-search" class="border-none h-14 w-full text-gray-900 bg-white/80 text-lg font-semibold focus:ring-orange-500 focus:border-orange-500 block w-full ps-20 p-2.5" placeholder="Your city" required/>
+						<button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-normal  text-md px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+					</div>
+
+
+				</div>
+
+			</form>
+		</div>
+
+
+		<!-- ************************************** -->
+	</div>
+</div>
+<div class="hidden md:block w-1/2 h-full bg-green-500 rounded-bl-full flex items-center justify-center bg-no-repeat bg-cover bg-center" style="background-image: url('{{ asset('template/images/back.jpg') }}'); "></div></div>{% include "components/categories.html.twig" with {
+		'categories' : categories
+}
+%}{% include "components/places.html.twig" with {
+		'listings' : listings
+}
+%}{% include "components/heading.html.twig" %}{% include "components/temoignage.html.twig" %}{% include "components/blog.html.twig" with {
+		'blogs' : blogs
+}
+%}{% include "components/actionnaire.html.twig" with {
+		'actionnaires' : actionnaires
+} %}{% include "components/partenaire.html.twig" with {
+		'partenaires' : partenaires
+} %}{% endblock %}{% block javascripts %}{{ parent()}}<script>
+
+
+document.addEventListener("DOMContentLoaded", function () {
+const textElement = document.getElementById('dynamic-text');
+const words = {{ categories_name | raw }};
+let index = 0;
+
+function changeText() { // Ajoute la classe de transition Tailwind CSS
+textElement.classList.add('transition-opacity', 'duration-500', 'opacity-0');
+
+// Attendre que la transition commence
+setTimeout(function () { // Change le texte
+textElement.textContent = words[index];
+// Retire la classe d'opacité pour montrer le texte
+textElement.classList.remove('opacity-0');
+// Augmente l'index pour afficher le mot suivant
+index = (index + 1) % words.length;
+}, 250);
+// la moitié de la durée de la transition
+
+// Supprimer la classe de transition après la transition est complète
+setTimeout(function () {
+textElement.classList.remove('transition-opacity', 'duration-500');
+}, 500); // la durée de la transition
+}
+
+// Change le texte immédiatement puis toutes les 3 secondes
+changeText();
+setInterval(changeText, 3000);
+});</script>{% endblock %}
