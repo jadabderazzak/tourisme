@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Amnities;
 use App\Entity\Listing;
 use App\Entity\Localite;
 use App\Entity\Categorie;
@@ -161,6 +162,26 @@ class ListingType extends AbstractType
             
             'required' => false,
         ])
+        ->add('amnities', EntityType::class, [
+            'class' => Amnities::class,
+            'mapped' => false,
+            'required' => false,
+            'choice_label' => 'nom',
+            'expanded' => true,
+            'multiple' => true,
+            'choice_attr' => function ($choice, $key, $value) use ($options) {
+                    // Vérifiez si cette amnity est déjà associée au Listing
+                    foreach ($options['listingAmnities'] as $listingAmnity) {
+                        if ($listingAmnity->getAmnities()->getId() === $choice->getId()) {
+                            return ['checked' => 'checked'];
+                        }
+                    }
+                    return [];
+                },
+                'choice_label' => function ($amnity, $key, $value) {
+                    return $amnity->getNom(); // Supposons que votre entité Amnity a une méthode getName()
+                },
+        ])
         ;
     }
 
@@ -168,6 +189,9 @@ class ListingType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Listing::class,
+         
+            'amnities' => [],
+            'listingAmnities' => [],
         ]);
     }
 }

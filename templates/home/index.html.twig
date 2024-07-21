@@ -52,48 +52,15 @@
 
 				<p class="text-xl leading-8 text-white mt-2 text-left">
 					<span class="inline-block border-b-2 border-orange-500 ">Découvrez Souss Massa: </span>  Un voyage à travers la splendeur naturelle et le riche patrimoine.</p>
-			</span>
-		</p>
-		<!-- ************ Card for search -->
-
-
-		<div class=" md:w-full mt-8 md:mt-20 p-4 justify-end rounded-lg  sm:p-6 md:p-4 shadow-md bg-gray-900/80">
-
-			<form class="space-y-8" action="#">
-				<div class="flex flex-col md:flex-row items-center justify-center ">
-					<div class="relative w-full">
-						<div class="absolute inset-y-0 start-0 flex items-center ps-2.5 pointer-events-none me-4 text-gray-900">
-						<img src="{{ asset('template/images/search.png')}}" class="object-cover h-6"/>
-						</div>
-						<input type="text" id="input-group-1" class="border-none h-14 w-full text-gray-900 bg-white/90 text-lg font-semibold focus:ring-orange-500 focus:border-orange-500 block w-full ps-14 p-2.5" placeholder="Ex: food, services ...">
-					</div>
-
-					<div class="relative w-full">
-						<div class="absolute inset-y-0 start-0 flex items-center ps-2.5 pointer-events-none me-4 text-gray-900">
-							<img src="{{ asset('template/images/category.png')}}" class="object-cover h-6"/>
-						</div>
-						<input type="text" id="input-group-1" class="border-none h-14 w-full text-gray-900 bg-white/90 text-lg font-semibold focus:ring-orange-500 focus:border-orange-500 block w-full ps-14 p-2.5" placeholder="Catégories">
-					</div>
-
-
-					<div class="relative w-full">
-						<div class="absolute inset-y-0 start-0 flex items-center ps-3 text-gray-900 pointer-events-none">
-							<img src="{{ asset('template/images/map.png')}}" class="object-cover h-6"/>
-						</div>
-						<input type="search" id="default-search" class="border-none h-14 w-full text-gray-900 bg-white/90 text-lg font-semibold focus:ring-orange-500 focus:border-orange-500 block w-full ps-14 p-2.5" placeholder="Localité" required/>
-						<button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-normal  text-md px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-					</div>
-
-
-				</div>
-
-			</form>
-		</div>
+			
+				{% include 'components/searchhome.html.twig' with {'form' : form} %}
 
 
 		<!-- ************************************** -->
 	</div>
-</div></div>{% include "components/categories.html.twig" with {
+</div></div>
+
+{% include "components/categories.html.twig" with {
 		'categories' : categories
 }
 %}{% include "components/places.html.twig" with {
@@ -109,31 +76,4 @@
 } %}{% endblock %}{% block javascripts %}{{ parent()}}<script>
 
 
-document.addEventListener("DOMContentLoaded", function () {
-const textElement = document.getElementById('dynamic-text');
-const words = {{ categories_name | raw }};
-let index = 0;
-
-function changeText() { // Ajoute la classe de transition Tailwind CSS
-textElement.classList.add('transition-opacity', 'duration-500', 'opacity-0');
-
-// Attendre que la transition commence
-setTimeout(function () { // Change le texte
-textElement.textContent = words[index];
-// Retire la classe d'opacité pour montrer le texte
-textElement.classList.remove('opacity-0');
-// Augmente l'index pour afficher le mot suivant
-index = (index + 1) % words.length;
-}, 250);
-// la moitié de la durée de la transition
-
-// Supprimer la classe de transition après la transition est complète
-setTimeout(function () {
-textElement.classList.remove('transition-opacity', 'duration-500');
-}, 500); // la durée de la transition
-}
-
-// Change le texte immédiatement puis toutes les 3 secondes
-changeText();
-setInterval(changeText, 3000);
-});</script>{% endblock %}
+</script>{% endblock %}

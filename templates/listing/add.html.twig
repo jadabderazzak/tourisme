@@ -9,7 +9,7 @@
 
 {% block body %}
 
-<nav class="border-b-1 border-gray-100 sticky  shadow-sm z-20 top-0 start-0 ">
+	<nav class="border-b-1 border-gray-100 sticky  shadow-sm z-20 top-0 start-0 ">
 
 		<ul class="flex justify-center items-center h-12 text-sm md:text-md">
 			<li class="mr-3">
@@ -66,7 +66,8 @@
 
 			<div class="flex  flex-col md:flex-row w-full gap-4">
 				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
-					<p class="text-md text-gray-900 mb-2">Le prix est entre </p>
+					<p class="text-md text-gray-900 mb-2">Le prix est entre
+					</p>
 					{{ form_widget(form.prixStart, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
 					<span class="text-sm text-red-700">{{ form_errors(form.prixStart) }}</span>
 				</div>
@@ -171,10 +172,22 @@
 					{{ form_widget(form.afficher, {'attr': {'class': 'w-12 h-12 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 '}}) }}
 					<span class="text-sm text-red-700">{{ form_errors(form.afficher) }}</span>
 				</div>
-				
+
+			</div>
+			<div class="relative mb-4 w-full md:w-full" data-te-input-wrapper-init>
+				<p class="text-md text-gray-900 mb-2">Equipements</p>
+				<div class="flex flex-wrap">
+					{% for checkbox in form.amnities %}
+						<div class="flex items-center mb-2 w-1/2 md:w-1/4 mt-4">
+							{{ form_widget(checkbox, {'attr': {'class': 'text-gray-900 text-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 p-2.5'}}) }}
+							<span class="ml-2">{{ form_label(checkbox) }}</span>
+						</div>
+					{% endfor %}
+				</div>
+				<span class="text-sm text-red-700">{{ form_errors(form.amnities) }}</span>
 			</div>
 			<div class="flex  flex-col md:flex-row w-full gap-4">
-			
+
 				<div class="relative mb-4 w-full md:w-[50%]" data-te-input-wrapper-init>
 					<p class="text-md text-gray-900 mb-2">Choisir des Images JPG ou PNG qui soient de bonne qualité</p>
 					<input type="file" id="myDropzone" name="file[]" multiple/>
@@ -209,28 +222,28 @@
 	<script src="{{asset('template/js/select2.min.js')}}" crossorigin="anonymous"></script>
 
 	<script>
-	$(document).ready(function() {
-    $('.js-example-basic-multiple').select2();
+		$(document).ready(function () {
+$('.js-example-basic-multiple').select2();
 });
-		function delete_image(id) {
-			var divid = "#image"+id;
-			$.ajax({
-										url: '/listing/image/delete/'+id,
-										
-										type: "POST",
-											success: function (response) {
-												
-											console.log(response)	
-											 $(divid).fadeOut(1000, function () {
-												$(this).remove();
-											});
+function delete_image(id) {
+var divid = "#image" + id;
+$.ajax({
+url: '/listing/image/delete/' + id,
 
-												
-											},
-											error: function(jqXHR, textStatus, errorThrown) {
-											alert(jqXHR.textStatus);
-											}
-										});
-		}
+type: "POST",
+success: function (response) {
+
+console.log(response)
+$(divid).fadeOut(1000, function () {
+$(this).remove();
+});
+
+
+},
+error: function (jqXHR, textStatus, errorThrown) {
+alert(jqXHR.textStatus);
+}
+});
+}
 	</script>
 {% endblock %}

@@ -1,0 +1,319 @@
+{% extends 'base_listing.html.twig' %}
+
+
+{% block body %}
+	<style>
+		.font-arial {
+			font-family: 'Poppins', sans-serif;
+		}
+
+		button:hover + [data-popover="popover"] {
+			opacity: 1;
+			pointer-events: auto;
+		}
+	</style>
+	<div class=" w-full justify-end  p-2 md:p-3 shadow-md bg-blue-900/80">
+		{% include 'components/searchsection.html.twig' with {'form' : form} %}
+	</div>
+
+	<!-- *************Search Header***************** -->
+	<script src="https://cdn.jsdelivr.net/gh/googlemaps/v3-utility-library@07f15d84/markerclustererplus/src/markerclusterer.js"></script>
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
+
+	<div class="relative flex flex-col md:flex-row w-full h-full items-start bg-gray-50 gap-0">
+
+		<div class=" w-full md:w-1/2 flex flex-col items-start justify-center px-2">
+			<div class="sticky top-0 bg-gray-50 z-20 w-full  flex flex-row justify-between items-center h-24 md:h-16 ">
+				<p class="text-md font-semibold tracking-wider mx-2">{{ listings.getTotalItemCount }}
+					établissements trouvés</p>
+
+
+				<!-- drawer init and toggle -->
+				<div class="items-center justify-center ">
+					<button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium  text-md  text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+						Ordre par :
+						<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
+							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+						</svg>
+					</button>
+					<div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+						<ul class="py-2 mx-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
+							<li class="py-2 mx-2 hover:underline">
+								{{ knp_pagination_sortable(listings, 'Alphabet','l.name')}}
+							</li>
+							<li class="py-2 mx-2 hover:underline">
+								{{ knp_pagination_sortable(listings, 'Date de création','l.createdAt')}}
+							</li>
+							<li class="py-2 mx-2 hover:underline">
+								{{ knp_pagination_sortable(listings, 'Les mieux/moins notés','l.note')}}
+							</li>
+
+						</ul>
+					</div>
+
+
+				</div>
+				<div class="">
+					<button class="relative select-none rounded-lg bg-gray-900 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" data-drawer-target="drawer-example" data-drawer-show="drawer-example" aria-controls="drawer-example" data-ripple-light="true" data-popover-target="popover">
+						<svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
+							<path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/>
+						</svg>
+					</button>
+					<div data-popover="popover" class="absolute p-4 font-sans text-sm font-normal break-words whitespace-normal bg-white border rounded-lg shadow-lg w-max border-blue-gray-50 text-blue-gray-500 shadow-blue-gray-500/10 opacity-0 transition-opacity duration-300 pointer-events-none z-10">
+						Plus de filtres
+					</div>
+				</div>
+			</div>
+
+
+			<div id="drawer-example" class="fixed w-full md:w-[35%] top-0 left-0 z-40 h-full p-4 overflow-y-auto transition-transform -translate-x-full bg-white  dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-label">
+
+				<button type="button" data-drawer-hide="drawer-example" aria-controls="drawer-example" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white">
+					<svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
+						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+					</svg>
+					<span class="sr-only">Close menu</span>
+				</button>
+
+				<div class="w-full mt-12">
+					{% include 'components/filtersection.html.twig' with {amnitiesForm :amnitiesForm, 'form' : form} %}
+				</div>
+			</div>
+
+
+			<div
+				class="w-full mt-4 flex flex-row justify-between items-center ">
+				<!-- Boucle sur les listings-->
+				{% if listings | length > 0 %}
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+						{% for listing in listings %}
+							{% include 'components/_card.html.twig' with {listing :listing } %}
+						{% endfor %}
+
+
+					</div>
+				{% else %}
+					<div class=" w-full h-full flex items-center justify-center text-xl text-blue-900">
+						<p>Pas de résultats trouvés</p>
+					</div>
+				{% endif %}
+			</div>
+			<div class="navigation flex justify-center w-full items-center mt-4 text-md">
+				{{ knp_pagination_render(listings) }}
+			</div>
+		</div>
+		<div class="sticky hidden md:block right-0 top-0 justify-center items-center bottom-0 w-full md:w-1/2  h-screen">
+			<div id="map" class=" items-center justify-center items-center h-screen border-b-2 border-gray-100 bg-gray-100">
+				Chargement en cours ...
+
+			</div>
+		</div>
+
+	</div>
+
+
+{% endblock %}
+{% block javascripts %}
+	{{ parent()}}
+
+	<script async="false" src="https://maps.googleapis.com/maps/api/js?key={{api_maps}}&callback=initMap&v=weekly" defer></script>
+
+	<script>
+		function initMap() {
+const mapOptions = {
+zoom: 6,
+center: new google.maps.LatLng(29.54619, -7.36133),
+mapTypeId: google.maps.MapTypeId.SATELLITE
+};
+
+const map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+const mapStyles = [{
+featureType: "administrative.country",
+stylers: [
+{
+visibility: "off"
+
+}
+]
+},];
+
+const mapType = new google.maps.StyledMapType(mapStyles, {name: "Maroc"});
+
+map.mapTypes.set("maroc", mapType);
+map.setMapTypeId("maroc");
+
+/************************************/
+
+// code pour dessiner la map  data.js
+// var data1 = groupCoordinates(data, 2);
+
+// data1.forEach(latLng => {
+
+// const polyline = new google.maps.Polyline({
+// path: latLng,
+// strokeOpacity: 1,
+// strokeWeight: 2,
+// strokeColor: "#E30AFA",
+// strokeStyle: "solid",
+// map: map
+// });
+
+// });
+
+/**************************************/
+
+
+// Ajouter un marqueur aux coordonnées spécifiées (35.7595, -5.8330)
+const svgMarker = {
+path: "M-1.547 12l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM0 0q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z",
+fillColor: "blue",
+fillOpacity: 0.6,
+strokeWeight: 0,
+rotation: 0,
+scale: 2,
+anchor: new google.maps.Point(0, 20)
+};
+
+
+const AdvancedMarkerElement = null;
+const PinElement = null;
+
+google.maps.importLibrary("marker").then(function (library) {
+const AdvancedMarkerElement = library.AdvancedMarkerElement;
+const PinElement = library.PinElement;
+
+// Votre code utilisant AdvancedMarkerElement et PinElement ici
+});
+
+
+// Créez un tableau pour stocker les marqueurs
+const markers = [];
+
+const listingsData = [{% for listing in listings %}{% set image = listing.getFirstImage != null ? 'template/uploads/' ~ listing.getFirstImage : 'template/images/no.jpg' %}{
+latitude: {{ listing.latitude | raw }},
+longitude: {{ listing.longitude | raw }},
+ville: "{{ listing.ville.province.nom | upper | raw }}/            {{ listing.ville.nom | upper | raw }}",
+getFirstImage: "{{ asset(image) }}",
+name: "{{ listing.name | raw }}",
+adresse: "{{ listing.adresse | raw | u.truncate(40,'...') }}",
+telephone: "{{ listing.telephone | raw }}"
+},{% endfor %}];
+const markers_cluster = [];
+var i = 1;
+const labels = "0123456789";
+function addMarker(listing) {
+const markerLatLng = new google.maps.LatLng(listing.latitude, listing.longitude);
+
+const chemin = listing.getFirstImage;
+
+const contentString = `
+        <a href="https://www.google.com/maps?q=${
+markerLatLng.lat()
+},${
+markerLatLng.lng()
+}" class="rounded overflow-hidden  bg-gray-50  rounded-tl-[40px] rounded-br-[40px] hover:shadow-md hover:shadow-gray-300  flex flex-col ">
+            <a href="#"></a>
+				<div class="relative">
+					<a href="#">
+						<img class=" w-full  h-32 object-cover rounded-xl shadow-lg" src="` + chemin + `">
+					</a>
+				
+				</div>
+				<div class="mx-2 mt-4">
+					<a href="#" class="font-medium text-lg inline-block text-blue-900 transition duration-500 ease-in-out inline-block mb-2">
+						` + listing.name + `
+					</a>
+
+					
+				</div>
+				
+				<div class=" flex flex-col justify-start  ">
+					
+
+					<span class="mx-2 py-1 text-xs justify-start text-left font-regular text-gray-900 mr-1 flex flex-row gap-1 items-center">
+						<svg class="w-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+  <path fill-rule="evenodd" d="M11.906 1.994a8.002 8.002 0 0 1 8.09 8.421 7.996 7.996 0 0 1-1.297 3.957.996.996 0 0 1-.133.204l-.108.129c-.178.243-.37.477-.573.699l-5.112 6.224a1 1 0 0 1-1.545 0L5.982 15.26l-.002-.002a18.146 18.146 0 0 1-.309-.38l-.133-.163a.999.999 0 0 1-.13-.202 7.995 7.995 0 0 1 6.498-12.518ZM15 9.997a3 3 0 1 1-5.999 0 3 3 0 0 1 5.999 0Z" clip-rule="evenodd"/>
+</svg>
+
+
+						<span class="ml-1">` + listing.adresse + `</span>
+					</span>
+
+				
+				</div>
+           
+        </a>`;
+const label = labels[i % labels.length];
+i++;
+
+const marker = new google.maps.Marker({position: markerLatLng, map: map});
+
+const infoWindow = new google.maps.InfoWindow({content: contentString});
+
+// Ajoutez un événement de clic pour ouvrir l'info-bulle
+marker.addListener('click', function () {
+infoWindow.open(map, marker);
+});
+
+var bounds = new google.maps.LatLngBounds();
+
+
+bounds.extend(marker.getPosition());
+
+// Zoomer automatiquement sur le marqueur en ajustant les limites de la carte
+map.fitBounds(bounds);
+// Limiter le zoom maximal (facultatif)
+google.maps.event.addListenerOnce(map, 'bounds_changed', function (event) {
+if (this.getZoom() > 6) {
+this.setZoom(6);
+}
+});
+
+
+markers_cluster.push(marker);
+}
+
+// Ajoutez les marqueurs pour chaque listing
+listingsData.forEach(function (listing) {
+addMarker(listing);
+});
+
+
+var markerCluster = new MarkerClusterer(map, markers_cluster, {imagePath: "{{ asset('template/images/m') }}"});
+
+
+}
+function groupCoordinates(arr, chunkSize) {
+var groupedCoordinates = [];
+for (var i = 0; i < arr.length; i += chunkSize) {
+groupedCoordinates.push(arr.slice(i, i + chunkSize));
+}
+return groupedCoordinates;
+}
+
+
+function checkMapLoaded() {
+var mapElement = document.getElementById('map');
+if (mapElement && mapElement.offsetWidth > 0 && mapElement.offsetHeight > 0) { // La carte est affichée correctement
+return true;
+}
+return false;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+function loadMap() {
+if (checkMapLoaded()) {
+initMap();
+} else {
+setTimeout(loadMap, 1000); // Réessaye après 1 seconde
+}
+}
+
+// Appelle loadMap une fois que le DOM est complètement chargé
+loadMap();
+});
+	</script>
+{% endblock %}

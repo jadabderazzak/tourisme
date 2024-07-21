@@ -2,23 +2,22 @@
 
 namespace App\Entity;
 
-use App\Repository\ImagesRepository;
+use App\Repository\ListingamnitiesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ImagesRepository::class)]
-class Images
+#[ORM\Entity(repositoryClass: ListingamnitiesRepository::class)]
+class Listingamnities
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'images')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy: 'listingamnities')]
     private ?Listing $listing = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $chemin = null;
+    #[ORM\ManyToOne(inversedBy: 'listingamnities')]
+    private ?Amnities $amnities = null;
 
     public function getId(): ?int
     {
@@ -37,19 +36,15 @@ class Images
         return $this;
     }
 
-    public function getChemin(): ?string
+    public function getAmnities(): ?Amnities
     {
-        return $this->chemin;
+        return $this->amnities;
     }
 
-    public function setChemin(string $chemin): static
+    public function setAmnities(?Amnities $amnities): static
     {
-        $this->chemin = $chemin;
+        $this->amnities = $amnities;
 
         return $this;
-    }
-    public function __toString()
-    {
-        return $this->getChemin();
     }
 }

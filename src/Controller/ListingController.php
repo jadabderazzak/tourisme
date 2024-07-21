@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Images;
 use App\Entity\Listing;
+use App\Entity\Listingamnities;
 use App\Form\ListingType;
+use App\Repository\AmnitiesRepository;
 use App\Repository\ImagesRepository;
+use App\Repository\ListingamnitiesRepository;
 use App\Repository\ListingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -28,7 +31,7 @@ class ListingController extends AbstractController
     }
 
     #[Route('/listing/ajouter', name: 'app_listing_add')]
-    public function add(Request $request, EntityManagerInterface $manager): Response
+    public function add(Request $request, EntityManagerInterface $manager, AmnitiesRepository $repoAmnities): Response
     {
         $extentions = ['jpeg', 'jpg', 'png', 'JPEG', 'JPG', 'PNG'];
 
@@ -36,16 +39,34 @@ class ListingController extends AbstractController
         $form = $this->createForm(ListingType::class, $listing);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $listing = $form->getData();
           
+            $listing = $form->getData();
+            $formData = $request->request->all();
+
+          
+            if (isset($formData['listing']['amnities'])) {
+                $amnities = $formData['listing']['amnities'];
+              
+            } 
+           
+          /************************** Ajouter ces amnities dans la base  */
+          foreach ($amnities as $amnityId) {
+            $amnity = $repoAmnities->findOneBy(['id' => $amnityId]);
+            $listingAmnity = new ListingAmnities();
+            $listingAmnity->setListing($listing);
+            $listingAmnity->setAmnities($amnity);
+
+            $manager->persist($listingAmnity);
+          }
+
+          /*************************************************************** */
             $manager->persist($listing);
             /************ Traitement des nombres */
             $listing->setNbCouverts((trim($listing->getNbCouverts()) !== "" and $listing->getNbCouverts() !== null) ? $listing->getNbCouverts() : 0);
             $listing->setNbChambre((trim($listing->getNbChambre()) !== "" and $listing->getNbChambre() !== null) ? $listing->getNbChambre() : 0);
             $listing->setNbLit((trim($listing->getNbLit()) !== "" and $listing->getNbLit() !== null) ? $listing->getNbLit() : 0);
             /****************** traitement des images  */
-
+            $listing->setNote(5);
             $images = $request->files->get('file');
 
             if (count($images) > 0) {
@@ -132,11 +153,18 @@ class ListingController extends AbstractController
     }
 
     #[Route('/listing/modifier/{slug}', name: 'app_listing_update')]
-    public function update(Listing $listing, Request $request, EntityManagerInterface $manager, ImagesRepository $repoImage): Response
+    public function update(Listing $listing, Request $request, ListingamnitiesRepository $repoListAmni, EntityManagerInterface $manager, AmnitiesRepository $repoAmnities, ImagesRepository $repoImage): Response
     {
+       
+        $listingAmnities = $listing->getListingamnities();
+        $allAmnities = $repoAmnities->findAll();
 
+     
         $extentions = ['jpeg', 'jpg', 'png', 'JPEG', 'JPG', 'PNG'];
-        $form = $this->createForm(ListingType::class, $listing);
+        $form = $this->createForm(ListingType::class, $listing, [
+            'amnities' => $allAmnities,
+            'listingAmnities' => $listingAmnities,
+        ]);
         $allimages = $repoImage->findBy([
             'listing' => $listing
         ]);
@@ -179,9 +207,6 @@ class ListingController extends AbstractController
                         // $listing->addImage($imagesentity);
 
 
-
-
-
                     }
 
 
@@ -190,6 +215,33 @@ class ListingController extends AbstractController
 
             }
 
+               /************************** Ajouter ces amnities dans la base  */
+               $formData = $request->request->all();
+
+               $amnities = null;
+          
+               if (isset($formData['listing']['amnities'])) {
+                   $amnities = $formData['listing']['amnities'];
+                 
+                     
+                   
+                    $existingListingAmnities = $repoListAmni->findBy(['listing' => $listing]);
+
+                    foreach ($existingListingAmnities as $existingAmnity) {
+                        $manager->remove($existingAmnity);
+                    }
+                    foreach ($amnities as $amnityId) {
+                        $amnity = $repoAmnities->findOneBy(['id' => $amnityId]);
+                      
+                        $listingAmnity = new ListingAmnities();
+                        $listingAmnity->setListing($listing);
+                        $listingAmnity->setAmnities($amnity);
+                        $manager->persist($listingAmnity);
+                        
+                       
+                    } 
+                       
+                    }
 
             $manager->flush();
             $this->addFlash('success', 'Le listing a bien été modifié.');

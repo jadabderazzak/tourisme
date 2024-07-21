@@ -8,6 +8,7 @@ parameters:
     uploads_directory_logo : '%kernel.project_dir%/public/template/logos'
     uploads_all_directory : '%kernel.project_dir%/public/template/uploadsAll'
     app.locales : [fr, en, ar]
+    API_MAPS: '%env(API_MAPS)%'
 
 services:
     # default configuration for services in *this* file

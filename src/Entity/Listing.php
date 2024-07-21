@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ListingRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Images;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ListingRepository;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ListingRepository::class)]
@@ -108,9 +109,22 @@ class Listing
     #[ORM\Column]
     private ?bool $afficher = null;
 
+    #[ORM\OneToMany(targetEntity: Listingamnities::class, mappedBy: 'listing')]
+    private Collection $listingamnities;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $note = null;
+
+   
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->listingamnities = new ArrayCollection();
+   
     }
 
     public function getId(): ?int
@@ -423,4 +437,65 @@ class Listing
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Listingamnities>
+     */
+    public function getListingamnities(): Collection
+    {
+        return $this->listingamnities;
+    }
+
+    public function addListingamnity(Listingamnities $listingamnity): static
+    {
+        if (!$this->listingamnities->contains($listingamnity)) {
+            $this->listingamnities->add($listingamnity);
+            $listingamnity->setListing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeListingamnity(Listingamnities $listingamnity): static
+    {
+        if ($this->listingamnities->removeElement($listingamnity)) {
+            // set the owning side to null (unless already changed)
+            if ($listingamnity->getListing() === $this) {
+                $listingamnity->setListing(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFirstImage(): ?Images
+    {
+        return $this->images->first() ?: null;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getNote(): ?float
+    {
+        return $this->note;
+    }
+
+    public function setNote(?float $note): static
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+  
 }

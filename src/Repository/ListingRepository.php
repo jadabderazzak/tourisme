@@ -56,8 +56,6 @@ class ListingRepository extends ServiceEntityRepository
             ->leftJoin('l.categorie','c')
             ->leftJoin('v.province','pr')
             ->leftJoin('l.pension','ps')
-          
-
             ->andWhere('l.afficher = :val')
             ->setParameter('val', true)
             ->setMaxResults($nombre)
@@ -93,13 +91,79 @@ class ListingRepository extends ServiceEntityRepository
         }
     }
 
-//    public function findOneBySomeField($value): ?Listing
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findBySearch($data,$amnitiesData) 
+    {
+        $keywords = explode(' ', $data->mot );
+        $listings = $this->createQueryBuilder('l')
+                        
+                        ->addSelect('l','v','c','pr','ps','la','a')
+                    
+                        ->leftJoin('l.ville','v')
+                        ->leftJoin('l.categorie','c')
+                        ->leftJoin('v.province','pr')
+                        ->leftJoin('l.listingamnities', 'la') 
+                        ->leftJoin('la.amnities', 'a')
+                        ->leftJoin('l.pension','ps');
+               
+
+            if(trim($data->mot) != "")
+            {
+                
+                                     
+                    foreach ($keywords as $index => $keyword) {
+                    $parameter = 'keyword' . $index;
+                
+                  
+                    $listings = $listings
+                        ->andWhere('l.name LIKE  :value')
+                        ->setParameter('value', '%' . $keyword . '%');
+                }
+            }
+
+
+            if($data->categorie != null)
+            {
+                $listings = $listings
+                                     ->andWhere('l.categorie =  :cat')
+                                     ->setParameter('cat', $data->categorie);
+            }
+           
+            if($data->ville != null)
+            {
+             
+                $listings = $listings
+                                     ->andWhere('v.id =  :ville')
+                                     ->setParameter('ville', $data->ville->getId());
+            }
+
+            $listings = $listings
+                        ->andWhere('l.afficher =  :aff')
+                        ->setParameter('aff', true);
+            
+            /************* Gestion de la latitude et longitude */
+            $listings = $listings
+                        ->andWhere('l.latitude  <>  :lat')
+                        ->setParameter('lat', "" )
+                        ->andWhere('l.longitude  <>  :long')
+                        ->setParameter('long', "" );
+
+            // ici le code à modifier            
+            if ($amnitiesData->getAmnities() !== null && !empty($amnitiesData->getAmnities())) {               
+                 $listings = $listings
+                ->andWhere('a IN (:amnities)')
+                ->setParameter('amnities', $amnitiesData->getAmnities());
+                
+            }          
+            $listings = $listings
+                             
+                                ->addOrderBy('l.id','ASC')
+                                 ->addOrderBy('l.createdAt','DESC')
+                                
+                                ;
+       
+            return $listings;
+
+    }
+
+   
 }

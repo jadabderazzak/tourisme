@@ -1,0 +1,54 @@
+{% if pageCount > 1 %}
+
+
+	<div class="max-w-8xl mx-auto container py-10">
+		<ul class="flex justify-center items-center">
+			<li>
+
+
+				{% if previous is defined %}
+
+					<a href="{{ path(route, query|merge({(pageParameterName): previous})) }}">
+
+						<span tabindex="0" aria-label="backward" role="button" class="focus:ring-2 focus:ring-offset-2 focus:ring-blue-800 focus:outline-none p-1 flex rounded transition duration-150 ease-in-out text-base leading-tight font-bold text-gray-500 hover:text-blue-800 focus:outline-none mr-1 sm:mr-3">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+								<path stroke="none" d="M0 0h24v24H0z"/>
+								<polyline points="15 6 9 12 15 18"/>
+							</svg>
+						</span>
+
+					</a>
+
+				{% endif %}
+			</li>
+
+
+			{% for page in pagesInRange %}
+				{% if page != current %}
+
+					<a href="{{ path(route, query|merge({(pageParameterName): page})) }}">
+						<span tabindex="0" class="focus:outline-none focus:bg-blue-800 focus:text-white flex text-blue-900 dark:text-indigo-400  bg-white   hover:bg-blue-800 hover:text-white text-base leading-tight font-bold cursor-pointer shadow transition duration-150 ease-in-out mx-2 sm:mx-2 rounded px-3 py-1 focus:outline-none">{{page}}</span>
+					</a>
+
+				{% else %}
+					<span tabindex="0" class="focus:outline-none focus:bg-blue-800 focus:text-white flex  dark:text-indigo-400  bg-blue-900   hover:bg-blue-800 hover:text-white text-white leading-tight font-bold cursor-pointer shadow transition duration-150 ease-in-out mx-2 sm:mx-2 rounded px-3 py-1 focus:outline-none">{{page}}</span>
+				{% endif %}
+			{% endfor %}
+
+
+			<li>
+				{% if next is defined %}
+					<a rel="next" href="{{ path(route, query|merge({(pageParameterName): next})) }}">
+						<span tabindex="0" aria-label="forward" role="button" class="focus:ring-2 focus:ring-offset-2 focus:ring-blue-800 focus:outline-none flex rounded transition duration-150 ease-in-out text-base leading-tight font-bold text-gray-500 hover:text-blue-800 p-1 focus:outline-none ml-1 sm:ml-1">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+								<path stroke="none" d="M0 0h24v24H0z"/>
+								<polyline points="9 6 15 12 9 18"/>
+							</svg>
+						</span>
+					</a>
+				{% endif %}
+			</li>
+		</ul>
+	</div>
+
+{% endif %}
