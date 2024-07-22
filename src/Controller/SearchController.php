@@ -2,14 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Localite;
 use App\Form\FiltreType;
 use App\Form\SearchType;
+use App\Entity\Categorie;
 use App\Model\FiltreDonnee;
 use App\Model\RechercheDonnee;
 use App\Repository\ListingRepository;
+
 use App\Repository\LocaliteRepository;
 use App\Repository\CategorieRepository;
-
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +24,7 @@ class SearchController extends AbstractController
     public function index(CategorieRepository $repoCat,ListingRepository $repoListing, Request $request, PaginatorInterface $paginator): Response
     {
 
-
+    
   
         $api_maps = $this->getParameter('API_MAPS');
         
@@ -37,7 +39,7 @@ class SearchController extends AbstractController
         $amnitiesForm->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid() )
          {
-           
+            
             $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
           
             $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
@@ -56,10 +58,10 @@ class SearchController extends AbstractController
             ]);
          }
 
-         if (  $amnitiesForm->isSubmitted() && $amnitiesForm->isValid() )
+         if ( $amnitiesForm->isSubmitted() && $amnitiesForm->isValid() )
          {
            
-            $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
+            $resultats = $repoListing->findByFilter($filtreDonnees);
           
             $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
             $donnees->page = $request->query->getInt('page', 1);  
@@ -77,7 +79,7 @@ class SearchController extends AbstractController
             ]);
          }
        
-       
+         
        
         return $this->render('search/index.html.twig', [
             'form' => $form->createView(),
@@ -90,76 +92,176 @@ class SearchController extends AbstractController
         ]);
     }
 
-   
-    // #[Route('/search', name: 'app_search')]
-    // public function index(CategorieRepository $repoCat, ListingRepository $repoListing, Request $request, PaginatorInterface $paginator): Response
-    // {
-    //     $api_maps = $this->getParameter('API_MAPS');
-    //     $categories = $repoCat->findAll();
-    
-    //     // Créer les objets de données
-    //     $donnees = new RechercheDonnee();
-    //     $filtreDonnees = new FiltreDonnee();
-    
-    //     // Créer les formulaires
-    //     $form = $this->createForm(SearchType::class, $donnees);
-    //     $amnitiesForm = $this->createForm(FiltreType::class, $filtreDonnees);
-    
-    //     // Manipuler les requêtes des formulaires
-    //     $form->handleRequest($request);
-    //     $amnitiesForm->handleRequest($request);
-    
-    //     // Préparer les données pour les formulaires
-    //     $queryParams = $request->query->all();
-    
-    //     // Charger les données du premier formulaire (recherche)
-    //     if (isset($queryParams['search'])) {
-    //         $searchParams = $queryParams['search'];
-    //         if (isset($searchParams['mot'])) {
-    //             $donnees->mot = $searchParams['mot'];
-    //         }
-    //         if (isset($searchParams['categorie'])) {
-    //             $categorie = $repoCat->find($searchParams['categorie']);
-    //             $donnees->categorie = $categorie;
-    //         }
-    //         if (isset($searchParams['ville'])) {
-    //             $ville = $repoListing->find($searchParams['ville']);
-    //             $donnees->ville = $ville;
-    //         }
-    
-    //         // Copier les données du premier formulaire au deuxième
-    //         $filtreDonnees->mot = $donnees->mot;
-    //         $filtreDonnees->categorie = $donnees->categorie;
-    //         $filtreDonnees->ville = $donnees->ville;
+    #[Route('/recherche/categorie/{slug}', name: 'app_search_categorie')]
+    public function hotels(Categorie $categorie, CategorieRepository $repoCat, ListingRepository $repoListing, PaginatorInterface $paginator, Request $request, ListingRepository $repoList): Response
+    {
+
+        $api_maps = $this->getParameter('API_MAPS');
+        $categories = $repoCat->findAll();
+        $listings = [];
+      
+        $categories_name = [];
+        foreach($categories as $cat )
+        {
+            $categories_name[] = mb_strtoupper($cat->getNom(), 'UTF-8');
+        }
+        $categories_names = json_encode( $categories_name, JSON_UNESCAPED_UNICODE);
+      
+       
+       
+
+        /**************** Form  */
+        $donnees = new RechercheDonnee();
+        $donnees->categorie = $categorie;
+        $form = $this->createForm(SearchType::class, $donnees);
+        $filtreDonnees = new FiltreDonnee();
+        $filtreDonnees->categorie = $categorie;
+
+       
+        $amnitiesForm = $this->createForm(FiltreType::class,$filtreDonnees);
+        $form->handleRequest($request);
+        $amnitiesForm->handleRequest($request);
+
+
+        $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
+        $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
+          
+            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+            $donnees->page = $request->query->getInt('page', 1);  
+          
             
-    //     }
-    
-    //     // Charger les données depuis la requête pour les filtres
-    //     if (isset($queryParams['filtre']['amnities']) && is_array($queryParams['filtre']['amnities'])) {
-    //         $amnities = $repoListing->findBy([
-    //             'id' => $queryParams['filtre']['amnities']
-    //         ]);
-    //         $filtreDonnees->amnities = $amnities;
-    //     }
-    
-    //     // Traiter les données combinées dans findBySearch
-    //     $resultats = $repoListing->findBySearch($donnees, $filtreDonnees);
-    
-    //     $listings = $paginator->paginate(
-    //         $resultats,
-    //         $request->query->getInt('page', 1),
-    //         4 // Nombre d'éléments par page
-    //     );
-    
-    //     // Passer les données au template
-    //     return $this->render('search/index.html.twig', [
-    //         'listings' => $listings,
-    //         'form' => $form->createView(),
-    //         'amnitiesForm' => $amnitiesForm->createView(),
-    //         'categories' => $categories,
-    //         'api_maps' => $api_maps,
-    //     ]);
-    // }
+            return $this->render('search/categorie.html.twig', [
+               
+                'listings' => $listings,
+                'donnees' => $donnees,
+                'filtreDonnees' => $filtreDonnees,
+                'form' => $form->createView(),
+                'amnitiesForm' => $amnitiesForm->createView(),
+                'categories' => $categories,
+                'api_maps' => $api_maps
+            ]);
+        }
+        if (  $amnitiesForm->isSubmitted() && $amnitiesForm->isValid() )
+        {
+          
+           $resultats = $repoListing->findByFilter($filtreDonnees);
+         
+           $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+           $donnees->page = $request->query->getInt('page', 1);  
+         
+           
+           return $this->render('search/categorie.html.twig', [
+              
+               'listings' => $listings,
+               'donnees' => $donnees,
+               'filtreDonnees' => $filtreDonnees,
+               'form' => $form->createView(),
+               'amnitiesForm' => $amnitiesForm->createView(),
+               'categories' => $categories,
+               'api_maps' => $api_maps
+           ]);
+        }
+
+     
+        return $this->render('search/categorie.html.twig', [
+            'listings' => $listings,
+               'donnees' => $donnees,
+               'filtreDonnees' => $filtreDonnees,
+               'form' => $form->createView(),
+               'amnitiesForm' => $amnitiesForm->createView(),
+               'categories' => $categories,
+               'api_maps' => $api_maps
+        ]);
+    }
+   
+
+    #[Route('/recherche/localite/{slug}', name: 'app_search_localite')]
+    public function localite(Localite $localite, CategorieRepository $repoCat, ListingRepository $repoListing, PaginatorInterface $paginator, Request $request, ListingRepository $repoList): Response
+    {
+
+        $api_maps = $this->getParameter('API_MAPS');
+        $categories = $repoCat->findAll();
+        $listings = [];
+      
+        $categories_name = [];
+        foreach($categories as $cat )
+        {
+            $categories_name[] = mb_strtoupper($cat->getNom(), 'UTF-8');
+        }
+       
+      
+       
+       
+
+        /**************** Form  */
+        $donnees = new RechercheDonnee();
+        $donnees->ville = $localite;
+        $form = $this->createForm(SearchType::class, $donnees);
+        $filtreDonnees = new FiltreDonnee();
+        $filtreDonnees->ville = $localite;
+
+       
+        $amnitiesForm = $this->createForm(FiltreType::class,$filtreDonnees);
+        $form->handleRequest($request);
+        $amnitiesForm->handleRequest($request);
+
+
+        $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
+        $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
+          
+            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+            $donnees->page = $request->query->getInt('page', 1);  
+          
+            
+            return $this->render('search/ville.html.twig', [
+               
+                'listings' => $listings,
+                'donnees' => $donnees,
+                'filtreDonnees' => $filtreDonnees,
+                'form' => $form->createView(),
+                'amnitiesForm' => $amnitiesForm->createView(),
+                'categories' => $categories,
+                'api_maps' => $api_maps
+            ]);
+        }
+        if (  $amnitiesForm->isSubmitted() && $amnitiesForm->isValid() )
+        {
+          
+           $resultats = $repoListing->findByFilter($filtreDonnees);
+         
+           $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+           $donnees->page = $request->query->getInt('page', 1);  
+         
+           
+           return $this->render('search/ville.html.twig', [
+              
+               'listings' => $listings,
+               'donnees' => $donnees,
+               'filtreDonnees' => $filtreDonnees,
+               'form' => $form->createView(),
+               'amnitiesForm' => $amnitiesForm->createView(),
+               'categories' => $categories,
+               'api_maps' => $api_maps
+           ]);
+        }
+
+     
+        return $this->render('search/ville.html.twig', [
+            'listings' => $listings,
+               'donnees' => $donnees,
+               'filtreDonnees' => $filtreDonnees,
+               'form' => $form->createView(),
+               'amnitiesForm' => $amnitiesForm->createView(),
+               'categories' => $categories,
+               'api_maps' => $api_maps
+        ]);
+    }
     
 
 

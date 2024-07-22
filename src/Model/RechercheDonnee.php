@@ -13,7 +13,7 @@ class RechercheDonnee {
     public $page = 1;
 
      /** @var string */
-     public $mot = '';
+     public $query = '';
 
      /** @var Categorie|null */
      public $categorie ;
@@ -21,8 +21,8 @@ class RechercheDonnee {
       /** @var Localite|null */
      public $ville ;
     
-     public function getMot(){
-        return $this->mot;
+     public function getQuery(){
+        return $this->query;
      }
      public function getCategorie(){
         return $this->categorie;
@@ -31,8 +31,8 @@ class RechercheDonnee {
         return $this->ville;
      }
 
-     public function setMot($mot){
-        return $this->mot = $mot;
+     public function setQuery($query){
+        return $this->query = $query;
      }
      public function setCategorie($cat){
         return $this->categorie = $cat;

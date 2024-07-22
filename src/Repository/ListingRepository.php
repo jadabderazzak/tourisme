@@ -93,7 +93,8 @@ class ListingRepository extends ServiceEntityRepository
 
     public function findBySearch($data,$amnitiesData) 
     {
-        $keywords = explode(' ', $data->mot );
+        
+        $keywords = explode(' ', $data->query );
         $listings = $this->createQueryBuilder('l')
                         
                         ->addSelect('l','v','c','pr','ps','la','a')
@@ -106,7 +107,7 @@ class ListingRepository extends ServiceEntityRepository
                         ->leftJoin('l.pension','ps');
                
 
-            if(trim($data->mot) != "")
+            if(trim($data->query) != "")
             {
                 
                                      
@@ -126,8 +127,10 @@ class ListingRepository extends ServiceEntityRepository
                 $listings = $listings
                                      ->andWhere('l.categorie =  :cat')
                                      ->setParameter('cat', $data->categorie);
+                                    
             }
-           
+            
+            
             if($data->ville != null)
             {
              
@@ -147,13 +150,93 @@ class ListingRepository extends ServiceEntityRepository
                         ->andWhere('l.longitude  <>  :long')
                         ->setParameter('long', "" );
 
-            // ici le code à modifier            
-            if ($amnitiesData->getAmnities() !== null && !empty($amnitiesData->getAmnities())) {               
+                    
+            if ($amnitiesData->getAmnities() !== null && count($amnitiesData->getAmnities())> 0  ) {               
                  $listings = $listings
                 ->andWhere('a IN (:amnities)')
                 ->setParameter('amnities', $amnitiesData->getAmnities());
                 
-            }          
+            }   
+
+            $listings = $listings
+                             
+                                ->addOrderBy('l.id','ASC')
+                                 ->addOrderBy('l.createdAt','DESC')
+                                
+                                ;
+       
+            return $listings;
+
+    }
+
+
+    public function findByFilter($amnitiesData) 
+    {
+        
+        $keywords = explode(' ', $amnitiesData->query );
+        $listings = $this->createQueryBuilder('l')
+                        
+                        ->addSelect('l','v','c','pr','ps','la','a')
+                    
+                        ->leftJoin('l.ville','v')
+                        ->leftJoin('l.categorie','c')
+                        ->leftJoin('v.province','pr')
+                        ->leftJoin('l.listingamnities', 'la') 
+                        ->leftJoin('la.amnities', 'a')
+                        ->leftJoin('l.pension','ps');
+               
+
+            if(trim($amnitiesData->query) != "")
+            {
+                
+                                     
+                    foreach ($keywords as $index => $keyword) {
+                    $parameter = 'keyword' . $index;
+                
+                  
+                    $listings = $listings
+                        ->andWhere('l.name LIKE  :value')
+                        ->setParameter('value', '%' . $keyword . '%');
+                }
+            }
+
+
+            if($amnitiesData->categorie != null)
+            {
+                $listings = $listings
+                                     ->andWhere('l.categorie =  :cat')
+                                     ->setParameter('cat', $amnitiesData->categorie);
+                                    
+            }
+            
+          
+            if($amnitiesData->ville != null)
+            {
+             
+                $listings = $listings
+                                     ->andWhere('v.id =  :ville')
+                                     ->setParameter('ville', $amnitiesData->ville->getId());
+            }
+
+            $listings = $listings
+                        ->andWhere('l.afficher =  :aff')
+                        ->setParameter('aff', true);
+            
+            /************* Gestion de la latitude et longitude */
+            $listings = $listings
+                        ->andWhere('l.latitude  <>  :lat')
+                        ->setParameter('lat', "" )
+                        ->andWhere('l.longitude  <>  :long')
+                        ->setParameter('long', "" );
+
+                    
+            if ($amnitiesData->getAmnities() !== null && count($amnitiesData->getAmnities())> 0  ) {               
+                 $listings = $listings
+                ->andWhere('a IN (:amnities)')
+                ->setParameter('amnities', $amnitiesData->getAmnities());
+                
+            }   
+
             $listings = $listings
                              
                                 ->addOrderBy('l.id','ASC')

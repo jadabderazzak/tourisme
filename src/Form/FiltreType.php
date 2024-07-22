@@ -18,7 +18,7 @@ class FiltreType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('mot',TextType::class,[
+        ->add('query',TextType::class,[
             'required' => false,
             'attr' => [
                 'placeholder' => 'Ex: Best place ... ',

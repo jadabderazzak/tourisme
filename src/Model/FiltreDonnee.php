@@ -14,7 +14,7 @@ class FiltreDonnee {
     public $page = 1;
 
     /** @var string */
-    public $mot = '';
+    public $query = '';
 
     /** @var Categorie|null */
     public $categorie;
@@ -26,13 +26,13 @@ class FiltreDonnee {
     public $amnities;
 
     // Getter and Setter methods
-    public function getMot()
+    public function getQuery()
     {
-        return $this->mot;
+        return $this->query;
     }
-    public function setMot($mot)
+    public function setMQuery($query)
     {
-        $this->mot = $mot;
+        $this->query = $query;
     }
 
     public function getCategorie()

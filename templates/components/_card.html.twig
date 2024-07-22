@@ -4,7 +4,7 @@
 	<div class="relative">
 		<a href="#">
 			<img class=" w-full  h-64 object-cover" src="{{ asset(chemin)}}" alt="{{ listing.name | raw}}">
-			<div class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-500 opacity-25"></div>
+			<div class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-500 opacity-5"></div>
 		</a>
 		<a href="#!">
 
@@ -45,7 +45,7 @@
 		
 	</div>
 	<div class="px-6 mb-2 flex flex-row items-center justify-between ">
-		<span href="#" class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
+		<a href="{{ path('app_search_localite',{ slug : listing.ville.slug})}}" class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
 			<svg class="h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
 				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"/>
@@ -53,12 +53,12 @@
 
 
 			<span class="ml-1">{{ listing.ville.nom | raw | upper}}</span>
-		</span>
+		</a>
 
-		<span href="#" class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
-
-			<span class="ml-1 text-md font-semibold text-blue-600">Open now</span>
-		</span>
+		<a href="{{ path('app_search_categorie',{ slug : listing.categorie.slug})}}" class="py-1 underline text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
+			<img src="{{ asset('template/images/category.png')}}" class="object-cover h-3 mr-1"/>
+			<span class="ml-1">{{ listing.categorie.nom | raw | upper}}</span>
+		</a>
 	</div>
 	<div class="px-6 py-2 flex flex-row items-center justify-between border border-t-1 border-gray-100">
 		<span href="#" class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
