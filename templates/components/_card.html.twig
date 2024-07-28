@@ -2,7 +2,7 @@
 <div class="rounded overflow-hidden border border-gray-200 bg-white rounded-tl-[40px] rounded-br-[40px] hover:shadow-md hover:shadow-gray-300   flex flex-col ">
 	<a href="#"></a>
 	<div class="relative">
-		<a href="#">
+		<a href="{{ path('app_search_listing_show',{slug : listing.slug})}}">
 			<img class=" w-full  h-64 object-cover" src="{{ asset(chemin)}}" alt="{{ listing.name | raw}}">
 			<div class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-500 opacity-5"></div>
 		</a>
@@ -20,7 +20,7 @@
 		</a>
 	</div>
 	<div class="px-6 mt-4 mb-2">
-		<a href="#" class="font-medium text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">
+		<a href="{{ path('app_search_listing_show',{slug : listing.slug})}}" class="font-medium text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">
 			{{ listing.name | raw | capitalize}}
 
 			{# stars rating #}
@@ -61,14 +61,15 @@
 		</a>
 	</div>
 	<div class="px-6 py-2 flex flex-row items-center justify-between border border-t-1 border-gray-100">
-		<span href="#" class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
+	{% if listing.telephone != "" %}
+		<a href="tel: {{ listing.telephone | raw }} " class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
 			<svg class="h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.427 14.768 17.2 13.542a1.733 1.733 0 0 0-2.45 0l-.613.613a1.732 1.732 0 0 1-2.45 0l-1.838-1.84a1.735 1.735 0 0 1 0-2.452l.612-.613a1.735 1.735 0 0 0 0-2.452L9.237 5.572a1.6 1.6 0 0 0-2.45 0c-3.223 3.2-1.702 6.896 1.519 10.117 3.22 3.221 6.914 4.745 10.12 1.535a1.601 1.601 0 0 0 0-2.456Z"/>
 			</svg>
 
 			<span class="ml-1 text-md ">Call now</span>
-		</span>
-
+		</a>
+	{% endif %}
 		<span href="#" class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
 			<svg class="w-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.153 19 21 12l-4.847-7H3l4.848 7L3 19h13.153Z"/>

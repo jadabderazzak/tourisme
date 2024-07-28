@@ -118,6 +118,9 @@ class Listing
     #[ORM\Column(nullable: true)]
     private ?float $note = null;
 
+    #[ORM\Column(length: 500, nullable: true)]
+    private ?string $video = null;
+
    
 
     public function __construct()
@@ -493,6 +496,18 @@ class Listing
     public function setNote(?float $note): static
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function getVideo(): ?string
+    {
+        return $this->video;
+    }
+
+    public function setVideo(?string $video): static
+    {
+        $this->video = $video;
 
         return $this;
     }

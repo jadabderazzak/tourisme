@@ -1,0 +1,12 @@
+<div data-te-lightbox-init class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16 mx-4">
+	
+		{% for image in images %}
+		
+				{% set chemin = "template/uploads/" ~ image.chemin %}
+				<div >
+					<img class="h-32 max-w-full rounded-lg cursor-pointer" src="{{ asset(chemin)}}" alt="">
+				</div>
+
+			{% endfor %}
+	
+	</div>

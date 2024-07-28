@@ -6,8 +6,6 @@
 		.font-arial {
 			font-family: 'Poppins', sans-serif;
 		}
-
-
 	</style>
 	<div class=" w-full justify-end  p-2 md:p-3 shadow-md bg-blue-900/80">
 		{% include 'components/searchsection.html.twig' with {'form' : form} %}
@@ -22,8 +20,8 @@
 
 		<div class=" w-full md:w-1/2 flex flex-col items-start justify-center px-2">
 			<div class="sticky top-0 bg-gray-50 z-20 w-full  flex flex-row justify-between items-center h-24 md:h-16 ">
-				<p class="text-md font-semibold tracking-wider mx-2">{{ listings.getTotalItemCount }}
-					établissements trouvés</p>
+				<p class="text-md font-semibold tracking-wider mx-2">{{ listings.getTotalItemCount <= 1 ? listings.getTotalItemCount ~ " établissement trouvé" : listings.getTotalItemCount ~ " établissements trouvés" }}
+				</p>
 
 
 				<!-- drawer init and toggle -->
@@ -58,8 +56,7 @@
 						</svg>
 					</button>
 
-			
-					
+
 				</div>
 			</div>
 
@@ -192,7 +189,7 @@ const markers = [];
 const listingsData = [{% for listing in listings %}{% set image = listing.getFirstImage != null ? 'template/uploads/' ~ listing.getFirstImage : 'template/images/no.jpg' %}{
 latitude: {{ listing.latitude | raw }},
 longitude: {{ listing.longitude | raw }},
-ville: "{{ listing.ville.province.nom | upper | raw }}/              {{ listing.ville.nom | upper | raw }}",
+ville: "{{ listing.ville.province.nom | upper | raw }}/               {{ listing.ville.nom | upper | raw }}",
 getFirstImage: "{{ asset(image) }}",
 name: "{{ listing.name | raw }}",
 adresse: "{{ listing.adresse | raw | u.truncate(40,'...') }}",

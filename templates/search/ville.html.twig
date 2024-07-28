@@ -22,8 +22,8 @@
 
 		<div class=" w-full md:w-1/2 flex flex-col items-start justify-center px-2">
 			<div class="sticky top-0 bg-gray-50 z-20 w-full  flex flex-row justify-between items-center h-24 md:h-16 ">
-				<p class="text-md font-semibold tracking-wider mx-2">{{ listings.getTotalItemCount }}
-					établissements trouvés</p>
+								<p class="text-md font-semibold tracking-wider mx-2">{{ listings.getTotalItemCount <= 1 ? listings.getTotalItemCount ~ " établissement trouvé" : listings.getTotalItemCount ~ " établissements trouvés" }}
+</p>
 
 
 				<!-- drawer init and toggle -->

@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Listing;
 use App\Entity\Localite;
 use App\Form\FiltreType;
 use App\Form\SearchType;
 use App\Entity\Categorie;
 use App\Model\FiltreDonnee;
 use App\Model\RechercheDonnee;
-use App\Repository\ListingRepository;
 
+use App\Repository\ListingRepository;
 use App\Repository\LocaliteRepository;
 use App\Repository\CategorieRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -20,7 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SearchController extends AbstractController
 {
-    #[Route('/search', name: 'app_search')]
+    #[Route('/recherche', name: 'app_search')]
     public function index(CategorieRepository $repoCat,ListingRepository $repoListing, Request $request, PaginatorInterface $paginator): Response
     {
 
@@ -260,6 +261,70 @@ class SearchController extends AbstractController
                'amnitiesForm' => $amnitiesForm->createView(),
                'categories' => $categories,
                'api_maps' => $api_maps
+        ]);
+    }
+
+
+    #[Route('/listing/{slug}', name: 'app_search_listing_show')]
+    public function listingShow(Listing $listing, Request $request, CategorieRepository $repoCat, ListingRepository $repoListing, PaginatorInterface $paginator): Response
+    {
+       
+        $api_maps = $this->getParameter('API_MAPS');
+        $listings1 = $repoListing->getActiveListings(0);
+        $listings = $paginator->paginate($listings1, $request->query->getInt('page', 1), 4);  
+        $categories = $repoCat->findAll();
+        $donnees = new RechercheDonnee();
+        $filtreDonnees = new FiltreDonnee();
+        $form = $this->createForm(SearchType::class, $donnees);
+        $amnitiesForm = $this->createForm(FiltreType::class,$filtreDonnees);
+        $form->handleRequest($request);
+        $amnitiesForm->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid() )
+         {
+            
+            $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
+          
+            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+            $donnees->page = $request->query->getInt('page', 1);  
+          
+            
+            return $this->render('search/index.html.twig', [
+               
+                'listings' => $listings,
+                'donnees' => $donnees,
+                'filtreDonnees' => $filtreDonnees,
+                'form' => $form->createView(),
+                'amnitiesForm' => $amnitiesForm->createView(),
+                'categories' => $categories,
+                'api_maps' => $api_maps
+            ]);
+         }
+
+         if ( $amnitiesForm->isSubmitted() && $amnitiesForm->isValid() )
+         {
+           
+            $resultats = $repoListing->findByFilter($filtreDonnees);
+          
+            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+            $donnees->page = $request->query->getInt('page', 1);  
+          
+            
+            return $this->render('search/index.html.twig', [
+               
+                'listings' => $listings,
+                'donnees' => $donnees,
+                'filtreDonnees' => $filtreDonnees,
+                'form' => $form->createView(),
+                'amnitiesForm' => $amnitiesForm->createView(),
+                'categories' => $categories,
+                'api_maps' => $api_maps
+            ]);
+         }
+   
+        return $this->render('search/show.html.twig', [
+            'listing' => $listing,
+            'api_maps' => $api_maps,
+            'form' => $form->createView(),
         ]);
     }
     
