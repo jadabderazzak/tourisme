@@ -1,12 +1,35 @@
-<div data-te-lightbox-init class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16 mx-4">
-	
-		{% for image in images %}
-		
-				{% set chemin = "template/uploads/" ~ image.chemin %}
-				<div >
-					<img class="h-32 max-w-full rounded-lg cursor-pointer" src="{{ asset(chemin)}}" alt="">
-				</div>
+{# <div data-te-lightbox-init class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16 mx-4">
 
-			{% endfor %}
-	
+	{% for image in images %}
+
+		{% set chemin = "template/uploads/" ~ image.chemin %}
+		<a data-fslightbox="gallery" href="{{ asset(chemin)}}">
+			<img class="h-32 max-w-full rounded-lg cursor-pointer" src="{{ asset(chemin)}}" alt="">
+		</a>
+
+	{% endfor %}
+
+
+</div> #}
+
+<div class="grid gap-4 mb-16 mb-6 ">
+	<div>
+
+		{% set chemin1 = listing.images | length > 0 ? "template/uploads/" ~ listing.getFirstImage : "template/images/no.jpg" %}
+		
+		<img class="h-auto w-full max-w-full rounded-lg object-cover object-center md:h-[480px] " src="{{ asset(chemin1)}}" alt=""/>
 	</div>
+	<div class="grid grid-cols-4 md:grid-cols-6 gap-4">
+		{% for image in images %}
+
+			{% set chemin = "template/uploads/" ~ image.chemin %}
+			<div>
+				<a data-fslightbox="gallery" href="{{ asset(chemin)}}">
+					<img src="{{ asset(chemin)}}" class="object-cover object-center h-20 max-w-full rounded-lg cursor-pointer" alt="gallery-image"/>
+				</a>
+			</div>
+		{% endfor %}
+
+	</div>
+	<script src="{{ asset('template/js/fslightbox.js')}}"></script>
+</div>

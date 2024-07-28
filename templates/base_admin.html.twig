@@ -17,10 +17,14 @@
 			<link rel="stylesheet" href="{{ asset('template/css/dataTables.min.css')}}" crossorigin="anonymous"/>
 			<link rel="stylesheet" href="{{ asset('template/css/datatablesResponsive.css')}}" crossorigin="anonymous"/>
 			<link rel="stylesheet" href="{{ asset('template/css/datatablesrowReorder.css')}}" crossorigin="anonymous"/>
+			<link rel="stylesheet" href="{{ asset('template/css/star-rating.css')}}" crossorigin="anonymous"/>
+			{# <link rel="stylesheet" href="{{ asset('template/css/styles.css')}}" crossorigin="anonymous"/> #}
+    
 		{% endblock %}
 
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}
+				
 			<script src="{{asset('template/js/jquery.min.js')}}" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 			<script src="{{asset('template/js/dataTables.js')}}" crossorigin="anonymous"></script>
@@ -28,6 +32,8 @@
 			<script src="{{asset('template/js/dataTables.rowReorder.js')}}" crossorigin="anonymous"></script>
 			<script src="{{asset('template/js/rowReorder.dataTables.js')}}" crossorigin="anonymous"></script>
 			<script src="{{asset('template/js/responsive.dataTables.js')}}" crossorigin="anonymous"></script>
+			<script src="{{asset('template/js/star-rating.js')}}" crossorigin="anonymous"></script>
+			
 		{% endblock %}
 	</head>
 	<body class="bg-gray-50">

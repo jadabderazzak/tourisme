@@ -121,12 +121,16 @@ class Listing
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $video = null;
 
+    #[ORM\OneToMany(targetEntity: Reviews::class, mappedBy: 'listing')]
+    private Collection $reviews;
+
    
 
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->listingamnities = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
    
     }
 
@@ -508,6 +512,36 @@ class Listing
     public function setVideo(?string $video): static
     {
         $this->video = $video;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reviews>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Reviews $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setListing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Reviews $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getListing() === $this) {
+                $review->setListing(null);
+            }
+        }
 
         return $this;
     }

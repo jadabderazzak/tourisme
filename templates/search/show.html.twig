@@ -1,28 +1,38 @@
 {% extends 'base_listing.html.twig' %}
 
-
-{% block body %}
+{% block stylesheets %}
+{{ parent()}}
+<link rel="stylesheet" href="{{ asset('template/css/star-rating.css')}}" crossorigin="anonymous"/>
 	<style>
 		.font-arial {
 			font-family: 'Poppins', sans-serif;
 		}
 	</style>
+{% endblock %}
+
+{% block body %}
+
 	<div class=" w-full justify-end  p-2 md:p-3 shadow-md bg-blue-900/80">
 		{% include 'components/searchsection.html.twig' with {'form' : form} %}
 	</div>
 
 	<!-- *************Search Header***************** -->
 	<script src="https://cdn.jsdelivr.net/gh/googlemaps/v3-utility-library@07f15d84/markerclustererplus/src/markerclusterer.js"></script>
-
 	<script src="https://polyfill.io/v3/polyfill.min.js?features=default" defer></script>
+
+
 	<div class="h-[130px] md:h-[110px] px-4 bg-transparent w-full  mt-5  flex flex-col md:flex-row ">
-		<div class=" w-full md:w-5/6 h-full items-start justify-start px-2 ">
+		<div class=" w-full md:w-4/6 lg:w-5/6 h-full items-start justify-start px-2 ">
 
 
 			<p class="text-4xl text-blue-900 font-semibold ">
 				{{ listing.name | raw }}</p>
-			<p class="text-md text-gray-900 font-normal mb-1">
-				{{ listing.adresse | raw }}</p>
+			<p class="text-md text-gray-900 font-normal mb-1 flex flex-row md:items-center gap-1">
+				<img src="{{ asset('template/svg/map.svg')}}" class="h-5"/>
+
+
+				<span class="me-2">{{ listing.adresse | raw }}</span>
+			</p>
 			<div class="flex items-center">
 				{% for i in 1..listing.note %}
 					<svg class="w-5 h-5 text-orange-500 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 22 20">
@@ -40,17 +50,17 @@
 
 
 		</div>
-		<div class="w-full md:w-1/6  mt-4 md:mt-0 h-full  px-2 ">
+		<div class="w-full md:w-2/6 lg:w-1/6 mt-6 md:mt-0 h-full  px-2 ">
 
 			<div class="flex flex-row md:flex-col w-full md:w-64 h-full items-center justify-center">
 				<div>
 
-					<button href="javascript:;" class="bg-blue-500 text-white py-2.5 px-4 rounded sm:hidden w-48 md:w-64">
+					<button id="scrollForm1" class="bg-blue-500 text-white py-2.5 px-4 rounded sm:hidden w-48 md:w-64">
 						Submit reviews
 					</button>
 
 					<!-- Bouton pour les écrans de taille moyenne et plus -->
-					<button href="javascript:;" class="bg-blue-900/90 h-[60px] text-center text-white text-lg py-2.5 px-4 rounded hidden sm:inline-block  w-full md:w-64">
+					<button id="scrollForm"  class="bg-blue-900/90 h-[60px] text-center text-white text-lg py-2.5 px-4 rounded hidden sm:inline-block  w-full md:w-64">
 						Submit reviews
 					</button>
 				</div>
@@ -81,54 +91,86 @@
 		</div>
 
 	</div>
-	<div class="relative mt-4 md:mt-0 px-4 flex flex-col md:flex-row w-full h-full items-start  gap-0">
+	<div class="relative mt-8  md:mt-0 px-4 flex flex-col md:flex-row w-full h-full items-start  gap-0">
 
-		<div class=" w-full md:w-3/5 flex h-screen flex-col items-start justify-start px-2 ">
+		<div class=" w-full md:w-3/5 flex h-full flex-col items-start justify-start px-2 ">
+
+
 
 			{% if listing.video != "" %}
-				<div class="w-full px-0 md:px-4 h-16 bg-white md:bg-gray-100 flex flex-col md:flex-row justify-start items-center gap-2">
-					<div class="md:w-5/6 w-full h-full flex items-center justify-start gap-4">
+				<div class="w-full px-0 md:mt-0 mt-8  mb-4 md:px-4 h-16 bg-white md:bg-gray-100 flex flex-col md:flex-row justify-start items-center gap-2">
+					<div class="md:w-5/6 w-full h-16 flex items-center justify-start gap-4">
 						<img src="{{ asset('template/svg/video.svg')}}" class="w-8 h-8"/>
 						<p class="text-lg text-blue-900">Checkout
 							{{ listing.name | raw | capitalize }}
 						</p>
 					</div>
 					<div class="md:w-1/6  w-full h-full flex items-center justify-center">
-						<button href="javascript:;" class="bg-white border border-gray-100 shadow-lg w-2/5 md:w-full h-12 md:h-4/5 text-center text-blue-600 font-semibold text-md  rounded  w-full ">
+						<button data-modal-target="modal-id" data-modal-toggle="modal-id" id="open-modal-btn" data-modal="button" href="javascript:;" class="bg-white border border-gray-100 shadow-lg w-32 md:w-full h-12 md:h-3/5 text-center text-blue-600 font-semibold text-md  rounded  ">
 							Voir la vidéo
 						</button>
+
+						{# Le modal de la vidéo  #}
+						<div id="modal-id" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+							<div
+								class="relative p-4 w-full max-w-2xl max-h-full" id="modal-content">
+								<!-- Modal content -->
+								<div
+									class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+
+									<!-- Modal body -->
+									<div class=" space-y-4">
+										<iframe id="iframevideo" class="w-full h-96" src="{{ listing.video | raw }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+
+						{# ************************ #}
 					</div>
 				</div>
 			{% endif %}
 
 			{% if listing.description !=  "" %}
-				<p class="mt-12 md:mt-8  mb-3 text-gray-800  first-line:uppercase first-line:tracking-widest first-letter:text-7xl first-letter:font-bold first-letter:text-gray-900 dark:first-letter:text-gray-100 first-letter:me-3 first-letter:float-start">
+				<p class="mt-12 md:mt-8  mb-2 text-gray-800  first-line:uppercase first-line:tracking-widest first-letter:text-7xl first-letter:font-bold first-letter:text-gray-900 dark:first-letter:text-gray-100 first-letter:me-3 first-letter:float-start">
 					{{ listing.description | raw | capitalize }}</p>
 			{% endif %}
 
 			{# gestion des amnities #}
 
-			<div class="mt-4 md:mt-8 grid grid-cols-2  md:grid-cols-4 gap-4 w-full ">
-				{% for item in listing.Listingamnities %}
-					<div class="flex flex-row justify-start items-center gap-2 ">
-						<svg class="flex-shrink-0 w-4 h-4 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 16 12">
-							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-						</svg>
-						<p>{{ item.amnities.nom  }}</p>
-					</div>
-				{% endfor %}
+			<div class="mt-4 md:mt-4 w-full ">
+
+
+				{% include 'components/_amnities.html.twig' with {
+                    
+					'listing' : listing 
+                }%}
 			</div>
 
 			{# gestion de la gallerie #}
+			{% if listing.images | length > 0 %}
+				<hr class="my-6 w-3/3  text-center border-t-2 border-[#FA7127]">
+	
+				{% include 'components/_gallery.html.twig' with {
+                    'images' : listing.images,
+					'listing' : listing 
+                }%}
+			{% endif %}
 
-			<hr class="my-6 w-2/3  text-center border-t-2 border-[#FA7127]">
-
-			{% include 'components/_gallery.html.twig' with {
-                    'images' : listing.images     
+			{% include 'components/_details.html.twig' with {
+                    
+					'listing' : listing 
                 }%}
 
+			{% include 'components/_review.html.twig' with {
+                    
+					'form_review' : form_review 
+                }%}
 		</div>
-		<div class="sticky hidden md:block right-0 top-0 justify-center items-center bottom-0 w-full md:w-2/5  h-screen">
+		<div class="static xl:sticky xl:top-0 justify-center items-center bottom-0 w-full md:w-2/5  h-screen shadow-xl ">
 			<div id="map" class=" items-center justify-center items-center h-screen border-b-2 border-gray-100 bg-gray-100">
 				Chargement en cours ...
 
@@ -143,8 +185,9 @@
 	{{ parent()}}
 
 	<script async="false" src="https://maps.googleapis.com/maps/api/js?key={{api_maps}}&callback=initMap&v=weekly" defer></script>
-
+<script src="{{asset('template/js/star-rating.js')}}" crossorigin="anonymous"></script>
 	<script>
+	
 		function initMap() {
 const mapOptions = {
 zoom: 6,
@@ -219,7 +262,7 @@ const markers = [];
 const listingsData = [{% set image = listing.getFirstImage != null ? 'template/uploads/' ~ listing.getFirstImage : 'template/images/no.jpg' %}{
 latitude: {{ listing.latitude | raw }},
 longitude: {{ listing.longitude | raw }},
-ville: "{{ listing.ville.province.nom | upper | raw }}/                            {{ listing.ville.nom | upper | raw }}",
+ville: "{{ listing.ville.province.nom | upper | raw }}/                                 {{ listing.ville.nom | upper | raw }}",
 getFirstImage: "{{ asset(image) }}",
 name: "{{ listing.name | raw }}",
 adresse: "{{ listing.adresse | raw | u.truncate(40,'...') }}",
@@ -340,5 +383,70 @@ setTimeout(loadMap, 1000); // Réessaye après 1 seconde
 // Appelle loadMap une fois que le DOM est complètement chargé
 loadMap();
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+const modal = document.getElementById('modal-id');
+const modalContent = document.getElementById('modal-content');
+const openModalBtn = document.getElementById('open-modal-btn');
+const iframe = document.getElementById('iframevideo');
+
+// Ouvre le modal
+openModalBtn.addEventListener('click', function () {
+modal.classList.remove('hidden');
+});
+
+// Ferme le modal si on clique en dehors du contenu
+modal.addEventListener('click', function (event) {
+if (! modalContent.contains(event.target)) {
+modal.classList.add('hidden');
+if (iframe) {
+iframe.src = iframe.src; // Arrête la vidéo
+
+}
+
+}
+});
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+
+ var destroyed = false;
+        var starratingPrebuilt = new StarRating('.star-rating-prebuilt', {
+            prebuilt: true,
+            maxStars: 5,
+        });
+        var starrating = new StarRating('.star-rating', {
+            stars: function (el, item, index) {
+                el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect class="gl-star-full" width="19" height="19" x="2.5" y="2.5"/><polygon fill="#FFF" points="12 5.375 13.646 10.417 19 10.417 14.665 13.556 16.313 18.625 11.995 15.476 7.688 18.583 9.333 13.542 5 10.417 10.354 10.417"/></svg>';
+            },
+        });
+       
+});
+
+ document.addEventListener('DOMContentLoaded', function() {
+        var button = document.getElementById('scrollForm');
+		 var button1 = document.getElementById('scrollForm1');
+        var form = document.getElementById('reviewForm');
+
+        if (button && form) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                form.scrollIntoView({ behavior: 'smooth' });
+            });
+        } else {
+            console.error('Element not found: Check if IDs are correct');
+        }
+
+		 if (button1 && form) {
+            button1.addEventListener('click', function(e) {
+                e.preventDefault();
+                form.scrollIntoView({ behavior: 'smooth' });
+            });
+        } else {
+            console.error('Element not found: Check if IDs are correct');
+        }
+    });
+
 	</script>
+	
 {% endblock %}

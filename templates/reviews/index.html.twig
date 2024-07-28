@@ -1,0 +1,76 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Reviews{% endblock %}
+
+{% block body %}
+	
+    <div class="w-full p-4 mt-10">
+		<blockquote class="text-2xl font-semibold italic text-center text-slate-900 mb-10">
+			Liste des
+			<span class="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-[#FA7127] relative inline-block ">
+				<span class="relative text-white">
+					reviews</span>
+			</span>
+
+		</blockquote>
+		<table id="example" class="display  w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
+			<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+				<tr>
+					<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Listing</th>
+                    <th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Note du listing</th>
+                    <th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Email</th>
+                    <th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Note de l'utilisateur</th>
+					
+					<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for rev in reviews %}
+						<tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+
+						<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ rev.listing.name | raw }}</td>
+                        <td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ rev.listing.note | number_format('0',',',' ') }}</td>
+						<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ rev.email | raw }}</td>
+                        <td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ rev.note| number_format('0',',',' ') }}</td>
+
+
+				
+						<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">
+							<a href="{{ path('app_province_update',{slug: rev.id})}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editer</a>
+							|
+							<a href="{{ path('app_province_delete',{slug: red.id})}}" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Supprimer</a>
+
+						</td>
+
+
+					</tr>
+				{% endfor %}
+
+
+			</tbody>
+		</table>
+	</div>
+{% endblock %}
+{% block javascripts %}
+
+
+	{{ parent()}}
+	<script>
+		$(document).ready(function () {
+$('#example').DataTable({
+responsive: true,
+rowReorder: {
+selector: 'td:nth-child(2)'
+},
+"language": {
+"url": "{{ asset('template/js/fr.json') }}" // si vous souhaitez localiser DataTables en français
+},
+"order": [], // Désactive le tri par défaut
+
+
+});
+
+
+});
+	</script>
+{% endblock %}

@@ -3,13 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Listing;
+use App\Entity\Reviews;
 use App\Entity\Localite;
 use App\Form\FiltreType;
+use App\Form\ReviewType;
 use App\Form\SearchType;
 use App\Entity\Categorie;
+
 use App\Model\FiltreDonnee;
 use App\Model\RechercheDonnee;
-
 use App\Repository\ListingRepository;
 use App\Repository\LocaliteRepository;
 use App\Repository\CategorieRepository;
@@ -275,6 +277,8 @@ class SearchController extends AbstractController
         $categories = $repoCat->findAll();
         $donnees = new RechercheDonnee();
         $filtreDonnees = new FiltreDonnee();
+        $reviews = new Reviews();
+        $form_review = $this->createForm(ReviewType::class, $reviews);
         $form = $this->createForm(SearchType::class, $donnees);
         $amnitiesForm = $this->createForm(FiltreType::class,$filtreDonnees);
         $form->handleRequest($request);
@@ -287,13 +291,14 @@ class SearchController extends AbstractController
             $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
             $donnees->page = $request->query->getInt('page', 1);  
           
-            
+            dd("form1");
             return $this->render('search/index.html.twig', [
                
                 'listings' => $listings,
                 'donnees' => $donnees,
                 'filtreDonnees' => $filtreDonnees,
                 'form' => $form->createView(),
+                'form_review' => $form_review->createView(),
                 'amnitiesForm' => $amnitiesForm->createView(),
                 'categories' => $categories,
                 'api_maps' => $api_maps
@@ -302,7 +307,7 @@ class SearchController extends AbstractController
 
          if ( $amnitiesForm->isSubmitted() && $amnitiesForm->isValid() )
          {
-           
+            dd("form2");
             $resultats = $repoListing->findByFilter($filtreDonnees);
           
             $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
@@ -317,13 +322,23 @@ class SearchController extends AbstractController
                 'form' => $form->createView(),
                 'amnitiesForm' => $amnitiesForm->createView(),
                 'categories' => $categories,
+                'form_review' => $form_review->createView(),
                 'api_maps' => $api_maps
             ]);
          }
-   
+
+         $form_review->handleRequest($request);
+         if ($form_review->isSubmitted() && $form_review->isValid())
+         {
+            $stars = $request->get('stars') != ""  ? intval($request->get('stars')) : null;
+          
+           
+         }
+       
         return $this->render('search/show.html.twig', [
             'listing' => $listing,
             'api_maps' => $api_maps,
+            'form_review' => $form_review->createView(),
             'form' => $form->createView(),
         ]);
     }

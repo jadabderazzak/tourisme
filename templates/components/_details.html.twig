@@ -1,0 +1,111 @@
+<section class="text-gray-600 body-font">
+	<div class="container">
+
+		<div class="flex flex-wrap w-full  sm:mb-2 -mx-2">
+			
+
+
+			<div class="p-2 w-1/2 md:w-1/3 w-full">
+				<div class="bg-gray-100 rounded flex p-4 h-full items-center">
+					<img src="{{ asset('template/svg/max.svg')}}" class="text-blue-600 w-7 h-7 flex-shrink-0 mr-4"/>
+					<span class="title-font font-medium">Nb Couverts :
+						{{ listing.nbCouverts  != null ?  listing.nbCouverts | number_format('0',',', ' ')  : '0' }}</span>
+				</div>
+			</div>
+			<div class="p-2 w-1/2 md:w-1/3 w-full">
+				<div class="bg-gray-100 rounded flex p-4 h-full items-center">
+					<img src="{{ asset('template/svg/bed.svg')}}" class="text-blue-600 w-7 h-7 flex-shrink-0 mr-4"/>
+
+					<span class="title-font font-medium">Nb Lits :
+						{{ listing.nbLit  != null ?  listing.nbLit | number_format('0',',', ' ') : '0'  }}</span>
+				</div>
+			</div>
+			<div class="p-2 w-1/2 md:w-1/3 w-full">
+				<div class="bg-gray-100 rounded flex p-4 h-full items-center">
+					<img src="{{ asset('template/svg/room.svg')}}" class="text-blue-600 w-7 h-7 flex-shrink-0 mr-4"/>
+					<span class="title-font font-medium">Nb Chambres :
+						{{ listing.nbChambre  != null ?  listing.nbChambre | number_format('0',',', ' ') : '0'  }}</span>
+				</div>
+			</div>
+
+
+			{% if listing.email  != null %}
+				<a href="mailto:{{listing.email | raw }}" class="p-2 w-1/2 md:w-1/3 w-full">
+					<div class="bg-gray-100 rounded flex p-4 h-full items-center">
+						<img src="{{ asset('template/svg/email.svg')}}" class="text-blue-600 w-7 h-7 flex-shrink-0 mr-4"/>
+						<span class="font-medium w-full" style="word-wrap: break-word; max-width: 80%;">
+							{{ listing.email != null ? listing.email|raw : '-' }}
+						</span>
+					</div>
+				</a>
+
+			{% endif %}
+			{% if listing.telephone  != null %}
+				<a href="tel:{{listing.telephone | raw }}" class="p-2 w-1/2 md:w-1/3 w-full">
+					<div class="bg-gray-100 rounded flex p-4 h-full items-center">
+						<img src="{{ asset('template/svg/phone.svg')}}" class="text-blue-600 w-7 h-7 flex-shrink-0 mr-4"/>
+
+						<span class=" font-medium">
+							{{ listing.telephone  != null ?  listing.telephone |  raw   : '-' }}</span>
+					</div>
+				</a>
+			{% endif %}
+			{% if listing.siteweb  != null %}
+				
+                <a href="{{listing.siteweb | raw }}" class="p-2 w-1/2 md:w-1/3 w-full" target="__blank">
+					<div class="bg-gray-100 rounded flex p-4 h-full items-center">
+						<img src="{{ asset('template/svg/web.svg')}}" class="text-blue-600 w-7 h-7 flex-shrink-0 mr-4"/>
+							<span class="font-medium w-full" style="word-wrap: break-word; max-width: 80%;">
+							{{ listing.siteweb  != null ?  listing.siteweb | raw : '-'  }}</span>
+					</div>
+				</a>
+			{% endif %}
+
+
+            {% if listing.facebook  != null %}
+				<a href="{{listing.facebook | raw }}" class="p-2 w-1/2 md:w-1/2 w-full" target="__blank">
+					<div class="bg-gray-100 rounded flex p-4 h-full items-center">
+						<img src="{{ asset('template/svg/face.svg')}}" class="text-blue-600 w-7 h-7 flex-shrink-0 mr-4"/>
+						<span class="font-medium w-full" style="word-wrap: break-word; max-width: 80%;">
+							{{ listing.facebook != null ? listing.facebook|raw : '-' }}
+						</span>
+					</div>
+				</a>
+
+			{% endif %}
+			{% if listing.instagram  != null %}
+				<a href="{{listing.instagram | raw }}" class="p-2 w-1/2 md:w-1/2 w-full" target="__blank">
+					<div class="bg-gray-100 rounded flex p-4 h-full items-center">
+						<img src="{{ asset('template/svg/insta.svg')}}" class="text-blue-600 w-7 h-7 flex-shrink-0 mr-4"/>
+
+						<span class=" font-medium">
+							{{ listing.instagram  != null ?  listing.instagram |  raw   : '-' }}</span>
+					</div>
+				</a>
+			{% endif %}
+			{% if listing.twitter  != null %}
+				<a href="{{listing.twitter | raw }}" class="p-2 w-1/2 md:w-1/2 w-full" target="__blank">
+					<div class="bg-gray-100 rounded flex p-4 h-full items-center">
+						<img src="{{ asset('template/svg/x.svg')}}" class="text-blue-600 w-7 h-7 flex-shrink-0 mr-4"/>
+							<span class="font-medium w-full" style="word-wrap: break-word; max-width: 80%;">
+							{{ listing.twitter  != null ?  listing.twitter | raw : '-'  }}</span>
+					</div>
+				</a>
+			{% endif %}
+            {% if listing.youtube  != null %}
+            
+				<a href="{{listing.youtube | raw }}" class="p-2 w-1/2 md:w-1/2 w-full" target="__blank">
+					<div class="bg-gray-100 rounded flex p-4 h-full items-center">
+						<img src="{{ asset('template/svg/youtube.svg')}}" class="text-blue-600 w-7 h-7 flex-shrink-0 mr-4"/>
+							<span class="font-medium w-full" style="word-wrap: break-word; max-width: 80%;">
+							{{ listing.youtube  != null ?  listing.youtube | raw : '-'  }}</span>
+					</div>
+				
+                
+                </a>
+			{% endif %}
+
+
+		</div>
+	</div>
+</section>
