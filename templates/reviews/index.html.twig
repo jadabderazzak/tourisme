@@ -17,6 +17,8 @@
 			<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 				<tr>
 					<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Listing</th>
+					<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Titre</th>
+					<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Description</th>
                     <th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Note du listing</th>
                     <th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Email</th>
                     <th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Note de l'utilisateur</th>
@@ -28,17 +30,21 @@
 				{% for rev in reviews %}
 						<tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
 
-						<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ rev.listing.name | raw }}</td>
-                        <td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ rev.listing.note | number_format('0',',',' ') }}</td>
+						<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">
+						<a href="{{ path('app_search_listing_show', { slug : rev.listing.slug})}}" target="__blank" class="text-blue-600 underline">{{ rev.listing.name | raw }}</a>
+						</td>
+						<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ rev.titre | raw }}</td>
+						<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">
+						<div class="w-64" style="overflow-wrap: break-word; white-space: normal;">{{ rev.description | raw | e }}</div></td>
+                        <td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ rev.listing.note | number_format('1',',',' ') }}</td>
 						<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ rev.email | raw }}</td>
                         <td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ rev.note| number_format('0',',',' ') }}</td>
-
-
-				
 						<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">
-							<a href="{{ path('app_province_update',{slug: rev.id})}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editer</a>
-							|
-							<a href="{{ path('app_province_delete',{slug: red.id})}}" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Supprimer</a>
+						{% if rev.calculer == false %}
+							<a href="{{ path('app_reviews_valider',{id: rev.id})}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Valider</a> |
+						<a href="{{ path('app_reviews_delete',{id: rev.id})}}" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Supprimer</a>
+						{% endif %}	
+							
 
 						</td>
 

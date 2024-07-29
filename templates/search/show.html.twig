@@ -1,8 +1,8 @@
 {% extends 'base_listing.html.twig' %}
 
 {% block stylesheets %}
-{{ parent()}}
-<link rel="stylesheet" href="{{ asset('template/css/star-rating.css')}}" crossorigin="anonymous"/>
+	{{ parent()}}
+	<link rel="stylesheet" href="{{ asset('template/css/star-rating.css')}}" crossorigin="anonymous"/>
 	<style>
 		.font-arial {
 			font-family: 'Poppins', sans-serif;
@@ -34,20 +34,28 @@
 				<span class="me-2">{{ listing.adresse | raw }}</span>
 			</p>
 			<div class="flex items-center">
-				{% for i in 1..listing.note %}
-					<svg class="w-5 h-5 text-orange-500 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 22 20">
-						<path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-					</svg>
-				{% endfor %}
+				{% set roundedNote = listing.note|round %}
+				{% if roundedNote > 0 %}
+					{% for i in 1.. roundedNote %}
+						<svg class="w-5 h-5 text-orange-500 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 22 20">
+							<path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+						</svg>
+					{% endfor %}
+				{% endif %}
+
 				{% if listing.note < 5 %}
-					{% for i in range(4, listing.note, -1) %}
+					{% for i in range(4, roundedNote, -1) %}
 						<svg class="w-5 h-5 ms-1 text-gray-500 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 22 20">
 							<path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
 						</svg>
 					{% endfor %}
 				{% endif %}
 			</div>
-
+			{% if roundedNote == 0 %}
+				<div class="mt-1 text-sm text-blue-700">
+					<a id="scrollForm2" class="cursor-pointer hover:text-orange-500">Sois le premier à évaluer ce listing</a>
+				</div>
+			{% endif %}
 
 		</div>
 		<div class="w-full md:w-2/6 lg:w-1/6 mt-6 md:mt-0 h-full  px-2 ">
@@ -60,28 +68,42 @@
 					</button>
 
 					<!-- Bouton pour les écrans de taille moyenne et plus -->
-					<button id="scrollForm"  class="bg-blue-900/90 h-[60px] text-center text-white text-lg py-2.5 px-4 rounded hidden sm:inline-block  w-full md:w-64">
+					<button id="scrollForm" class="bg-blue-900/90 h-[60px] text-center text-white text-lg py-2.5 px-4 rounded hidden sm:inline-block  w-full md:w-64">
 						Submit reviews
 					</button>
 				</div>
 				<div class="flex flex-row w-full h-full items-start justify-center mt-1 gap-1 ">
 					<div>
-						<a href="javascript:;" class="text-gray-900 bg-white w-[90px] md:w-[125px] hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium  text-sm px-4 py-2.5 justify-center inline-flex items-center  ">
+						<a id="dropdownDefaultButton" data-dropdown-toggle="dropdown" href="javascript:;" class="text-gray-900 bg-white w-[90px] md:w-[125px] hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium  text-sm px-4 py-2.5 justify-center inline-flex items-center  ">
 							<svg class="w-4 h-4  text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 								<path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
 							</svg>
 
 							Share
 						</a>
+						<!-- Dropdown menu -->
+						<div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+							<ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+								
+								<li>
+									<a href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}" target="__blank" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Facebook</a>
+								</li>
+								<li>
+									<a href="https://twitter.com/intent/tweet?url={{ app.request.uri }}" target="__blank" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Twitter</a>
+								</li>
+								
+							</ul>
+						</div>
+
 					</div>
 					<div>
-						<a href="javascript:;" class="text-gray-900 bg-white w-[90px]  md:w-[125px] hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium  text-sm px-4 py-2.5 justify-center inline-flex items-center  ">
+						<a href="javascript:;" data-clipboard-text="{{ app.request.uri }}" id="copyButton"  class="text-gray-900 bg-white w-[90px]  md:w-[125px] hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium  text-sm px-4 py-2.5 justify-center inline-flex items-center  ">
 							<svg class="w-4 h-4  text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 								<path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M11 16h2m6.707-9.293-2.414-2.414A1 1 0 0 0 16.586 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7.414a1 1 0 0 0-.293-.707ZM16 20v-6a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v6h8ZM9 4h6v3a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4Z"/>
 							</svg>
 
 
-							Save
+							Copier
 						</a>
 					</div>
 				</div>
@@ -91,10 +113,9 @@
 		</div>
 
 	</div>
-	<div class="relative mt-8  md:mt-0 px-4 flex flex-col md:flex-row w-full h-full items-start  gap-0">
+	<div class="relative mt-16  md:mt-0 px-4 flex flex-col md:flex-row w-full h-full items-start  gap-0">
 
 		<div class=" w-full md:w-3/5 flex h-full flex-col items-start justify-start px-2 ">
-
 
 
 			{% if listing.video != "" %}
@@ -153,7 +174,7 @@
 			{# gestion de la gallerie #}
 			{% if listing.images | length > 0 %}
 				<hr class="my-6 w-3/3  text-center border-t-2 border-[#FA7127]">
-	
+
 				{% include 'components/_gallery.html.twig' with {
                     'images' : listing.images,
 					'listing' : listing 
@@ -185,9 +206,9 @@
 	{{ parent()}}
 
 	<script async="false" src="https://maps.googleapis.com/maps/api/js?key={{api_maps}}&callback=initMap&v=weekly" defer></script>
-<script src="{{asset('template/js/star-rating.js')}}" crossorigin="anonymous"></script>
+	<script src="{{asset('template/js/star-rating.js')}}" crossorigin="anonymous"></script>
 	<script>
-	
+
 		function initMap() {
 const mapOptions = {
 zoom: 6,
@@ -262,7 +283,7 @@ const markers = [];
 const listingsData = [{% set image = listing.getFirstImage != null ? 'template/uploads/' ~ listing.getFirstImage : 'template/images/no.jpg' %}{
 latitude: {{ listing.latitude | raw }},
 longitude: {{ listing.longitude | raw }},
-ville: "{{ listing.ville.province.nom | upper | raw }}/                                 {{ listing.ville.nom | upper | raw }}",
+ville: "{{ listing.ville.province.nom | upper | raw }}/                                  {{ listing.ville.nom | upper | raw }}",
 getFirstImage: "{{ asset(image) }}",
 name: "{{ listing.name | raw }}",
 adresse: "{{ listing.adresse | raw | u.truncate(40,'...') }}",
@@ -410,43 +431,88 @@ iframe.src = iframe.src; // Arrête la vidéo
 
 document.addEventListener('DOMContentLoaded', function () {
 
- var destroyed = false;
-        var starratingPrebuilt = new StarRating('.star-rating-prebuilt', {
-            prebuilt: true,
-            maxStars: 5,
-        });
-        var starrating = new StarRating('.star-rating', {
-            stars: function (el, item, index) {
-                el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect class="gl-star-full" width="19" height="19" x="2.5" y="2.5"/><polygon fill="#FFF" points="12 5.375 13.646 10.417 19 10.417 14.665 13.556 16.313 18.625 11.995 15.476 7.688 18.583 9.333 13.542 5 10.417 10.354 10.417"/></svg>';
-            },
-        });
-       
+var destroyed = false;
+var starratingPrebuilt = new StarRating('.star-rating-prebuilt', {
+prebuilt: true,
+maxStars: 5
+});
+var starrating = new StarRating('.star-rating', {
+stars: function (el, item, index) {
+el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect class="gl-star-full" width="19" height="19" x="2.5" y="2.5"/><polygon fill="#FFF" points="12 5.375 13.646 10.417 19 10.417 14.665 13.556 16.313 18.625 11.995 15.476 7.688 18.583 9.333 13.542 5 10.417 10.354 10.417"/></svg>';
+}
 });
 
- document.addEventListener('DOMContentLoaded', function() {
-        var button = document.getElementById('scrollForm');
-		 var button1 = document.getElementById('scrollForm1');
-        var form = document.getElementById('reviewForm');
+});
 
-        if (button && form) {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                form.scrollIntoView({ behavior: 'smooth' });
+document.addEventListener('DOMContentLoaded', function () {
+var button = document.getElementById('scrollForm');
+var button1 = document.getElementById('scrollForm1');
+var button2 = document.getElementById('scrollForm2');
+var form = document.getElementById('reviewForm');
+
+if (button && form) {
+button.addEventListener('click', function (e) {
+e.preventDefault();
+form.scrollIntoView({behavior: 'smooth'});
+});
+} else {
+console.error('Element not found: Check if IDs are correct');
+}
+
+if (button1 && form) {
+button1.addEventListener('click', function (e) {
+e.preventDefault();
+form.scrollIntoView({behavior: 'smooth'});
+});
+} else {
+console.error('Element not found: Check if IDs are correct');
+}
+
+if (button2 && form) {
+button2.addEventListener('click', function (e) {
+e.preventDefault();
+form.scrollIntoView({behavior: 'smooth'});
+});
+} else {
+console.error('Element not found: Check if IDs are correct');
+}
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+if (document.querySelector('.is-invalid')) {
+document.getElementById('formID').scrollIntoView({behavior: 'smooth'});
+}
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+var form = document.getElementById('formID'); // Remplacez par l'ID de votre formulaire
+var select = document.getElementById('glsr-prebuilt');
+var errorMessage = document.getElementById('noteID');
+
+form.addEventListener('submit', function (event) {
+if (! select.value) {
+event.preventDefault();
+errorMessage.classList.remove('hidden');
+} else {
+errorMessage.classList.add('hidden');
+}
+});
+});
+
+ 
+  document.addEventListener('DOMContentLoaded', function() {
+            var copyButton = document.getElementById('copyButton');
+            copyButton.addEventListener('click', function() {
+                var link = this.getAttribute('data-clipboard-text');
+                navigator.clipboard.writeText(link).then(function() {
+                  toastr.success('Lien copié avec succès', 'SDR', {timeOut: 3000})
+                }).catch(function(err) {
+					
+                    toastr.success('Lien copié avec succès', 'SDR', {timeOut: 3000})
+                });
             });
-        } else {
-            console.error('Element not found: Check if IDs are correct');
-        }
-
-		 if (button1 && form) {
-            button1.addEventListener('click', function(e) {
-                e.preventDefault();
-                form.scrollIntoView({ behavior: 'smooth' });
-            });
-        } else {
-            console.error('Element not found: Check if IDs are correct');
-        }
-    });
-
+        });
 	</script>
-	
+
 {% endblock %}

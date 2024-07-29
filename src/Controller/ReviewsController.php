@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-
+use App\Entity\Reviews;
 use App\Repository\ReviewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,5 +42,32 @@ class ReviewsController extends AbstractController
             return $this->json("Une erreur s'est produite. Image introuvable", 400);
         }
 
+    }
+
+    #[Route('/reviews/supprimer/{id}', name: 'app_reviews_delete')]
+    public function delete(Reviews $reviews, EntityManagerInterface $manager): Response
+    {
+       $manager->remove($reviews);
+       $manager->flush();
+       $this->addFlash('success','Review supprimé avec succès.');
+       return $this->redirectToRoute('app_reviews');
+    }
+
+    #[Route('/reviews/valider/{id}', name: 'app_reviews_valider')]
+    public function valider(Reviews $reviews, EntityManagerInterface $manager): Response
+    {
+        $reviews->setCalculer(true);
+        /*************** Recalculer la note  */
+        $listing = $reviews->getListing();
+
+        $note = $listing->getNote();
+
+        $notefinal = $note != 0 ? number_format(($note + $reviews->getNote()) / 2, 2) : $reviews->getNote();
+
+        $listing->setNote($notefinal);
+      
+       $manager->flush();
+       $this->addFlash('success','Review validé avec succès.');
+       return $this->redirectToRoute('app_reviews');
     }
 }

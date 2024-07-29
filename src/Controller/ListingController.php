@@ -66,7 +66,7 @@ class ListingController extends AbstractController
             $listing->setNbChambre((trim($listing->getNbChambre()) !== "" and $listing->getNbChambre() !== null) ? $listing->getNbChambre() : 0);
             $listing->setNbLit((trim($listing->getNbLit()) !== "" and $listing->getNbLit() !== null) ? $listing->getNbLit() : 0);
             /****************** traitement des images  */
-            $listing->setNote(5);
+            $listing->setNote(0);
             $images = $request->files->get('file');
 
             if (count($images) > 0) {

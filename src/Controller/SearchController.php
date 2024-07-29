@@ -15,6 +15,7 @@ use App\Model\RechercheDonnee;
 use App\Repository\ListingRepository;
 use App\Repository\LocaliteRepository;
 use App\Repository\CategorieRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -268,7 +269,7 @@ class SearchController extends AbstractController
 
 
     #[Route('/listing/{slug}', name: 'app_search_listing_show')]
-    public function listingShow(Listing $listing, Request $request, CategorieRepository $repoCat, ListingRepository $repoListing, PaginatorInterface $paginator): Response
+    public function listingShow(Listing $listing, Request $request, CategorieRepository $repoCat,  EntityManagerInterface $manager, ListingRepository $repoListing, PaginatorInterface $paginator): Response
     {
        
         $api_maps = $this->getParameter('API_MAPS');
@@ -291,7 +292,7 @@ class SearchController extends AbstractController
             $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
             $donnees->page = $request->query->getInt('page', 1);  
           
-            dd("form1");
+           
             return $this->render('search/index.html.twig', [
                
                 'listings' => $listings,
@@ -307,7 +308,7 @@ class SearchController extends AbstractController
 
          if ( $amnitiesForm->isSubmitted() && $amnitiesForm->isValid() )
          {
-            dd("form2");
+         
             $resultats = $repoListing->findByFilter($filtreDonnees);
           
             $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
@@ -330,8 +331,17 @@ class SearchController extends AbstractController
          $form_review->handleRequest($request);
          if ($form_review->isSubmitted() && $form_review->isValid())
          {
-            $stars = $request->get('stars') != ""  ? intval($request->get('stars')) : null;
-          
+            $stars = $request->get('stars') != ""  ? intval($request->get('stars')) : 0;
+            $reviews = $form_review->getData();
+            $reviews->setNote($stars);
+            $reviews->setCalculer(false);
+            $reviews->setListing($listing);
+
+            $manager->persist($reviews);
+            $manager->flush();
+
+            $this->addFlash('success', "Votre review a bien été pris en compte. Merci pour votre interaction.");
+            return $this->redirectToRoute('app_search_listing_show',['slug' => $listing->getSlug()]);
            
          }
        
