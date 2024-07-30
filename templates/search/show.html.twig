@@ -31,7 +31,8 @@
 				<img src="{{ asset('template/svg/map.svg')}}" class="h-5"/>
 
 
-				<span class="me-2">{{ listing.adresse | raw }}</span>
+				<span class="me-2">{{ listing.adresse | raw }},
+					{{ listing.ville.nom | raw }}</span>
 			</p>
 			<div class="flex items-center">
 				{% set roundedNote = listing.note|round %}
@@ -84,20 +85,20 @@
 						<!-- Dropdown menu -->
 						<div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
 							<ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-								
+
 								<li>
 									<a href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}" target="__blank" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Facebook</a>
 								</li>
 								<li>
 									<a href="https://twitter.com/intent/tweet?url={{ app.request.uri }}" target="__blank" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Twitter</a>
 								</li>
-								
+
 							</ul>
 						</div>
 
 					</div>
 					<div>
-						<a href="javascript:;" data-clipboard-text="{{ app.request.uri }}" id="copyButton"  class="text-gray-900 bg-white w-[90px]  md:w-[125px] hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium  text-sm px-4 py-2.5 justify-center inline-flex items-center  ">
+						<a href="javascript:;" data-clipboard-text="{{ app.request.uri }}" id="copyButton" class="text-gray-900 bg-white w-[90px]  md:w-[125px] hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium  text-sm px-4 py-2.5 justify-center inline-flex items-center  ">
 							<svg class="w-4 h-4  text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 								<path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M11 16h2m6.707-9.293-2.414-2.414A1 1 0 0 0 16.586 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7.414a1 1 0 0 0-.293-.707ZM16 20v-6a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v6h8ZM9 4h6v3a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4Z"/>
 							</svg>
@@ -155,8 +156,26 @@
 				</div>
 			{% endif %}
 
+			<div class="w-full px-0 md:mt-0 mt-8    bg-white  flex flex-row justify-start items-center gap-1">
+				<div class="md:w-3/6 w-full h-16 flex items-center justify-start gap-1">
+					
+						<a href="javascript:;" id="voircarte"class="block md:hidden text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2">
+						<img src="{{ asset('template/svg/map1.svg')}}" class="w-7 h-7 me-2"/>
+						Voir la carte
+					</a>
+				</div>
+				<div class="md:w-3/6  w-full h-full flex items-center justify-end">
+				<a href="https://www.google.com/maps?q={{listing.latitude | raw}},{{listing.longitude | raw}}" target="_blank" class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2">
+						<svg class="w-5 text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
+							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.153 19 21 12l-4.847-7H3l4.848 7L3 19h13.153Z"/>
+						</svg>
+						Get Direction
+					</a>
+				</div>
+			</div>
+
 			{% if listing.description !=  "" %}
-				<p class="mt-12 md:mt-8  mb-2 text-gray-800  first-line:uppercase first-line:tracking-widest first-letter:text-7xl first-letter:font-bold first-letter:text-gray-900 dark:first-letter:text-gray-100 first-letter:me-3 first-letter:float-start">
+				<p class="mt-8 md:mt-4  mb-2 text-gray-800  first-line:uppercase first-line:tracking-widest first-letter:text-7xl first-letter:font-bold first-letter:text-gray-900 dark:first-letter:text-gray-100 first-letter:me-3 first-letter:float-start">
 					{{ listing.description | raw | capitalize }}</p>
 			{% endif %}
 
@@ -185,13 +204,18 @@
                     
 					'listing' : listing 
                 }%}
-
+			{% if listing.link != "" %}
+				{% include 'components/_booking.html.twig' with {
+                    
+					'listing' : listing 
+                }%}
+			{% endif %}
 			{% include 'components/_review.html.twig' with {
                     
 					'form_review' : form_review 
                 }%}
 		</div>
-		<div class="static xl:sticky xl:top-0 justify-center items-center bottom-0 w-full md:w-2/5  h-screen shadow-xl ">
+		<div id="carte" class="static xl:sticky xl:top-0 justify-center items-center bottom-0 w-full md:w-2/5  h-screen shadow-xl ">
 			<div id="map" class=" items-center justify-center items-center h-screen border-b-2 border-gray-100 bg-gray-100">
 				Chargement en cours ...
 
@@ -199,8 +223,15 @@
 		</div>
 
 	</div>
-
-
+	{% if listing.link != "" %}
+		<div class="fixed top-1/2 left-4 transform -translate-y-1/2 flex flex-col items-end">
+			<div class="flex flex-col items-start rotate-90 origin-left">
+				<button class="bg-blue-500 text-white py-2.5 px-4 rounded mb-2 text-lg" id="scrollBook">
+					Book now
+				</button>
+			</div>
+		</div>
+	{% endif %}
 {% endblock %}
 {% block javascripts %}
 	{{ parent()}}
@@ -283,7 +314,7 @@ const markers = [];
 const listingsData = [{% set image = listing.getFirstImage != null ? 'template/uploads/' ~ listing.getFirstImage : 'template/images/no.jpg' %}{
 latitude: {{ listing.latitude | raw }},
 longitude: {{ listing.longitude | raw }},
-ville: "{{ listing.ville.province.nom | upper | raw }}/                                  {{ listing.ville.nom | upper | raw }}",
+ville: "{{ listing.ville.province.nom | upper | raw }}/                                    {{ listing.ville.nom | upper | raw }}",
 getFirstImage: "{{ asset(image) }}",
 name: "{{ listing.name | raw }}",
 adresse: "{{ listing.adresse | raw | u.truncate(40,'...') }}",
@@ -500,19 +531,157 @@ errorMessage.classList.add('hidden');
 });
 });
 
- 
-  document.addEventListener('DOMContentLoaded', function() {
-            var copyButton = document.getElementById('copyButton');
-            copyButton.addEventListener('click', function() {
-                var link = this.getAttribute('data-clipboard-text');
-                navigator.clipboard.writeText(link).then(function() {
-                  toastr.success('Lien copié avec succès', 'SDR', {timeOut: 3000})
-                }).catch(function(err) {
-					
-                    toastr.success('Lien copié avec succès', 'SDR', {timeOut: 3000})
-                });
-            });
-        });
+
+document.addEventListener('DOMContentLoaded', function () {
+var copyButton = document.getElementById('copyButton');
+copyButton.addEventListener('click', function () {
+var link = this.getAttribute('data-clipboard-text');
+navigator.clipboard.writeText(link).then(function () {
+toastr.success('Lien copié avec succès', 'SDR', {timeOut: 3000})
+}).catch(function (err) {
+
+toastr.success('Lien copié avec succès', 'SDR', {timeOut: 3000})
+});
+});
+});
+document.addEventListener('DOMContentLoaded', function () {
+$(function () {
+var today = moment().startOf('day');
+var tomorrow = today.clone().add(1, 'days');
+$('input[name="daterange"]').daterangepicker({
+opens: 'center',
+minDate: today,
+endDate: tomorrow,
+locale: {
+format: 'DD/MM/YYYY',
+applyLabel: 'Appliquer',
+cancelLabel: 'Annuler',
+fromLabel: 'De',
+toLabel: 'À',
+customRangeLabel: 'Plage personnalisée',
+daysOfWeek: [
+'Dim',
+'Lun',
+'Mar',
+'Mer',
+'Jeu',
+'Ven',
+'Sam'
+],
+monthNames: [
+'Janvier',
+'Février',
+'Mars',
+'Avril',
+'Mai',
+'Juin',
+'Juillet',
+'Août',
+'Septembre',
+'Octobre',
+'Novembre',
+'Décembre'
+],
+firstDay: 1
+}
+// Configuration de base
+}, function (start, end, label) {
+console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+
+// Calcul du nombre de nuits
+var numberOfNights = end.diff(start, 'days');
+$('#numberOfNights').text('Nombre de nuits: ' + numberOfNights); // Affiche le nombre de nuits
+});
+
+// Manipulation du DOM pour masquer les dates non souhaitées
+$('input[name="daterange"]').on('apply.daterangepicker', function (ev, picker) { // Masquer les dates du mois précédent
+picker.container.find('.calendar .off').each(function () {
+var date = moment($(this).data('title'), 'MM/DD/YYYY');
+if (date.isBefore(today, 'month')) {
+$(this).addClass('disabled'); // Grise les dates du mois précédent
+}
+});
+
+// Masquer les dates du mois suivant
+picker.container.find('.calendar .off').each(function () {
+var date = moment($(this).data('title'), 'MM/DD/YYYY');
+if (date.isAfter(today, 'month')) {
+$(this).addClass('disabled'); // Grise les dates du mois suivant
+}
+});
+});
+});
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+var button7 = document.getElementById('scrollBook');
+var div1 = document.getElementById('booknow');
+
+
+if (button7 && div1) {
+button7.addEventListener('click', function (e) {
+e.preventDefault();
+div1.scrollIntoView({behavior: 'smooth'});
+});
+} else {
+console.error('Element not found: Check if IDs are correct');
+}
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+var button8 = document.getElementById('voircarte');
+var div2 = document.getElementById('carte');
+
+
+if (button8 && div2) {
+button8.addEventListener('click', function (e) {
+e.preventDefault();
+div2.scrollIntoView({behavior: 'smooth'});
+});
+} else {
+console.error('Element not found: Check if IDs are correct');
+}
+});
+
+
+function createLink(link) {
+
+
+var daterange = document.getElementById('daterange').value;
+
+// Séparer les deux dates
+var dates = daterange.split(' - ');
+var startDateStr = dates[0].trim();
+var endDateStr = dates[1].trim();
+
+// Convertir les dates au format YYYY-MM-DD
+var startDate = formatDate(startDateStr);
+var endDate = formatDate(endDateStr);
+var dayCount = calculateDayCount(startDate, endDate);
+
+// Construire l'URL avec les paramètres requis
+var url = `https://palais-amani.hotelrunner.com/bv3/search?search={"checkin_date":"${startDate}","checkout_date":"${endDate}","day_count":${dayCount}}`;
+
+window.open(url, '_blank');
+
+}
+
+function formatDate(dateStr) {
+var parts = dateStr.split('/');
+var day = parts[0];
+var month = parts[1];
+var year = parts[2];
+return `${year}-${month}-${day}`;
+}
+
+function calculateDayCount(start, end) {
+var startDate = new Date(start);
+var endDate = new Date(end);
+var diffTime = Math.abs(endDate - startDate);
+var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+return diffDays;
+}
 	</script>
 
 {% endblock %}

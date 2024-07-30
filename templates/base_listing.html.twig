@@ -13,6 +13,8 @@
     {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
     <link rel="stylesheet" href="{{ asset('template/css/star-rating.css')}}" crossorigin="anonymous"/>
     <link rel="stylesheet" href="{{ asset('template/css/toaster.min.css')}}" crossorigin="anonymous"/>
+     <link rel="stylesheet" href="{{ asset('template/css/datepicker.css')}}" crossorigin="anonymous"/>
+   
     {% block stylesheets %}
       {{ encore_entry_link_tags('app') }}
       
@@ -24,10 +26,14 @@
       <script src="{{ asset('template/js/fslightbox.js')}}"></script>
       <script src="{{ asset('template/js/toaster.min.js')}}"></script>
       <script src="{{asset('template/js/star-rating.js')}}" crossorigin="anonymous"></script>
+      <script src="{{asset('template/js/moment.min.js')}}" crossorigin="anonymous"></script>
+     <script src="{{asset('template/js/daterangepicker.min.js')}}" crossorigin="anonymous"></script>
+
       
     {% endblock %}
   </head>
   <body>
+  
     {% for message in app.flashes('success') %}
       <div class="p-4  text-lg text-white text-center bg-green-400 dark:bg-green-800 dark:text-blue-400 border-b-2 shadow-lg shadow-gray-500/30 border-gray-400" role="alert">{{ message|raw }}</div>
     {% endfor %}

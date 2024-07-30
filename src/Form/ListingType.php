@@ -28,6 +28,12 @@ class ListingType extends AbstractType
                 'placeholder' => 'Veuillez introduire un nom du listing',
                 ],
         ])
+        ->add('link',TextType::class,[
+            'required' => false,
+            'attr' => [
+                'placeholder' => 'Example : https://palais-amani.hotelrunner.com/bv3/search?search=',
+                ],
+        ])
         ->add('adresse',TextType::class,[
             'required' => false,
             'attr' => [

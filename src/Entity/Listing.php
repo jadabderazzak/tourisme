@@ -124,6 +124,9 @@ class Listing
     #[ORM\OneToMany(targetEntity: Reviews::class, mappedBy: 'listing')]
     private Collection $reviews;
 
+    #[ORM\Column(length: 500, nullable: true)]
+    private ?string $link = null;
+
    
 
     public function __construct()
@@ -542,6 +545,18 @@ class Listing
                 $review->setListing(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLink(): ?string
+    {
+        return $this->link;
+    }
+
+    public function setLink(?string $link): static
+    {
+        $this->link = $link;
 
         return $this;
     }

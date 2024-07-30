@@ -1,0 +1,29 @@
+
+{% if listing.link != "" %}
+
+<div class="shadow-md border border-1 border-gray-100  py-4 w-full bg-gray-50 rounded-lg">
+	<div id="booknow" class=" w-full h-16 text-lg text-blue-900 flex justify-center items-center rounded-xl gap-2 ">
+		<img src="{{ asset('template/svg/checkin.svg') }}" class="h-6 flex-shrink-0  animate-bounce "/>
+		<span class="flex items-end font-semibold mt-2 ">Book now</span>
+	</div>
+
+	{% set today = "now"|date("m/d/Y") %}
+	{% set tomorrow = "now"|date_modify("+1 day")|date("m/d/Y") %}
+
+
+	<div class="w-full flex flex-col mx-1 md:mx-4 md:flex-row justify-end mt-4 gap-2">
+		<div class="w-full md:w-4/5 text-center">
+			<p class="text-md text-blue-900 mt-2 text-center md:text-left">Dates d'arrivée et de départ</p>
+			<input type="text" id ="daterange" name="daterange" value="{{ today }} - {{ tomorrow }}" class="w-auto md:w-full border-0  h-12  cursor-pointer text-xl text-center shadow-md rounded-xl" readonly/>
+			<p id="numberOfNights" class="text-sm text-gray-600 mt-3 text-center">Nombre de nuits: 1</p>
+		</div>
+		<div class="w-full md:w-1/5 flex items-center justify-center md:justify-start">
+            {% set link = listing.link %}
+			<a href="javascript:;" onclick="createLink('{{ link | raw}}');"class="shadow-md rounded-lg text-white bg-blue-900/90 w-[90px] md:w-[125px] h-12 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium text-sm px-4 py-3 justify-center inline-flex items-center">
+				Réserver
+			</a>
+		</div>
+	</div>
+
+</div>
+{% endif %}
