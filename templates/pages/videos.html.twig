@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blogs
+{% endblock %}
+
+{% block body %}
+
+	<section class="bg-white dark:bg-gray-900">
+		<div class="py-8 px-4 mx-auto w-full  lg:py-16 lg:px-6">
+			<div class="mx-auto max-w-screen-sm text-center  mb-8">
+				<h2 class="mb-4 text-3xl md:text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">Vidéos</h2>
+				<p class="font-light text-gray-500 text-lg text-left md:text-center">Découvrez comment nous dénichons les trésors cachés et anticipons vos attentes pour vous offrir des expériences de voyage uniques et inoubliables.
+				</p>
+			</div>
+			<nav class="rounded-xl mb-4  ">
+
+				<ul class="grid grid-cols-1 md:grid-cols-5 justify-center mx-3 items-center text-sm md:text-md  ">
+					<li class="mr-3 mt-2">
+							<a href="{{ path('page_videos')}}" class="flex flex-row gap-3 inline-block border border-gray-300 focus:outline-none hover:bg-gray-100/30 rounded-3xl  py-2 px-3 text-gray-900  text-lg">
+								<svg class="w-[26px] h-[26px] text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
+									<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M8 6h8M6 10h12M8 14h8M6 18h12"/>
+								</svg>
+
+								Toutes
+							</a>
+						</li>
+					{% for cat in categories %}
+						<li class="mr-3 mt-2">
+							<a href="{{ path('page_videos_categorie',{ slug : cat.slug})}}" class="flex flex-row gap-3 inline-block border border-gray-300 focus:outline-none hover:bg-gray-100/30 rounded-3xl  py-2 px-3 text-gray-900  text-lg">
+								<svg class="md:w-[26px] md:h-[26px] text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
+									<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M8 6h8M6 10h12M8 14h8M6 18h12"/>
+								</svg>
+
+								{{ cat.nom | raw | capitalize}}
+							</a>
+						</li>
+					{% endfor %}
+
+				</ul>
+			</nav>
+			{% if videos | length > 0 %}
+			<div class="grid gap-8 md:grid-cols-3 lg:grid-cols-4 mt-12">
+
+			
+				{% for video in videos %}
+
+
+					<div class="relative h-[330px]">
+						<span class="rounded-t-xl text-center">
+							<iframe id="iframevideo" class="w-full rounded-t-xl" width="320" height="250" src="{{ video.lien | raw }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+							<div class="absolute bottom-0 left-0 right-0 bg-blue-900/90 backdrop-blur-md p-4 rounded-b-xl">
+								<p class="text-white text-center text-md">{{ video.titre | raw | capitalize }}</p>
+								<a href="{{ path('app_search_categorie',{ slug : video.categorie.slug})}}" class="text-white text-xl underline">
+									{{ video.categorie.nom | raw }}
+								</a>
+							</div>
+						</span>
+					</div>
+
+				{% endfor %}
+			
+			</div>
+			{% else %}
+			<div class="h-full mt-32 items-center text-center w-full ">
+				<p class="w-full text-center text-xl text-blue-900">Pas de vidéos trouvées</p>
+			</div>
+			{% endif %}
+		</div>
+	</section>
+
+{% endblock %}

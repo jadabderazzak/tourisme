@@ -4,9 +4,12 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\Blog;
+use App\Entity\Categorie;
 use App\Entity\Commentsblog;
 use App\Form\BlogcommentType;
 use App\Repository\BlogRepository;
+use App\Repository\VideoRepository;
+use App\Repository\CategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,6 +54,31 @@ class PagesController extends AbstractController
             'blog' => $blog,
             'blogs' => $blogs,
             'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/section/videos', name: 'page_videos')]
+    public function videos(VideoRepository $repoVideo, CategorieRepository $repoCat): Response
+    {
+        $categories = $repoCat->findAll();
+        $videos = $repoVideo->findBy([], ['id' => 'DESC']);
+        return $this->render('pages/videos.html.twig', [
+            'videos' => $videos,
+            'categories' => $categories
+        ]);
+    }
+
+    #[Route('/section/videos/{slug}', name: 'page_videos_categorie')]
+    public function videos_categorie(Categorie $categorie, VideoRepository $repoVideo, CategorieRepository $repoCat): Response
+    {
+        $categories = $repoCat->findAll();
+        $videos = $repoVideo->findBy([
+            'categorie' => $categorie
+        ],['id' => 'DESC']);
+       
+        return $this->render('pages/videos.html.twig', [
+            'videos' => $videos,
+            'categories' => $categories
         ]);
     }
 }
