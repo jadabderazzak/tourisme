@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html >
+<html>
 	<head>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -9,16 +9,16 @@
 				SDR
 			{% endblock %}
 		</title>
-		<link
-		rel="icon" href="{{ asset('template/images/icon.png') }}"/>
-		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-		<link rel="stylesheet" href="{{ asset('template/css/star-rating.css')}}" crossorigin="anonymous"/>
-		<link rel="stylesheet" href="{{ asset('template/css/toaster.min.css')}}" crossorigin="anonymous"/>
-		<link rel="stylesheet" href="{{ asset('template/css/datepicker.css')}}" crossorigin="anonymous"/>
+		<link rel="icon" href="{{ asset('template/images/icon.png') }}"/>
 
 		{% block stylesheets %}
 			{{ encore_entry_link_tags('app') }}
-
+			{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+			<link rel="stylesheet" href="{{ asset('template/css/star-rating.css')}}" crossorigin="anonymous"/>
+			<link rel="stylesheet" href="{{ asset('template/css/toaster.min.css')}}" crossorigin="anonymous"/>
+			<link rel="stylesheet" href="{{ asset('template/css/datepicker.css')}}" crossorigin="anonymous"/>
+			<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+			<link rel="stylesheet" href="{{ asset('template/css/custumselect.css')}}" crossorigin="anonymous"/>
 		{% endblock %}
 
 		{% block javascripts %}
@@ -29,34 +29,104 @@
 			<script src="{{asset('template/js/star-rating.js')}}" crossorigin="anonymous"></script>
 			<script src="{{asset('template/js/moment.min.js')}}" crossorigin="anonymous"></script>
 			<script src="{{asset('template/js/daterangepicker.min.js')}}" crossorigin="anonymous"></script>
+			<script src="{{asset('template/js/select2.min.js')}}" defer></script>
+			
 			<script>
-	
+				$(document).ready(function () {
+$('.js-example-basic-single').select2();
+});
+			</script>
+			<script>
 
 
-function toggleDropdown() {
-    var dropdown = document.getElementById("dropdown-menu");
-    var arrowIcon = document.getElementById("arrow-icon");
-    if (dropdown.style.transform === "scale(0)") {
-        dropdown.style.transform = "scale(1)";
-        arrowIcon.classList.add("rotate-180");
-    } else {
-        dropdown.style.transform = "scale(0)";
-        arrowIcon.classList.remove("rotate-180");
-    }
+				function toggleDropdown() {
+var dropdown = document.getElementById("dropdown-menu");
+var arrowIcon = document.getElementById("arrow-icon");
+if (dropdown.style.transform === "scale(0)") {
+dropdown.style.transform = "scale(1)";
+arrowIcon.classList.add("rotate-180");
+} else {
+dropdown.style.transform = "scale(0)";
+arrowIcon.classList.remove("rotate-180");
+}
 }
 
-function onChangeLanguage(value)
-{
+function onChangeLanguage(value) {
 
 if (value === "fr") {
-          window.location.href = "/change/locales/fr";
-          } else if (value === "en") {
-          window.location.href = "/change/locales/en";
-          } else if (value === "ar") {
-          window.location.href = "/change/locales/ar";
-          }
+window.location.href = "/change/locales/fr";
+} else if (value === "en") {
+window.location.href = "/change/locales/en";
+} else if (value === "ar") {
+window.location.href = "/change/locales/ar";
+}
 
 }
+document.addEventListener('DOMContentLoaded', function () {
+const searchForm = document.getElementById('search_query');
+const searchResults = document.getElementById('search-results');
+
+searchForm.addEventListener('input', function () {
+const query = searchForm.value;
+
+if (searchForm && searchForm.value.trim() !== "") {
+$.ajax({
+url: '/search/query/' + query,
+
+type: "POST",
+success: function (response) {
+
+if (response !== null) {
+searchResults.classList.remove('hidden');
+updateResults(response);
+} else {
+searchResults.classList.add('hidden');
+searchResults.innerHTML = '';
+
+}
+
+
+},
+error: function (jqXHR, textStatus, errorThrown) {
+searchResults.classList.add('hidden');
+}
+});
+} else {
+searchResults.classList.add('hidden');
+searchResults.innerHTML = '';
+}
+});
+
+function updateResults(results) { // Effacez les résultats existants
+searchResults.innerHTML = '';
+
+// Créez une liste non ordonnée
+const resultList = document.createElement('ul');
+
+// Ajoutez les nouveaux résultats à la liste
+results.forEach(result => {
+const listItem = document.createElement('li');
+listItem.textContent = result.name; // Utilisez le champ approprié ici
+listItem.classList.add('py-2', 'px-2', 'cursor-pointer', 'border-b', 'border-gray-100', 'no-underline');
+
+// Ajoutez un gestionnaire d'événements pour mettre à jour le champ de recherche
+listItem.addEventListener('click', function () {
+searchForm.value = result.name;
+searchResults.classList.add('hidden');
+});
+
+resultList.appendChild(listItem);
+});
+
+// Ajoutez la liste à l'élément searchResults
+searchResults.appendChild(resultList);
+}
+document.addEventListener('click', function (event) {
+if (! searchResults.contains(event.target) && event.target !== searchForm) {
+searchResults.classList.add('hidden');
+}
+});
+});
 			</script>
 
 		{% endblock %}

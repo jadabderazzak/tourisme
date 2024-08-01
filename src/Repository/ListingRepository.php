@@ -78,14 +78,22 @@ class ListingRepository extends ServiceEntityRepository
           
 
             ->andWhere('l.afficher = :val')
-            ->setParameter('val', true)
+            ->setParameter('val', true);
+             
+            /************* Gestion de la latitude et longitude */
+            $dql = $dql
+                        ->andWhere('l.latitude  <>  :lat')
+                        ->setParameter('lat', "" )
+                        ->andWhere('l.longitude  <>  :long')
+                        ->setParameter('long', "" );
+
            
           
             
            
-            ->getQuery();
+            $list = $dql->getQuery();
             
-             return $dql->getResult()
+             return $list->getResult()
         ;
 
         }
@@ -247,6 +255,31 @@ class ListingRepository extends ServiceEntityRepository
             return $listings;
 
     }
+
+
+    public function findResulBySearch($query) 
+    {
+        $listings = $this->createQueryBuilder('l')
+            ->addSelect('l', 'v', 'c', 'pr', 'ps')
+            ->leftJoin('l.ville', 'v')
+            ->leftJoin('l.categorie', 'c')
+            ->leftJoin('v.province', 'pr')
+       
+            ->leftJoin('l.pension', 'ps')
+            ->andWhere('l.name LIKE :value')
+            ->setParameter('value', '%' . $query . '%')
+            ->andWhere('l.afficher = :aff')
+            ->setParameter('aff', true);
+    
+        // Tester sans limit
+        // $results = $listings->getQuery()->getResult();
+    
+        // Tester avec limit
+        $resultsWithLimit = $listings->setMaxResults(6)->getQuery()->getResult();
+    
+        return $resultsWithLimit;
+    }
+    
 
    
 }

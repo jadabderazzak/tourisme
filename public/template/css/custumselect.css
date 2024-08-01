@@ -1,0 +1,66 @@
+/* Style général pour le conteneur select2 */
+.select2-container--default .select2-selection--single {
+    height: 3.5rem; /* Hauteur du select */
+    border: none; /* Pas de bordure */
+    background-color: rgba(255, 255, 255, 0.9); /* Couleur de fond */
+    font-size: 1.125rem; /* Taille de la police */
+    font-weight: normal; /* Poids de la police */
+    padding: 0.5rem 2.5rem; /* Ajuste l'espace pour l'image et la flèche */
+    display: flex; /* Utilisation de flexbox pour aligner le texte */
+    align-items: center; /* Aligne verticalement le texte */
+    width: 100%; /* Assure que le select2 occupe toute la largeur disponible */
+    border-radius: 0; /* Enlever les coins arrondis */
+}
+
+/* Style pour le texte affiché dans le select */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding-left: 2.5rem; /* Espace pour l'image */
+    color: #1a202c; /* Couleur du texte */
+    font-size: 1.125rem; /* Taille du texte */
+}
+
+/* Style pour la flèche du select2 */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    top: 50%;
+    right: 0.5rem; /* Ajustez cette valeur si nécessaire pour la flèche */
+    transform: translateY(-50%);
+}
+
+/* Optionnel : Ajuster la taille et la couleur de la flèche */
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: #1a202c transparent transparent transparent; /* Couleur de la flèche */
+    border-width: 0.375rem; /* Taille de la flèche */
+}
+
+/* Style pour l'état focus */
+.select2-container--default .select2-selection--single:focus-within {
+    box-shadow: 0 0 0 1px #f8f6f5; /* Couleur de l'ombre au focus */
+}
+
+/* Style pour les options dans le menu déroulant */
+.select2-container--default .select2-results__option {
+    padding: 0.5rem; /* Espacement autour des options */
+}
+
+/* Style spécifique pour le conteneur de l'image */
+.custom-select-container {
+    position: relative;
+    width: 100%;
+    max-width: 300px; /* Ajustez en fonction de vos besoins */
+}
+
+/* Style pour l'image dans le select spécifique */
+.custom-select-container .custom-select-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.5rem; /* Ajustez si nécessaire */
+    transform: translateY(-50%);
+    z-index: 1; /* Assurez-vous que l'image est au-dessus du select2 */
+}
+
+/* Style spécifique pour les petits écrans */
+@media (max-width: 639px) {
+    .custom-select-container {
+        max-width: 100%; /* Assure que le conteneur occupe toute la largeur sur les petits écrans */
+    }
+}

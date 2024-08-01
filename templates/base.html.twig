@@ -13,10 +13,19 @@
     {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
     {% block stylesheets %}
       {{ encore_entry_link_tags('app') }}
+      <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{{ asset('template/css/custumselect.css')}}" crossorigin="anonymous"/>
     {% endblock %}
 
     {% block javascripts %}
       {{ encore_entry_script_tags('app') }}
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script src="{{asset('template/js/select2.min.js')}}" defer></script>
+    <script>
+          $(window).on('load', function() {
+            $('.js-example-basic-single').select2();
+        });
+    </script>
       	<script>
 			
 
@@ -44,6 +53,75 @@ if (value === "fr") {
           }
 
 }
+document.addEventListener('DOMContentLoaded', function () {
+const searchForm = document.getElementById('search_query');
+const searchResults = document.getElementById('search-results');
+
+searchForm.addEventListener('input', function () {
+    const query = searchForm.value;
+
+                        if (searchForm && searchForm.value.trim() !== "") {
+                        $.ajax({
+                                url: '/search/query/'+query,
+                                
+                                type: "POST",
+                                        success: function (response) {
+
+                                        if( response !== null )
+                                        {
+                                        searchResults.classList.remove('hidden');     
+                                        updateResults(response);
+                                        }else{
+                                                  searchResults.classList.add('hidden'); 
+                                                    searchResults.innerHTML = '';
+                                               
+                                        }
+                                               
+
+                                                
+                                        },
+                                        error: function(jqXHR, textStatus, errorThrown) {
+                                        searchResults.classList.add('hidden');     
+                                        }
+                        });
+                        }else{
+                                searchResults.classList.add('hidden');     
+                                searchResults.innerHTML = '';
+                        }
+});
+
+function updateResults(results) {
+    // Effacez les résultats existants
+    searchResults.innerHTML = '';
+
+    // Créez une liste non ordonnée
+    const resultList = document.createElement('ul');
+
+    // Ajoutez les nouveaux résultats à la liste
+    results.forEach(result => {
+        const listItem = document.createElement('li');
+        listItem.textContent = result.name; // Utilisez le champ approprié ici
+        listItem.classList.add('py-2', 'px-2', 'cursor-pointer','border-b', 'border-gray-100','no-underline');
+
+        // Ajoutez un gestionnaire d'événements pour mettre à jour le champ de recherche
+        listItem.addEventListener('click', function () {
+            searchForm.value = result.name;
+            searchResults.classList.add('hidden');
+        });
+
+        resultList.appendChild(listItem);
+    });
+
+    // Ajoutez la liste à l'élément searchResults
+    searchResults.appendChild(resultList);
+}
+ document.addEventListener('click', function (event) {
+        if (!searchResults.contains(event.target) && event.target !== searchForm) {
+            searchResults.classList.add('hidden');
+        }
+    });
+});
+
 </script>
     {% endblock %}
   </head>

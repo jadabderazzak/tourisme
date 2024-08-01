@@ -35,7 +35,8 @@ class SearchController extends AbstractController
         $api_maps = $this->getParameter('API_MAPS');
         
         $listings1 = $repoListing->getActiveListings(0);
-        $listings = $paginator->paginate($listings1, $request->query->getInt('page', 1), 4);  
+      
+        $listings = $paginator->paginate($listings1, $request->query->getInt('page', 1), 20);  
         $categories = $repoCat->findAll();
         $donnees = new RechercheDonnee();
         $filtreDonnees = new FiltreDonnee();
@@ -48,7 +49,7 @@ class SearchController extends AbstractController
             
             $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
           
-            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
             $donnees->page = $request->query->getInt('page', 1);  
           
             
@@ -69,7 +70,7 @@ class SearchController extends AbstractController
            
             $resultats = $repoListing->findByFilter($filtreDonnees);
           
-            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
             $donnees->page = $request->query->getInt('page', 1);  
           
             
@@ -130,12 +131,12 @@ class SearchController extends AbstractController
 
 
         $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
-        $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+        $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
         if($form->isSubmitted() && $form->isValid())
         {
             $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
           
-            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
             $donnees->page = $request->query->getInt('page', 1);  
           
             
@@ -155,7 +156,7 @@ class SearchController extends AbstractController
           
            $resultats = $repoListing->findByFilter($filtreDonnees);
          
-           $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+           $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
            $donnees->page = $request->query->getInt('page', 1);  
          
            
@@ -216,12 +217,12 @@ class SearchController extends AbstractController
 
 
         $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
-        $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+        $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
         if($form->isSubmitted() && $form->isValid())
         {
             $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
           
-            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
             $donnees->page = $request->query->getInt('page', 1);  
           
             
@@ -241,7 +242,7 @@ class SearchController extends AbstractController
           
            $resultats = $repoListing->findByFilter($filtreDonnees);
          
-           $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+           $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
            $donnees->page = $request->query->getInt('page', 1);  
          
            
@@ -292,7 +293,7 @@ class SearchController extends AbstractController
             
             $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
           
-            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
             $donnees->page = $request->query->getInt('page', 1);  
           
            
@@ -315,7 +316,7 @@ class SearchController extends AbstractController
          
             $resultats = $repoListing->findByFilter($filtreDonnees);
           
-            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
             $donnees->page = $request->query->getInt('page', 1);  
           
             
@@ -360,6 +361,27 @@ class SearchController extends AbstractController
         ]);
     }
     
+
+    #[Route('/search/query/{query}', name: 'home_search')]
+    public function search(Request $request,  ListingRepository $repoListing): Response
+    {
+
+        $query = $request->get('query');
+
+        $results = $repoListing->findResulBySearch($query);  
+        $formattedResults = [];
+
+        foreach ($results as $result) {
+            $formattedResults[] = [
+              
+                'name' => $result->getName(),
+                
+              
+            ];
+        }
+        
+        return $this->json(count($formattedResults) > 0 ? $formattedResults : null, 200);
+    }
 
 
   
