@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block body %}
-
+{% set sizetext = dirs == ' rtl' ? "text-sm" : "text-md" %}
 	<div class=" w-full justify-end  p-2 md:p-3 shadow-md bg-blue-900/80">
 		{% include 'components/searchsection.html.twig' with {'form' : form} %}
 	</div>
@@ -32,7 +32,7 @@
 
 
 				<span class="me-2">{{ listing.adresse | raw }},
-					{{ listing.ville.nom | raw }}</span>
+					{{ listing.ville.nom | raw | trans}}</span>
 			</p>
 			<div class="flex items-center">
 				{% set roundedNote = listing.note|round %}
@@ -54,7 +54,7 @@
 			</div>
 			{% if roundedNote == 0 %}
 				<div class="mt-1 text-sm text-blue-700">
-					<a id="scrollForm2" class="cursor-pointer hover:text-orange-500">Sois le premier à évaluer ce listing</a>
+					<a id="scrollForm2" class="cursor-pointer hover:text-orange-500 {{sizetext}}">{{"Sois le premier à évaluer ce listing" | trans}}</a>
 				</div>
 			{% endif %}
 
@@ -65,22 +65,22 @@
 				<div>
 
 					<button id="scrollForm1" class="bg-blue-500 text-white py-2.5 px-4 rounded sm:hidden w-48 md:w-64">
-						Submit reviews
+						{{"Soumettre des avis" | trans}}
 					</button>
 
 					<!-- Bouton pour les écrans de taille moyenne et plus -->
 					<button id="scrollForm" class="bg-blue-900/90 h-[60px] text-center text-white text-lg py-2.5 px-4 rounded hidden sm:inline-block  w-full md:w-64">
-						Submit reviews
+						{{"Soumettre des avis" | trans}}
 					</button>
 				</div>
 				<div class="flex flex-row w-full h-full items-start justify-center mt-1 gap-1 ">
 					<div>
-						<a id="dropdownDefaultButton" data-dropdown-toggle="dropdown" href="javascript:;" class="text-gray-900 bg-white w-[90px] md:w-[125px] hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium  text-sm px-4 py-2.5 justify-center inline-flex items-center  ">
-							<svg class="w-4 h-4  text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
+						<a dir={{dirs}} id="dropdownDefaultButton" data-dropdown-toggle="dropdown" href="javascript:;" class="text-gray-900 bg-white w-[90px] md:w-[125px] hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium  text-sm px-4 py-2.5 justify-center inline-flex items-center  ">
+							<svg class="w-4 h-4 hidden md:block text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 								<path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
 							</svg>
 
-							Share
+							{{"Partager" | trans}}
 						</a>
 						<!-- Dropdown menu -->
 						<div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
@@ -98,13 +98,13 @@
 
 					</div>
 					<div>
-						<a href="javascript:;" data-clipboard-text="{{ app.request.uri }}" id="copyButton" class="text-gray-900 bg-white w-[90px]  md:w-[125px] hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium  text-sm px-4 py-2.5 justify-center inline-flex items-center  ">
-							<svg class="w-4 h-4  text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
+						<a dir={{dirs}}  href="javascript:;" data-clipboard-text="{{ app.request.uri }}" id="copyButton" class="text-gray-900 bg-white w-[90px]  md:w-[125px] hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium  text-sm px-4 py-2.5 justify-center inline-flex items-center  ">
+							<svg class="w-4 h-4 hidden md:block text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 								<path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M11 16h2m6.707-9.293-2.414-2.414A1 1 0 0 0 16.586 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7.414a1 1 0 0 0-.293-.707ZM16 20v-6a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v6h8ZM9 4h6v3a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4Z"/>
 							</svg>
 
 
-							Copier
+							{{"Copier" | trans }}
 						</a>
 					</div>
 				</div>
@@ -123,13 +123,13 @@
 				<div class="w-full px-0 md:mt-0 mt-8  mb-4 md:px-4 h-16 bg-white md:bg-gray-100 flex flex-col md:flex-row justify-start items-center gap-2">
 					<div class="md:w-5/6 w-full h-16 flex items-center justify-start gap-4">
 						<img src="{{ asset('template/svg/video.svg')}}" class="w-8 h-8"/>
-						<p class="text-lg text-blue-900">Checkout
+						<p class="text-lg text-blue-900">
 							{{ listing.name | raw | capitalize }}
 						</p>
 					</div>
 					<div class="md:w-1/6  w-full h-full flex items-center justify-center">
 						<button data-modal-target="modal-id" data-modal-toggle="modal-id" id="open-modal-btn" data-modal="button" href="javascript:;" class="bg-white border border-gray-100 shadow-lg w-32 md:w-full h-12 md:h-3/5 text-center text-blue-600 font-semibold text-md  rounded  ">
-							Voir la vidéo
+							{{"Voir la vidéo" | trans}}
 						</button>
 
 						{# Le modal de la vidéo  #}
@@ -161,7 +161,7 @@
 					
 						<a href="javascript:;" id="voircarte"class="block md:hidden text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2">
 						<img src="{{ asset('template/svg/map1.svg')}}" class="w-7 h-7 me-2"/>
-						Voir la carte
+						{{"Voir la carte" | trans }}
 					</a>
 				</div>
 				<div class="md:w-3/6  w-full h-full flex items-center justify-end">
@@ -169,7 +169,7 @@
 						<svg class="w-5 text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.153 19 21 12l-4.847-7H3l4.848 7L3 19h13.153Z"/>
 						</svg>
-						Get Direction
+						{{"Direction" | trans}}
 					</a>
 				</div>
 			</div>
@@ -214,6 +214,10 @@
                     
 					'form_review' : form_review 
                 }%}
+			{% include 'components/_comments.html.twig' with {
+                    
+					'form_review' : form_review 
+                }%}
 		</div>
 		<div id="carte" class="static xl:sticky xl:top-0 justify-center items-center bottom-0 w-full md:w-2/5  h-screen shadow-xl ">
 			<div id="map" class=" items-center justify-center items-center h-screen border-b-2 border-gray-100 bg-gray-100">
@@ -227,7 +231,7 @@
 		<div class="fixed top-1/2 left-4 transform -translate-y-1/2 flex flex-col items-end">
 			<div class="flex flex-col items-start rotate-90 origin-left">
 				<button class="bg-blue-500 text-white py-2.5 px-4 rounded mb-2 text-lg" id="scrollBook">
-					Book now
+					{{"Réserve maintenant" | trans}}
 				</button>
 			</div>
 		</div>
@@ -545,73 +549,83 @@ toastr.success('Lien copié avec succès', 'SDR', {timeOut: 3000})
 });
 });
 document.addEventListener('DOMContentLoaded', function () {
-$(function () {
-var today = moment().startOf('day');
-var tomorrow = today.clone().add(1, 'days');
-$('input[name="daterange"]').daterangepicker({
-opens: 'center',
-minDate: today,
-endDate: tomorrow,
-locale: {
-format: 'DD/MM/YYYY',
-applyLabel: 'Appliquer',
-cancelLabel: 'Annuler',
-fromLabel: 'De',
-toLabel: 'À',
-customRangeLabel: 'Plage personnalisée',
-daysOfWeek: [
-'Dim',
-'Lun',
-'Mar',
-'Mer',
-'Jeu',
-'Ven',
-'Sam'
-],
-monthNames: [
-'Janvier',
-'Février',
-'Mars',
-'Avril',
-'Mai',
-'Juin',
-'Juillet',
-'Août',
-'Septembre',
-'Octobre',
-'Novembre',
-'Décembre'
-],
-firstDay: 1
-}
-// Configuration de base
-}, function (start, end, label) {
-console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    $(function () {
+        var today = moment().startOf('day');
+        var tomorrow = today.clone().add(1, 'days');
+        
+        var localeOptions = {
+            'ar': {
+                format: 'DD/MM/YYYY',
+                applyLabel: 'تطبيق',
+                cancelLabel: 'إلغاء',
+                fromLabel: 'من',
+                toLabel: 'إلى',
+                customRangeLabel: 'نطاق مخصص',
+                daysOfWeek: ['أحد', 'اثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'],
+                monthNames: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+                firstDay: 0
+            },
+            'en': {
+                format: 'DD/MM/YYYY',
+                applyLabel: 'Apply',
+                cancelLabel: 'Cancel',
+                fromLabel: 'From',
+                toLabel: 'To',
+                customRangeLabel: 'Custom Range',
+                daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                firstDay: 0
+            },
+            'fr': {
+                format: 'DD/MM/YYYY',
+                applyLabel: 'Appliquer',
+                cancelLabel: 'Annuler',
+                fromLabel: 'De',
+                toLabel: 'À',
+                customRangeLabel: 'Plage personnalisée',
+                daysOfWeek: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+                monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                firstDay: 1
+            }
+        };
 
-// Calcul du nombre de nuits
-var numberOfNights = end.diff(start, 'days');
-$('#numberOfNights').text('Nombre de nuits: ' + numberOfNights); // Affiche le nombre de nuits
+        var locale = '{{ app.request.locale }}'; // Assurez-vous que cette variable est correctement définie en Twig
+        var currentLocale = localeOptions[locale] || localeOptions['en']; // Utilisez 'en' comme langue par défaut
+
+        $('input[name="daterange"]').daterangepicker({
+            opens: 'center',
+            minDate: today,
+            endDate: tomorrow,
+            locale: currentLocale
+        }, function (start, end, label) {
+            console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+
+            // Calcul du nombre de nuits
+            var numberOfNights = end.diff(start, 'days');
+            $('#numberOfNights').text(numberOfNights); // Affiche le nombre de nuits
+        });
+
+        // Manipulation du DOM pour masquer les dates non souhaitées
+        $('input[name="daterange"]').on('apply.daterangepicker', function (ev, picker) {
+            // Masquer les dates du mois précédent
+            picker.container.find('.calendar .off').each(function () {
+                var date = moment($(this).data('title'), 'MM/DD/YYYY');
+                if (date.isBefore(today, 'month')) {
+                    $(this).addClass('disabled'); // Grise les dates du mois précédent
+                }
+            });
+
+            // Masquer les dates du mois suivant
+            picker.container.find('.calendar .off').each(function () {
+                var date = moment($(this).data('title'), 'MM/DD/YYYY');
+                if (date.isAfter(today, 'month')) {
+                    $(this).addClass('disabled'); // Grise les dates du mois suivant
+                }
+            });
+        });
+    });
 });
 
-// Manipulation du DOM pour masquer les dates non souhaitées
-$('input[name="daterange"]').on('apply.daterangepicker', function (ev, picker) { // Masquer les dates du mois précédent
-picker.container.find('.calendar .off').each(function () {
-var date = moment($(this).data('title'), 'MM/DD/YYYY');
-if (date.isBefore(today, 'month')) {
-$(this).addClass('disabled'); // Grise les dates du mois précédent
-}
-});
-
-// Masquer les dates du mois suivant
-picker.container.find('.calendar .off').each(function () {
-var date = moment($(this).data('title'), 'MM/DD/YYYY');
-if (date.isAfter(today, 'month')) {
-$(this).addClass('disabled'); // Grise les dates du mois suivant
-}
-});
-});
-});
-});
 
 document.addEventListener('DOMContentLoaded', function () {
 var button7 = document.getElementById('scrollBook');
@@ -661,7 +675,7 @@ var endDate = formatDate(endDateStr);
 var dayCount = calculateDayCount(startDate, endDate);
 
 // Construire l'URL avec les paramètres requis
-var url = `https://palais-amani.hotelrunner.com/bv3/search?search={"checkin_date":"${startDate}","checkout_date":"${endDate}","day_count":${dayCount}}`;
+var url = `https://${link}.hotelrunner.com/bv3/search?search={"checkin_date":"${startDate}","checkout_date":"${endDate}","day_count":${dayCount}}`;
 
 window.open(url, '_blank');
 

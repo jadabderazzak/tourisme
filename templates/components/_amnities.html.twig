@@ -18,14 +18,17 @@
 </section> #}
 
 {% if listing.pension != null %}
-				<div class="mb-4 w-full">
-					<div class="bg-gray-100 rounded flex p-4 h-full items-center">
+				<div class="mb-4 w-full" dir={{dirs}}>
+					<div  class="bg-gray-100 rounded flex p-4 h-full items-center">
 						<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="text-blue-600 w-6 h-6 flex-shrink-0 mr-4" viewbox="0 0 24 24">
 							<path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
 							<path d="M22 4L12 14.01l-3-3"></path>
 						</svg>
-						<span class="title-font font-medium">{{  listing.pension.nom | raw   }}</span>
+						<span class="{{sizetext}} font-medium ml-2 mr-2">{{  listing.pension.nom | raw | trans  }}</span>
+			
 					</div>
+					<span class="text-sm font-thin text-blue-600">{{  listing.pension.description | raw | trans  }}</span>
+					
 				</div>
 			{% endif %}
 <ul class="flex justify-start items-center text-sm  whitespace-nowrap">
@@ -38,7 +41,7 @@
 						<path d="M22 4L12 14.01l-3-3"></path>
 					</svg>
 
-					<span class="text-sm">{{ cat.amnities.nom   | raw | capitalize}}</span>
+					<span class="text-sm">{{ cat.amnities.nom   | raw | trans | capitalize}}</span>
 				</a>
 			</li>
 		{% endfor %}

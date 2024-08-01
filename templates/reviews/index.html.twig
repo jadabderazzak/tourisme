@@ -22,7 +22,7 @@
                     <th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Note du listing</th>
                     <th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Email</th>
                     <th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Note de l'utilisateur</th>
-					
+					 <th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Créé le </th>
 					<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Actions</th>
 				</tr>
 			</thead>
@@ -39,10 +39,11 @@
                         <td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ rev.listing.note | number_format('1',',',' ') }}</td>
 						<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ rev.email | raw }}</td>
                         <td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ rev.note| number_format('0',',',' ') }}</td>
+						<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ rev.createdAt | date("d-m-Y H:i") }}</td>
 						<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">
 						{% if rev.calculer == false %}
 							<a href="{{ path('app_reviews_valider',{id: rev.id})}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Valider</a> |
-						<a href="{{ path('app_reviews_delete',{id: rev.id})}}" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Supprimer</a>
+						    <a href="{{ path('app_reviews_delete',{id: rev.id})}}" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Supprimer</a>
 						{% endif %}	
 							
 

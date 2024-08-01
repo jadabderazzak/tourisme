@@ -51,7 +51,12 @@ class FiltreType extends AbstractType
             'expanded'=> true,
        
             'class' => Amnities::class,
-            'choice_label' => 'nom',
+            'choice_attr' => function(Amnities $amnities) {
+                return [
+                    'data-label' => $amnities->getNom() // Utilisez une data attribute pour stocker le nom
+                ];
+            },
+            'choice_translation_domain' => 'messages',
             'multiple' => true 
            
         ])

@@ -4,13 +4,13 @@
 			<div class="mb-3 ">
 				<h1 class="text-xl text-center font-bold  leading-none tracking-tight text-gray-900 md:text-3xl">
 
-					Les catégories
+					{{"Les catégories" | trans}}
 
 				</h1>
 			</div>
 			<div class="mb-3">
 				<a href="{{ path('app_search')}}" class="inline-flex items-center font-medium text-blue-600  hover:underline">
-					Consulter
+					{{"Consulter" | trans}}
 					<svg class="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 10">
 						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
 					</svg>
@@ -27,12 +27,12 @@
 					</div>
 					<div class="relative p-6 px-6 py-14 md:px-12">
 						<h2 class="mb-6 block text-4xl font-medium leading-[1.5] tracking-normal text-white antialiased">
-							{{ cat.nom | raw | capitalize}}
+							{{ cat.nom | raw | capitalize | trans}}
 						</h2>
 
 						<div class="p-0 mt-12">
 							<a href="{{ path('app_search_categorie',{ slug : cat.slug})}}" class="select-none rounded-lg text-white border border-white hover:border-orange-500 py-3 px-6 text-center align-middle  text-xs font-bold uppercase  transition-all  focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
-								Consulter
+								{{"Consulter" | trans}}
 							</a>
 						</div>
 					</div>

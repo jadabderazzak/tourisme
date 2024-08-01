@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Video;
 use App\Form\VideoType;
 use App\Repository\VideoRepository;
@@ -34,7 +35,7 @@ class VideoController extends AbstractController
         {
 
            $video = $form->getData();
-
+        $video->setCreatedAt(new DateTime());
        
          
 

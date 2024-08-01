@@ -2,19 +2,21 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Listing;
 use App\Entity\Reviews;
 use App\Entity\Localite;
 use App\Form\FiltreType;
 use App\Form\ReviewType;
 use App\Form\SearchType;
-use App\Entity\Categorie;
 
+use App\Entity\Categorie;
 use App\Model\FiltreDonnee;
 use App\Model\RechercheDonnee;
 use App\Repository\ListingRepository;
 use App\Repository\LocaliteRepository;
 use App\Repository\CategorieRepository;
+use App\Repository\ReviewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -269,13 +271,14 @@ class SearchController extends AbstractController
 
 
     #[Route('/listing/{slug}', name: 'app_search_listing_show')]
-    public function listingShow(Listing $listing, Request $request, CategorieRepository $repoCat,  EntityManagerInterface $manager, ListingRepository $repoListing, PaginatorInterface $paginator): Response
+    public function listingShow(Listing $listing, ReviewsRepository $repoRev, Request $request, CategorieRepository $repoCat,  EntityManagerInterface $manager, ListingRepository $repoListing, PaginatorInterface $paginator): Response
     {
        
         $api_maps = $this->getParameter('API_MAPS');
         $listings1 = $repoListing->getActiveListings(0);
         $listings = $paginator->paginate($listings1, $request->query->getInt('page', 1), 4);  
         $categories = $repoCat->findAll();
+        $reviewslist = $repoRev->findBy(['listing' => $listing, 'calculer'=> 1],['id' => 'DESC'],5);
         $donnees = new RechercheDonnee();
         $filtreDonnees = new FiltreDonnee();
         $reviews = new Reviews();
@@ -302,7 +305,8 @@ class SearchController extends AbstractController
                 'form_review' => $form_review->createView(),
                 'amnitiesForm' => $amnitiesForm->createView(),
                 'categories' => $categories,
-                'api_maps' => $api_maps
+                'api_maps' => $api_maps,
+                'reviewslist' => $reviewslist
             ]);
          }
 
@@ -324,7 +328,8 @@ class SearchController extends AbstractController
                 'amnitiesForm' => $amnitiesForm->createView(),
                 'categories' => $categories,
                 'form_review' => $form_review->createView(),
-                'api_maps' => $api_maps
+                'api_maps' => $api_maps,
+                'reviewslist' => $reviewslist
             ]);
          }
 
@@ -334,6 +339,7 @@ class SearchController extends AbstractController
             $stars = $request->get('stars') != ""  ? intval($request->get('stars')) : 0;
             $reviews = $form_review->getData();
             $reviews->setNote($stars);
+            $reviews->setCreatedAt(new DateTime());
             $reviews->setCalculer(false);
             $reviews->setListing($listing);
 
@@ -350,6 +356,7 @@ class SearchController extends AbstractController
             'api_maps' => $api_maps,
             'form_review' => $form_review->createView(),
             'form' => $form->createView(),
+            'reviewslist' => $reviewslist
         ]);
     }
     

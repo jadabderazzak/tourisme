@@ -69,7 +69,7 @@ class AmnitiesController extends AbstractController
            $manager->persist($amnitie);
            $manager->flush();
            $this->addFlash('success','Equipement modifié avec succès.');
-           return $this->redirectToRoute('app_amnitie');
+           return $this->redirectToRoute('app_amnities');
 
         }
 

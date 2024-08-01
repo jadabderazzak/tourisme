@@ -4,21 +4,21 @@
 			<svg class="w-5 h-5 text-blue-900 dark:text-white " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
 				<path stroke="currentColor" stroke-width="2" d="M11.083 5.104c.35-.8 1.485-.8 1.834 0l1.752 4.022a1 1 0 0 0 .84.597l4.463.342c.9.069 1.255 1.2.556 1.771l-3.33 2.723a1 1 0 0 0-.337 1.016l1.03 4.119c.214.858-.71 1.552-1.474 1.106l-3.913-2.281a1 1 0 0 0-1.008 0L7.583 20.8c-.764.446-1.688-.248-1.474-1.106l1.03-4.119A1 1 0 0 0 6.8 14.56l-3.33-2.723c-.698-.571-.342-1.702.557-1.771l4.462-.342a1 1 0 0 0 .84-.597l1.753-4.022Z"/>
 			</svg>
-			<span class="flex items-center font-semibold mt-2">Rate us and Write a Review</span>
+			<span class="flex items-center font-semibold mt-2">{{"Évaluez-nous et rédigez un avis" | trans}}</span>
 		</div>
 
-		{{ form_start(form_review, { 'attr': { 'id': 'formID' }}) }}
+		{{ form_start(form_review, { 'attr': { 'id': 'formID',  dir: dirs }}) }}
 		<div class="mb-5 mt-6  text-center">
 			<div class="form-field">
 				<span class="gl-star-rating">
 
 					<select id="glsr-prebuilt" name="stars" class="star-rating-prebuilt">
-						<option value="">Select a rating</option>
-						<option value="5">5 Stars</option>
-						<option value="4">4 Stars</option>
-						<option value="3">3 Stars</option>
-						<option value="2">2 Stars</option>
-						<option value="1">1 Star</option>
+						<option value="">{{"Sélectionnez une note" | trans }}</option>
+						<option value="5">5 {{"étoiles" | trans}}</option>
+						<option value="4">4 {{"étoiles" | trans}}</option>
+						<option value="3">3 {{"étoiles" | trans}}</option>
+						<option value="2">2 {{"étoiles" | trans}}</option>
+						<option value="1">1 {{"étoile" | trans}}</option>
 					</select>
 
 					<span class="gl-star-rating--stars">
@@ -61,8 +61,8 @@
 		<span class="text-red-700 text-left text-lg w-full hidden" id="noteID">Veuillez choisir une note</span>
 		<div class="grid md:grid-cols-2 md:gap-6 mt-6">
 			<div class="relative z-0 w-full mb-1 group">
-				<label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-				{{ form_widget(form_review.email, {'attr': {'class': 'bg-gray-100 border-0 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
+				<label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{"Votre email" | trans}}</label>
+				{{ form_widget(form_review.email, {'attr': {'class': 'bg-gray-100 border-0 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5','dir' : dirs}}) }}
 				{% if form_review.email.vars.errors|length > 0 %}
 					<span class="text-sm text-red-700 is-invalid">{{ form_errors(form_review.email) }}</span>
 				{% else %}
@@ -70,8 +70,8 @@
 				{% endif %}
 			</div>
 			<div class="relative z-0 w-full mb-53 group">
-				<label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your name</label>
-				{{ form_widget(form_review.nom, {'attr': {'class': 'bg-gray-100 border-0 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
+				<label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{"Votre nom" | trans}}</label>
+				{{ form_widget(form_review.nom, {'attr': {'class': 'bg-gray-100 border-0 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5','dir' : dirs}}) }}
 				{% if form_review.nom.vars.errors|length > 0 %}
 					<span class="text-sm text-red-700 is-invalid">{{ form_errors(form_review.nom) }}</span>
 				{% else %}
@@ -81,8 +81,8 @@
 		</div>
 
 		<div class="mb-5 mt-6">
-			<label for="titre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
-			{{ form_widget(form_review.titre, {'attr': {'class': 'bg-gray-100 border-0 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'}}) }}
+			<label for="titre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{"Titre" | trans}}</label>
+			{{ form_widget(form_review.titre, {'attr': {'class': 'bg-gray-100 border-0 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5','dir' : dirs}}) }}
 			{% if form_review.titre.vars.errors|length > 0 %}
 				<span class="text-sm text-red-700 is-invalid">{{ form_errors(form_review.titre) }}</span>
 			{% else %}
@@ -90,8 +90,8 @@
 			{% endif %}
 		</div>
 		<div class="mb-5 mt-6">
-			<label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-			{{ form_widget(form_review.description, {'attr': {'class': 'bg-gray-100 border-0 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5','rows':6 }}) }}
+			<label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{"Description" | trans}}</label>
+			{{ form_widget(form_review.description, {'attr': {'class': 'bg-gray-100 border-0 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5','rows':6,'dir' : dirs}}) }}
 			{% if form_review.description.vars.errors|length > 0 %}
 				<span class="text-sm text-red-700 is-invalid">{{ form_errors(form_review.description) }}</span>
 			{% else %}
@@ -100,7 +100,7 @@
 		</div>
 
 		<div class="flex  w-full justify-end ">
-			<button type="submit" class="bg-blue-900/90 h-[40px] text-center text-white text-lg py-2.5 px-4 rounded  w-full md:w-48">Submit</button>
+			<button type="submit" class="bg-blue-900/90 h-[40px] text-center text-white text-lg py-2.5 px-4 rounded  w-full md:w-48">{{"Soumettre" | trans}}</button>
 		</div>
 		{{ form_end(form_review)}}
 

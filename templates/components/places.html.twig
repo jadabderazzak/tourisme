@@ -4,13 +4,13 @@
 			<div class="mb-3 ">
 				<h1 class="text-xl text-center font-bold  leading-none tracking-tight text-gray-900 md:text-3xl">
 
-					Endroit populaire à visiter
+					{{"Endroit populaire à visiter" | trans}}
 
 				</h1>
 			</div>
 			<div class="mb-3">
 				<a href="javascripts:;" class="inline-flex items-center font-medium text-blue-600  hover:underline">
-					Consulter
+					{{"Consulter" | trans }}
 					<svg class="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 10">
 						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
 					</svg>
@@ -27,7 +27,7 @@
 					<a href="{{ path('app_search_listing_show',{slug : listing.slug})}}">
 					<img class=" h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" loading="lazy" src="{{ asset(chemin)}}" alt="">
 					<div class="absolute bottom-0 left-0 right-0 bg-black/30 backdrop-blur-md p-4">
-						<p class="text-white text-center text-xl">{{ listing.name | raw | upper}}</p>
+						<p class="text-white text-center text-xl">{{ listing.name | raw | trans | upper}}</p>
 					</div>
 					</a>
 				</div>

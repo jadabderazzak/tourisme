@@ -5,13 +5,13 @@
 			<div class="mb-3 ">
 				<h1 class="text-xl text-center font-bold  leading-none tracking-tight text-gray-900 md:text-3xl">
 
-						Blog et actualités
+						{{"Blog et actualités" | trans}}
 
 				</h1>
 			</div>
 			<div class="mb-3">
 				<a href="{{ path('page_blog')}}" class="inline-flex items-center font-medium text-blue-600  hover:underline">
-					Voir tous les blogs
+					{{"Voir tous les blogs" | trans}}
 					<svg class="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 10">
 						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
 					</svg>
@@ -35,7 +35,7 @@
 					{% if blog.video != "" %}
 						<span>
 							<div class="absolute bottom-0 left-0 bg-orange-500 px-4 py-2 text-white text-md shadow-xl rounded-t-xl transition duration-500 ease-in-out">
-								Vidéos
+								{{"Vidéos" | trans}}
 							</div>
 						</span>
 					{% endif %}
@@ -65,13 +65,14 @@
 									</g>
 								</g>
 							</svg>
-							<span class="ml-1">{{ blog.createdAt | ago(locale='fr') }}</span>
+							{% set locale = app.request.locale %}
+							<span class="ml-1">{{ blog.createdAt | ago(locale=locale) }}</span>
 						</span>
 					</div>
 					<div>
 						
 							<a href="{{ path('page_blog_read',{slug:blog.slug})}}" class="text-white rounded-lg shadow-xl end-2.5 bottom-2.5 bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-normal  text-md px-4 py-2 " rel="noreferrer">
-                Lire
+                {{"Lire" | trans}}
                 </a>
 					</div>
 				</div>

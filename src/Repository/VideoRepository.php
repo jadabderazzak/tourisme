@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Video;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Categorie;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Video>
@@ -21,20 +22,82 @@ class VideoRepository extends ServiceEntityRepository
         parent::__construct($registry, Video::class);
     }
 
-//    /**
-//     * @return Video[] Returns an array of Video objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('v.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+ public function getVideos(int $nombre)
+    {
+
+        if($nombre != 0 )
+        {
+       $dql = $this->createQueryBuilder('v')
+           
+            ->addSelect('v','c')
+            ->leftJoin('v.categorie','c')
+           
+            ->setMaxResults($nombre)
+          
+            
+           
+            ;
+            
+             return $dql
+        ;
+        }else{
+            $dql = $this->createQueryBuilder('v')
+           
+            ->addSelect('v','c')
+            ->leftJoin('v.categorie','c')
+           
+          
+           
+          
+            
+           
+            ;
+            
+             return $dql
+        ;
+
+        }
+    }
+
+    public function getVideosByCategorie(Categorie $categorie)
+    {
+
+    
+       $dql = $this->createQueryBuilder('v')
+           
+            ->addSelect('v','c')
+            ->leftJoin('v.categorie','c')
+            ->andWhere('v.categorie = :cat')
+            ->setParameter('cat', $categorie)
+            
+            
+           
+            ;
+            
+             return $dql
+        ;
+        
+    }
+
+    public function getVideosSearch(String $query)
+    {
+
+    
+       $dql = $this->createQueryBuilder('v')
+           
+            ->addSelect('v','c')
+            ->leftJoin('v.categorie','c')
+            ->andWhere('v.titre like :val')
+            ->setParameter('val', '%' . $query . '%')
+            
+            
+           
+            ;
+            
+             return $dql
+        ;
+        
+    }
 
 //    public function findOneBySomeField($value): ?Video
 //    {

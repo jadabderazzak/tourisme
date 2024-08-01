@@ -20,43 +20,51 @@
 
 		<div class=" w-full md:w-1/2 flex flex-col items-start justify-center px-2">
 			<div class="sticky top-0 bg-gray-50 z-20 w-full  flex flex-row justify-between items-center h-24 md:h-16 ">
-				<p class="text-md font-semibold tracking-wider mx-2">{{ listings.getTotalItemCount <= 1 ? listings.getTotalItemCount ~ " établissement trouvé" : listings.getTotalItemCount ~ " établissements trouvés" }}
-				</p>
 
-
-				<!-- drawer init and toggle -->
-				<div class="items-center justify-center ">
-					<button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium  text-md  text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-						Ordre par
-						<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
-							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-						</svg>
-					</button>
-					<div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-						<ul class="py-2 mx-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
-							<li class="py-2 mx-2 hover:underline">
-								{{ knp_pagination_sortable(listings, 'Alphabet','l.name')}}
-							</li>
-							<li class="py-2 mx-2 hover:underline">
-								{{ knp_pagination_sortable(listings, 'Date de création','l.createdAt')}}
-							</li>
-							<li class="py-2 mx-2 hover:underline">
-								{{ knp_pagination_sortable(listings, 'Les mieux/moins notés','l.note')}}
-							</li>
-
-						</ul>
+				<div class="flex flex-col md:flex-row gap-4 justify-between w-full">
+					{% set etab = "établissement trouvé" | trans  %}
+					{% set etabs = "établissements trouvés" | trans  %}
+					<div class="w-full flex justify-center items-center">
+						<p class="text-md font-semibold tracking-wider mx-2 w-full text-center md:text-left">{{ listings.getTotalItemCount <= 1 ? listings.getTotalItemCount ~ " "~ etab : listings.getTotalItemCount ~ " "~  etabs  }}
+						</p>
 					</div>
+					<div
+						class="flex flex-row items-center justify-between gap-6 w-full">
+						<!-- drawer init and toggle -->
+						<div class="items-center justify-center ">
+							<button id="dropdownDividerButton" dir={{dirs}} data-dropdown-toggle="dropdownDivider" class="text-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium  text-md  text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+								{{"Ordre par" | trans}}
+								<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
+									<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+								</svg>
+							</button>
+							<div id="dropdownDivider" dir={{dirs}} class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+								<ul class="py-2 mx-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
+									<li class="py-2 mx-2 hover:underline">
+										{{ knp_pagination_sortable(listings, 'Alphabet' | trans,'l.name')}}
+									</li>
+									<li class="py-2 mx-2 hover:underline">
+										{{ knp_pagination_sortable(listings, 'Date de création' | trans,'l.createdAt')}}
+									</li>
+									<li class="py-2 mx-2 hover:underline">
+										{{ knp_pagination_sortable(listings, 'Les mieux/moins notés' | trans,'l.note')}}
+									</li>
+
+								</ul>
+							</div>
 
 
-				</div>
-				<div class="">
-					<button class="relative select-none rounded-lg bg-blue-900 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" data-drawer-target="drawer-example" data-drawer-show="drawer-example" aria-controls="drawer-example" data-ripple-light="true" title="Plus de filres">
-						<svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
-							<path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/>
-						</svg>
-					</button>
+						</div>
+						<div class="">
+							<button class="relative select-none rounded-lg bg-blue-900 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" data-drawer-target="drawer-example" data-drawer-show="drawer-example" aria-controls="drawer-example" data-ripple-light="true" title="Plus de filres">
+								<svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
+									<path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/>
+								</svg>
+							</button>
 
 
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -90,7 +98,7 @@
 					</div>
 				{% else %}
 					<div class=" w-full h-full flex items-center justify-center text-xl text-blue-900">
-						<p>Pas de résultats trouvés</p>
+						<p>{{"Pas de résultats trouvés" | trans}}</p>
 					</div>
 				{% endif %}
 			</div>

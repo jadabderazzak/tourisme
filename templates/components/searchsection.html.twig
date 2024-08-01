@@ -7,7 +7,7 @@
 			<div class="absolute inset-y-0 start-0 flex items-center ps-2.5 pointer-events-none me-4 text-gray-900">
 				<img src="{{ asset('template/images/search.png')}}" class="object-cover h-6"/>
 			</div>
-			{{ form_widget(form.query, {'attr': {'class': 'border-none h-14 w-full text-gray-900 bg-white/90 text-lg font-normal focus:ring-orange-500 focus:border-orange-500 block w-full ps-14 p-2.5'}}) }}
+			{{ form_widget(form.query, {'attr': {'class': 'border-none h-14 w-full text-gray-900 bg-white/90 text-lg font-normal focus:ring-orange-500 focus:border-orange-500 block w-full ps-14 p-2.5', 'dir': dirs}}) }}
 
 		</div>
 
@@ -15,8 +15,8 @@
 			<div class="absolute inset-y-0 start-0 flex items-center ps-2.5 pointer-events-none me-4 text-gray-900">
 				<img src="{{ asset('template/images/category.png')}}" class="object-cover h-6"/>
 			</div>
-			{{ form_widget(form.categorie, {'attr': {'class': 'border-none h-14 w-full text-gray-900 bg-white/90 text-lg font-normal focus:ring-orange-500 focus:border-orange-500 block w-full ps-14 p-2.5'}}) }}
-
+			{{ form_widget(form.categorie, {'attr': {'class': 'text-center border-none h-14 w-full text-gray-900 bg-white/90 text-lg font-normal focus:ring-orange-500 focus:border-orange-500 block w-full ps-14 p-2.5', 'dir': dirs}}) }}
+			
 		</div>
 
 
@@ -24,7 +24,7 @@
 			<div class="absolute inset-y-0 start-0 flex items-center ps-3 text-gray-900 pointer-events-none">
 				<img src="{{ asset('template/images/map.png')}}" class="object-cover h-6"/>
 			</div>
-			{{ form_widget(form.ville, {'attr': {'class': 'border-none h-14 w-full text-gray-900 bg-white/90 text-lg font-normal focus:ring-orange-500 focus:border-orange-500 block w-full ps-14 p-2.5'}}) }}
+			{{ form_widget(form.ville, {'attr': {'class': 'text-center border-none h-14 w-full text-gray-900 bg-white/90 text-lg font-normal focus:ring-orange-500 focus:border-orange-500 block w-full ps-14 p-2.5', 'dir': dirs}}) }}
 			<button type="submit" class="text-white rounded-full absolute end-1 bottom-1 bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-normal  text-md px-3 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
 							<svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 					<path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/>

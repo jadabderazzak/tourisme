@@ -8,30 +8,44 @@
 	<section class="bg-white dark:bg-gray-900">
 		<div class="py-8 px-4 mx-auto w-full  lg:py-16 lg:px-6">
 			<div class="mx-auto max-w-screen-sm text-center  mb-8">
-				<h2 class="mb-4 text-3xl md:text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">Vidéos</h2>
-				<p class="font-light text-gray-500 text-lg text-left md:text-center">Découvrez comment nous dénichons les trésors cachés et anticipons vos attentes pour vous offrir des expériences de voyage uniques et inoubliables.
+				<h2 class="mb-4 text-3xl md:text-5xl tracking-tight font-extrabold text-gray-900 dark:text-white">{{"Vidéos" | trans}}</h2>
+				<p class="font-light text-gray-500 text-lg text-left md:text-center">{{"Découvrez comment nous dénichons les trésors cachés et anticipons vos attentes pour vous offrir des expériences de voyage uniques et inoubliables" | trans}}.
 				</p>
 			</div>
-			<nav class="rounded-xl mb-4  ">
 
-				<ul class="grid grid-cols-1 md:grid-cols-5 justify-center mx-3 items-center text-sm md:text-md  ">
-					<li class="mr-3 mt-2">
-							<a href="{{ path('page_videos')}}" class="flex flex-row gap-3 inline-block border border-gray-300 focus:outline-none hover:bg-gray-100/30 rounded-3xl  py-2 px-3 text-gray-900  text-lg">
-								<svg class="w-[26px] h-[26px] text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
-									<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M8 6h8M6 10h12M8 14h8M6 18h12"/>
-								</svg>
+			<form class="w-full md:w-1/2  mx-auto mb-6" method="POST" action="{{ path('page_videos_search')}}" dir={{dirs}}>
+				<label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+				<div class="relative">
+					<div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+						<svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 20 20">
+							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+						</svg>
+					</div>
+					{% set placehold = "Recherche ..." | trans %}
+					<input type="search" name="search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ placehold }}"/>
+					<button type="submit" class="text-white absolute end-2.5 bottom-2 bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full  px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+					<svg class="w-4 h-4 text-white dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 20 20">
+							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+						</svg>
+					
+					</button>
+				</div>
+			</form>
 
-								Toutes
-							</a>
-						</li>
+			<nav class=" mb-4 ">
+
+				<ul class="flex flex-wrap justify-start md:justify-center mx-3 items-start text-sm md:text-md gap-3" dir="{{ dirs }}">
+					<li class="mr-1 mt-2">
+						<a href="{{ path('page_videos')}}" class=" border border-gray-800 focus:outline-none bg-black  rounded-lg py-2 px-3 text-white  text-md">
+							{{"Tous" | trans}}
+						</a>
+					</li>
 					{% for cat in categories %}
-						<li class="mr-3 mt-2">
-							<a href="{{ path('page_videos_categorie',{ slug : cat.slug})}}" class="flex flex-row gap-3 inline-block border border-gray-300 focus:outline-none hover:bg-gray-100/30 rounded-3xl  py-2 px-3 text-gray-900  text-lg">
-								<svg class="md:w-[26px] md:h-[26px] text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
-									<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M8 6h8M6 10h12M8 14h8M6 18h12"/>
-								</svg>
+						<li class="mr-1 mt-2">
+							<a href="{{ path('page_videos_categorie',{ slug : cat.slug})}}" class=" focus:outline-none bg-gray-100 rounded-lg  py-2 px-3 font-semibold text-black  text-md">
 
-								{{ cat.nom | raw | capitalize}}
+
+								{{ cat.nom | raw | trans | capitalize}}
 							</a>
 						</li>
 					{% endfor %}
@@ -39,31 +53,41 @@
 				</ul>
 			</nav>
 			{% if videos | length > 0 %}
-			<div class="grid gap-8 md:grid-cols-3 lg:grid-cols-4 mt-12">
-
-			
-				{% for video in videos %}
+				<div class="grid gap-8 md:grid-cols-3 lg:grid-cols-4 mt-12">
 
 
-					<div class="relative h-[330px]">
-						<span class="rounded-t-xl text-center">
-							<iframe id="iframevideo" class="w-full rounded-t-xl" width="320" height="250" src="{{ video.lien | raw }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-							<div class="absolute bottom-0 left-0 right-0 bg-blue-900/90 backdrop-blur-md p-4 rounded-b-xl">
-								<p class="text-white text-center text-md">{{ video.titre | raw | capitalize }}</p>
-								<a href="{{ path('app_search_categorie',{ slug : video.categorie.slug})}}" class="text-white text-xl underline">
-									{{ video.categorie.nom | raw }}
-								</a>
+					{% for video in videos %}
+						{% set textpos = is_arabic(video.titre) == true ? "text-right" : "text-left" %}
+						{% set locale = app.request.locale %}
+						<div class="flex flex-col  bg-white rounded-xl shadow-md overflow-hidden">
+							<div class="relative">
+								<iframe id="iframevideo" class="w-full h-[200px] rounded-t-xl " src="{{ video.lien | raw }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 							</div>
-						</span>
-					</div>
+							<div class="flex flex-col flex-grow">
+								<div class="flex-shrink-0 p-4 flex-grow flex flex-col justify-between ">
+									<p class="text-black {{textpos}} text-md">{{ video.titre | raw | capitalize }}</p>
+									<div class="flex flex-row justify-between  mt-4">
+										<a href="{{ path('app_search_categorie',{ slug : video.categorie.slug})}}" class=" text-black text-md underline">
+											<span>{{ video.categorie.nom | raw | trans}}</span>
 
-				{% endfor %}
-			
-			</div>
+										</a>
+										<span class="text-sm">{{ video.createdAt | ago(locale=locale) }}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					{% endfor %}
+
+
+				</div>
+				<div class="navigation flex justify-center w-full items-center mt-4 text-md">
+					{{ knp_pagination_render(videos) }}
+				</div>
 			{% else %}
-			<div class="h-full mt-32 items-center text-center w-full ">
-				<p class="w-full text-center text-xl text-blue-900">Pas de vidéos trouvées</p>
-			</div>
+				<div class="h-full mt-32 items-center text-center w-full ">
+					<p class="w-full text-center text-xl text-blue-900">{{"Pas de vidéos trouvées" | trans}}</p>
+				</div>
 			{% endif %}
 		</div>
 	</section>

@@ -24,13 +24,13 @@
 		<ul class="flex justify-start mx-3 md:justify-end items-center text-sm md:text-md overflow-x-auto whitespace-nowrap hide-scrollbar ">
 
 			{% for cat in categories %}
-				<li class="mr-3">
-					<a  href="{{ path('app_search_categorie',{ slug : cat.slug})}}" class="flex flex-row gap-3 inline-block border border-gray-300 focus:outline-none hover:bg-gray-100/30 rounded-3xl  py-2 px-3 text-white text-lg">
+				<li class="mr-3" dir="{{dirs}}">
+					<a href="{{ path('app_search_categorie',{ slug : cat.slug})}}" class="flex flex-row gap-3 inline-block border border-gray-300 focus:outline-none hover:bg-gray-100/30 rounded-3xl  py-2 px-3 text-white text-lg">
 						<svg class="w-[26px] h-[26px] text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M8 6h8M6 10h12M8 14h8M6 18h12"/>
 						</svg>
 
-						{{ cat.nom | raw | capitalize}}
+						{{ cat.nom | raw | capitalize | trans}}
 					</a>
 				</li>
 			{% endfor %}
@@ -42,25 +42,30 @@
 		<div
 			class="w-full  h-[500px] md:h-[300px] flex  bg-gradient-to-b to-blue-800 from-blue-900  justify-center border-b-2 border-gray-100 ">
 			<!-- Contenu de la première div gauche -->
-
-			<div class="text-center text-blue-900 px-6 md:py-0 md:px-16 mt-12">
-				<h1 class="mb-4 md:mb-8 text-4xl font-extrabold text-gray-600 text-left md:text-6xl font-arial">
-					<span class="mb-2 text-3xl md:text-5xl text-white">Trouvez votre prochain séjour</span><br/>
+			{% set text = app.request.locale == "ar" ? "text-center" : "text-left" %}
+			<div class=" px-2 text-blue-900 md:py-0  md:px-16  mt-12">
+				<h1 class="mb-4 md:mb-8 text-4xl font-extrabold text-gray-600 {{text}} md:text-6xl font-arial">
+					<span class="mb-2 text-3xl md:text-5xl text-white">{{"Trouvez votre prochain séjour" | trans}}</span><br/>
 
 
 				</h1>
 
-				<p class="text-xl leading-8 text-white mt-2 text-left">
-					<span class="inline-block border-b-2 border-orange-500 ">Découvrez Souss Massa: </span>  Un voyage à travers la splendeur naturelle et le riche patrimoine.</p>
-			
+				<p class="text-xl leading-8 text-white mt-2 {{text}}" dir="{{dirs}}">
+					<span class="inline-block border-b-2 border-orange-500 ">{{"Découvrez Souss Massa" | trans}}
+						:
+					</span>
+					{{"Un voyage à travers la splendeur naturelle et le riche patrimoine." | trans}}
+				</p>
+
 				{% include 'components/searchhome.html.twig' with {'form' : form} %}
 
 
-		<!-- ************************************** -->
+				<!-- ************************************** -->
+			</div>
+		</div>
 	</div>
-</div></div>
 
-{% include "components/categories.html.twig" with {
+	{% include "components/categories.html.twig" with {
 		'categories' : categories
 }
 %}{% include "components/places.html.twig" with {
@@ -73,7 +78,8 @@
 		'actionnaires' : actionnaires
 } %}{% include "components/partenaire.html.twig" with {
 		'partenaires' : partenaires
-} %}{% endblock %}{% block javascripts %}{{ parent()}}<script>
-
-
-</script>{% endblock %}
+} %}
+{% endblock %}
+{% block javascripts %}
+	{{ parent()}}<script></script>
+{% endblock %}

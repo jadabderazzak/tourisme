@@ -31,7 +31,7 @@ class ListingType extends AbstractType
         ->add('link',TextType::class,[
             'required' => false,
             'attr' => [
-                'placeholder' => 'Example : https://palais-amani.hotelrunner.com/bv3/search?search=',
+                'placeholder' => 'Introduisez seulement le nom utilisé dans hotelrunner Exemple : palais-amani',
                 ],
         ])
         ->add('adresse',TextType::class,[

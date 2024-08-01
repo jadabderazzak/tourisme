@@ -11,6 +11,7 @@ use App\Repository\BlogRepository;
 use App\Repository\VideoRepository;
 use App\Repository\CategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -58,24 +59,43 @@ class PagesController extends AbstractController
     }
 
     #[Route('/section/videos', name: 'page_videos')]
-    public function videos(VideoRepository $repoVideo, CategorieRepository $repoCat): Response
+    public function videos(VideoRepository $repoVideo, CategorieRepository $repoCat, PaginatorInterface $paginator, Request $request): Response
     {
         $categories = $repoCat->findAll();
-        $videos = $repoVideo->findBy([], ['id' => 'DESC']);
+     
+        $videos1 = $repoVideo->getVideos(0);
+        $videos = $paginator->paginate($videos1, $request->query->getInt('page', 1), 12);
         return $this->render('pages/videos.html.twig', [
             'videos' => $videos,
             'categories' => $categories
         ]);
     }
 
-    #[Route('/section/videos/{slug}', name: 'page_videos_categorie')]
-    public function videos_categorie(Categorie $categorie, VideoRepository $repoVideo, CategorieRepository $repoCat): Response
+    #[Route('/section/videos/categorie/{slug}', name: 'page_videos_categorie')]
+    public function videos_categorie(Categorie $categorie, VideoRepository $repoVideo, CategorieRepository $repoCat, PaginatorInterface $paginator, Request $request): Response
     {
         $categories = $repoCat->findAll();
-        $videos = $repoVideo->findBy([
-            'categorie' => $categorie
-        ],['id' => 'DESC']);
+        $videos1 = $repoVideo->getVideosByCategorie($categorie);
        
+        $videos = $paginator->paginate($videos1, $request->query->getInt('page', 1), 12);
+       
+        return $this->render('pages/videos.html.twig', [
+            'videos' => $videos,
+            'categories' => $categories
+        ]);
+    }
+
+    #[Route('/section/videos/search', name: 'page_videos_search')]
+    public function search(VideoRepository $repoVideo, CategorieRepository $repoCat, PaginatorInterface $paginator, Request $request): Response
+    {
+        $query = trim($request->get('search'));
+        $query = preg_replace('/[^a-zA-Z0-9_\-\s]/', '', $query);
+        $query = htmlspecialchars($query, ENT_QUOTES, 'UTF-8');
+      
+        $categories = $repoCat->findAll();
+     
+        $videos1 = $repoVideo->getVideosSearch($query);
+        $videos = $paginator->paginate($videos1, $request->query->getInt('page', 1), 12);
         return $this->render('pages/videos.html.twig', [
             'videos' => $videos,
             'categories' => $categories

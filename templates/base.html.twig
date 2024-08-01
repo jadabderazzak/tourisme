@@ -17,6 +17,34 @@
 
     {% block javascripts %}
       {{ encore_entry_script_tags('app') }}
+      	<script>
+			
+
+function toggleDropdown() {
+    var dropdown = document.getElementById("dropdown-menu");
+    var arrowIcon = document.getElementById("arrow-icon");
+    if (dropdown.style.transform === "scale(0)") {
+        dropdown.style.transform = "scale(1)";
+        arrowIcon.classList.add("rotate-180");
+    } else {
+        dropdown.style.transform = "scale(0)";
+        arrowIcon.classList.remove("rotate-180");
+    }
+}
+
+function onChangeLanguage(value)
+{
+
+if (value === "fr") {
+          window.location.href = "/change/locales/fr";
+          } else if (value === "en") {
+          window.location.href = "/change/locales/en";
+          } else if (value === "ar") {
+          window.location.href = "/change/locales/ar";
+          }
+
+}
+</script>
     {% endblock %}
   </head>
   <body>
