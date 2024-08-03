@@ -119,13 +119,22 @@ function updateResults(results) {
 
         // Ajoutez un gestionnaire d'événements pour mettre à jour le champ de recherche
         listItem.addEventListener('click', function () {
-        searchForm.value = searchForm.value.slice(0, -1);
-        searchForm.value +=  result.name + ", ";
-         searchForm.value = removeDuplicates(searchForm.value);
+            const terms = searchForm.value.split(',').map(term => term.trim());
+            terms.pop(); // Supprime le dernier terme saisi
+
+            // Ajoute le terme sélectionné
+            terms.push(result.name);
+
+            // Met à jour le champ de recherche avec les termes
+            searchForm.value = terms.join(', ');
+
+            // Suppression des doublons
+            searchForm.value = removeDuplicates(searchForm.value);
+
             document.getElementById('queryId').value = result.id;
             searchResults.classList.add('hidden');
             searchForm.focus();
-    searchForm.setSelectionRange(searchForm.value.length, searchForm.value.length);
+            searchForm.setSelectionRange(searchForm.value.length, searchForm.value.length);
         });
 
         resultList.appendChild(listItem);
