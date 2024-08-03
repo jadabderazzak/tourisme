@@ -21,18 +21,52 @@
 						<span class="absolute -bottom-1 left-0 w-0 transition-all h-0.5 bg-orange-400 group-hover:w-full"></span>
 					</p>
 				</li>
-				<li>
-					<p class="text-lg  group relative w-max">
-						<a href="#" class="block py-2 text-lg px-3 text-white rounded md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">{{"Explorer les lieux" | trans}}</a>
-						<span class="absolute -bottom-1 left-0 w-0 transition-all h-0.5 bg-orange-400 group-hover:w-full"></span>
-					</p>
-				</li>
-				<li>
-					<p class="text-lg  group relative w-max">
+				
 
-						<a href="#" class="block py-2 text-lg px-3  text-white rounded   md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">{{"Explorer les catégories" | trans}}</a>
-						<span class="absolute -bottom-1 left-0 w-0 transition-all h-0.5 bg-orange-400 group-hover:w-full"></span>
-					</p>
+				<li>
+					<button id="dropdownNavbarLink1" data-dropdown-toggle="dropdownNavbar1" class="flex items-center justify-between py-2 text-lg px-3 text-white rounded md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+						{{"Explorer les lieux" | trans}}
+						<svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
+							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+						</svg>
+					</button>
+					<!-- Dropdown menu -->
+					<div id="dropdownNavbar1" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+						<ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+							{% for prov in provinces %}
+							<li>
+								<a href="{{ path('app_search_categorie',{ slug : prov.slug})}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+								
+								{{ prov.nom | raw  | trans}}</a>
+							</li>
+							{% endfor %}
+						
+						</ul>
+						
+					</div>
+				</li>
+	
+				<li>
+					<button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between py-2 text-lg px-3 text-white rounded md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+						{{"Explorer les catégories" | trans}}
+						<svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 10 6">
+							<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+						</svg>
+					</button>
+					<!-- Dropdown menu -->
+					<div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+						<ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+							{% for mcat in categories %}
+							<li>
+								<a href="{{ path('app_search_categorie',{ slug : mcat.slug})}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+								
+								{{ mcat.nom | raw | capitalize | trans}}</a>
+							</li>
+							{% endfor %}
+						
+						</ul>
+						
+					</div>
 				</li>
 				<li>
 					<p class="text-lg  group relative w-max">
@@ -46,28 +80,27 @@
 						<span class="absolute -bottom-1 left-0 w-0 transition-all h-0.5 bg-orange-400 group-hover:w-full"></span>
 					</p>
 				</li>
-				<li >
+				<li>
 					<p class="text-lg  group relative w-max">
 						<a href="{{ path('app_login')}}" class="block py-2 text-lg px-3 text-white rounded   md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">{{"Se connecter" | trans}}</a>
 						<span class="absolute -bottom-1 left-0 w-0 transition-all h-0.5 bg-orange-400 group-hover:w-full"></span>
 					</p>
 				</li>
 				<li>
-					<div
-						class="">
-					
+					<div class="">
+
 						{% set language = "français" %}
-				
+
 						{% if app.request.locale == "fr" %}
 							{% set language = "français" %}
 						{% elseif app.request.locale == "ar" %}
 							{% set language = "العربية" %}
 						{% elseif app.request.locale == "en" %}
 							{% set language = "English" %}
-						{% else %}
+							{% else %}
 
 						{% endif %}
-						
+
 						<div class="relative group  md:flex">
 							<button class="flex flex-row gap-1 outline-none focus:outline-none pl-2 pr-8 bg-transparent text-white rounded-sm flex items-center" onclick="toggleDropdown()">
 								<span class="pr-1 text-lg flex-1">{{language | raw }}</span>
@@ -77,8 +110,9 @@
 									</svg>
 								</span>
 							</button>
-<ul id="dropdown-menu" class="z-50 bg-white/40 rounded-xl shadow-xl transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top top-full right-0">								<li class="items-center inline-flex  py-2">
-									<a href="javascript:;" onclick="onChangeLanguage('fr')" class="icon-8 email" rel="noopener me" >
+							<ul id="dropdown-menu" class="z-50 bg-white/40 rounded-xl shadow-xl transform scale-0 group-hover:scale-100 absolute transition duration-150 ease-in-out origin-top top-full right-0">
+								<li class="items-center inline-flex  py-2">
+									<a href="javascript:;" onclick="onChangeLanguage('fr')" class="icon-8 email" rel="noopener me">
 
 
 										<svg class="h-7 hover:scale-125 px-2" viewbox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--twemoji" preserveaspectratio="xMidYMid meet">
@@ -88,7 +122,7 @@
 										</svg>
 									</a>
 
-									<a href="javascript:;" onclick="onChangeLanguage('ar')" class="icon-8 email" rel="noopener me" >
+									<a href="javascript:;" onclick="onChangeLanguage('ar')" class="icon-8 email" rel="noopener me">
 
 
 										<svg class="h-7 hover:scale-125 px-2" viewbox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--twemoji" preserveaspectratio="xMidYMid meet">
@@ -96,7 +130,7 @@
 											<path fill="#006233" d="M15.047 22.165l1.128-3.471l-2.953-2.145h3.649L18 13.074l1.129 3.474h3.649l-2.953 2.145l1.128 3.471L18 20.019l-2.953 2.146zm3.583-2.603l.916.665l-.35-1.077l-.566.412zm-1.826-.412l-.35 1.077l.916-.665l-.566-.412zm.241-.74l.955.694l.955-.694l-.365-1.122h-1.182l-.363 1.122zM15.5 17.288l.915.665l.216-.665H15.5zm3.869 0l.216.665l.915-.665h-1.131zm-1.019-.74L18 15.47l-.35 1.079h.7z"></path>
 										</svg>
 									</a>
-									<a href="javascript:;" onclick="onChangeLanguage('en')" class="icon-8 email" rel="noopener me" >
+									<a href="javascript:;" onclick="onChangeLanguage('en')" class="icon-8 email" rel="noopener me">
 
 
 										<svg class="h-7 hover:scale-125 px-2" viewbox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--twemoji" preserveaspectratio="xMidYMid meet">

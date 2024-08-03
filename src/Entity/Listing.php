@@ -127,6 +127,9 @@ class Listing
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $link = null;
 
+    #[ORM\OneToMany(targetEntity: ListingTags::class, mappedBy: 'listing')]
+    private Collection $listingTags;
+
    
 
     public function __construct()
@@ -134,6 +137,7 @@ class Listing
         $this->images = new ArrayCollection();
         $this->listingamnities = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+        $this->listingTags = new ArrayCollection();
    
     }
 
@@ -557,6 +561,36 @@ class Listing
     public function setLink(?string $link): static
     {
         $this->link = $link;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ListingTags>
+     */
+    public function getListingTags(): Collection
+    {
+        return $this->listingTags;
+    }
+
+    public function addListingTag(ListingTags $listingTag): static
+    {
+        if (!$this->listingTags->contains($listingTag)) {
+            $this->listingTags->add($listingTag);
+            $listingTag->setListing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeListingTag(ListingTags $listingTag): static
+    {
+        if ($this->listingTags->removeElement($listingTag)) {
+            // set the owning side to null (unless already changed)
+            if ($listingTag->getListing() === $this) {
+                $listingTag->setListing(null);
+            }
+        }
 
         return $this;
     }

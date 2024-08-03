@@ -5,11 +5,15 @@ namespace App\Controller;
 use App\Entity\Images;
 use App\Entity\Listing;
 use App\Entity\Listingamnities;
+use App\Entity\ListingTags;
 use App\Form\ListingType;
 use App\Repository\AmnitiesRepository;
 use App\Repository\ImagesRepository;
 use App\Repository\ListingamnitiesRepository;
 use App\Repository\ListingRepository;
+use App\Repository\ListingTagsRepository;
+use App\Repository\TagsRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +35,7 @@ class ListingController extends AbstractController
     }
 
     #[Route('/listing/ajouter', name: 'app_listing_add')]
-    public function add(Request $request, EntityManagerInterface $manager, AmnitiesRepository $repoAmnities): Response
+    public function add(Request $request, EntityManagerInterface $manager, TagsRepository $repoTags, AmnitiesRepository $repoAmnities): Response
     {
         $extentions = ['jpeg', 'jpg', 'png', 'JPEG', 'JPG', 'PNG'];
 
@@ -57,6 +61,21 @@ class ListingController extends AbstractController
             $listingAmnity->setAmnities($amnity);
 
             $manager->persist($listingAmnity);
+          }
+
+          if (isset($formData['listing']['tags'])) {
+            $tags = $formData['listing']['tags'];
+          
+        } 
+
+           /************************** Ajouter ces tags dans la base  */
+           foreach ($tags as $tagId) {
+            $tag = $repoTags->findOneBy(['id' => $tagId]);
+            $listingtags = new ListingTags();
+            $listingtags->setListing($listing);
+            $listingtags->setTags($tag);
+
+            $manager->persist($listingtags);
           }
 
           /*************************************************************** */
@@ -102,7 +121,7 @@ class ListingController extends AbstractController
 
             }
 
-
+            $listing->setCreatedAt(new DateTime());
             $manager->flush();
 
             /******************************************* */
@@ -153,17 +172,20 @@ class ListingController extends AbstractController
     }
 
     #[Route('/listing/modifier/{slug}', name: 'app_listing_update')]
-    public function update(Listing $listing, Request $request, ListingamnitiesRepository $repoListAmni, EntityManagerInterface $manager, AmnitiesRepository $repoAmnities, ImagesRepository $repoImage): Response
+    public function update(Listing $listing, Request $request, ListingamnitiesRepository $repoListAmni, ListingTagsRepository $repoListTags,  TagsRepository $repoTags,EntityManagerInterface $manager, AmnitiesRepository $repoAmnities, ImagesRepository $repoImage): Response
     {
        
         $listingAmnities = $listing->getListingamnities();
         $allAmnities = $repoAmnities->findAll();
-
+        $listingsTags = $listing->getListingTags();
+        $allTags = $repoTags->findAll();
      
         $extentions = ['jpeg', 'jpg', 'png', 'JPEG', 'JPG', 'PNG'];
         $form = $this->createForm(ListingType::class, $listing, [
             'amnities' => $allAmnities,
+            'tags' => $allTags,
             'listingAmnities' => $listingAmnities,
+            'listingTags' => $listingsTags
         ]);
         $allimages = $repoImage->findBy([
             'listing' => $listing
@@ -242,6 +264,32 @@ class ListingController extends AbstractController
                     } 
                        
                     }
+                   /************************** modification ces tags dans la base  */
+
+                   if (isset($formData['listing']['tags'])) {
+                    $tags = $formData['listing']['tags'];
+                  
+                      
+                    
+                     $existingListingTags = $repoListTags->findBy(['listing' => $listing]);
+ 
+                     foreach ($existingListingTags as $existingags) {
+                         $manager->remove($existingags);
+                     }
+                    
+
+                     foreach ($tags as $tagId) {
+                        $tag = $repoTags->findOneBy(['id' => $tagId]);
+                        $listingtags = new ListingTags();
+                        $listingtags->setListing($listing);
+                        $listingtags->setTags($tag);
+
+                        $manager->persist($listingtags);
+                    }
+                        
+                     }
+                 
+                   
 
             $manager->flush();
             $this->addFlash('success', 'Le listing a bien été modifié.');
@@ -251,6 +299,7 @@ class ListingController extends AbstractController
 
         return $this->render('listing/add.html.twig', [
             'form' => $form->createView(),
+            'listing' => $listing,
             'action' => 2,
             'images' => $allimages
         ]);

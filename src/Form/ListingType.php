@@ -2,8 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\Amnities;
+use App\Entity\Tags;
 use App\Entity\Listing;
+use App\Entity\Amnities;
 use App\Entity\Localite;
 use App\Entity\Categorie;
 use App\Entity\TypePension;
@@ -188,6 +189,27 @@ class ListingType extends AbstractType
                     return $amnity->getNom(); // Supposons que votre entité Amnity a une méthode getName()
                 },
         ])
+        ->add('tags', EntityType::class, [
+            'class' => Tags::class,
+            'mapped' => false,
+            'required' => false,
+            'choice_label' => 'nom',
+            'expanded' => true,
+            'multiple' => true,
+            'choice_attr' => function ($choice, $key, $value) use ($options) {
+               
+                    // Vérifiez si ce tag est déjà associée au Listing
+                    foreach ($options['listingTags'] as $listingtags) {
+                        if ($listingtags->getTags()->getId() === $choice->getId()) {
+                            return ['checked' => 'checked'];
+                        }
+                    }
+                    return [];
+                },
+                'choice_label' => function ($tag, $key, $value) {
+                    return $tag->getNom(); 
+                },
+        ])       
         ;
     }
 
@@ -195,7 +217,8 @@ class ListingType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Listing::class,
-         
+            'tags' => [],
+            'listingTags' => [],
             'amnities' => [],
             'listingAmnities' => [],
         ]);

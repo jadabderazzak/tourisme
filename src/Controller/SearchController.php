@@ -13,16 +13,18 @@ use App\Form\SearchType;
 use App\Entity\Categorie;
 use App\Model\FiltreDonnee;
 use App\Model\RechercheDonnee;
+use App\Repository\TagsRepository;
 use App\Repository\ListingRepository;
+use App\Repository\ReviewsRepository;
 use App\Repository\LocaliteRepository;
 use App\Repository\CategorieRepository;
-use App\Repository\ReviewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SearchController extends AbstractController
 {
@@ -48,7 +50,7 @@ class SearchController extends AbstractController
          {
             
             $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
-          
+            
             $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
             $donnees->page = $request->query->getInt('page', 1);  
           
@@ -87,7 +89,7 @@ class SearchController extends AbstractController
          }
        
          
-       
+      
         return $this->render('search/index.html.twig', [
             'form' => $form->createView(),
             'listings' => $listings,
@@ -131,6 +133,7 @@ class SearchController extends AbstractController
 
 
         $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
+        
         $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
         if($form->isSubmitted() && $form->isValid())
         {
@@ -217,6 +220,7 @@ class SearchController extends AbstractController
 
 
         $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
+        
         $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
         if($form->isSubmitted() && $form->isValid())
         {
@@ -363,18 +367,26 @@ class SearchController extends AbstractController
     
 
     #[Route('/search/query/{query}', name: 'home_search')]
-    public function search(Request $request,  ListingRepository $repoListing): Response
+    public function search(Request $request,  TagsRepository $repoTags, RequestStack $requestStack): Response
     {
-
+        $locale = $requestStack->getCurrentRequest()->getLocale();
         $query = $request->get('query');
 
-        $results = $repoListing->findResulBySearch($query);  
+        $results = $repoTags->findResulByTags($query);  
         $formattedResults = [];
 
+        $method = 'getNom'; // Valeur par défaut
+        if ($locale === 'ar') {
+            $method = 'getAr';
+        } elseif ($locale === 'en') {
+            $method = 'getEn';
+        }
+
         foreach ($results as $result) {
+            $name = $result->$method();
             $formattedResults[] = [
-              
-                'name' => $result->getName(),
+                'id' => $result->getId(),
+                'name' => $name,
                 
               
             ];

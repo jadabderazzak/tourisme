@@ -1,0 +1,64 @@
+{% extends 'base_admin.html.twig' %}
+
+
+{% block body %}
+
+
+	<nav class="border-b-1 border-gray-100 sticky  shadow-sm z-20 top-0 start-0 ">
+
+		<ul class="flex justify-center items-center h-12 text-sm md:text-md">
+			<li class="mr-3">
+				<a class="inline-block  py-2 px-3 text-orange-500" href="{{ path('app_tags')}}">Liste des tags</a>
+			</li>
+			<li class="mr-3">
+				<a class="inline-block  py-2 px-3 text-orange-500" href="{{ path('app_tags_add')}}">Ajouter un tag</a>
+			</li>
+
+		</ul>
+	</nav>
+
+	<div class="flex w-full justify-center items-center h-full mt-20 mb-20">
+
+		<div class="px-4 md:px-0 w-full md:w-6/12">
+
+			<blockquote class="text-2xl font-semibold italic text-center text-slate-900 mb-10">
+				Formulaire 
+				<span class="before:block before:absolute before:-inset-1 before:-skew-y-3 before:bg-[#FA7127] relative inline-block " >
+					<span class="relative text-white">{{action == 1 ? "d'ajout" : " de mise à jour " }}</span>
+				</span>
+				de "tags"
+			</blockquote>
+			{{ form_start(form) }}
+
+			<div class="relative mb-4" data-te-input-wrapper-init>
+				<p class="text-md text-gray-900 mb-2">Nom du tag</p>
+				{{ form_widget(form.nom, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+				<span class="text-sm text-red-700">{{ form_errors(form.nom) }}</span>
+			</div>
+			<div class="relative mb-4" data-te-input-wrapper-init>
+				<p class="text-md text-gray-900 mb-2">Traduction arabe</p>
+				{{ form_widget(form.ar, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+				<span class="text-sm text-red-700">{{ form_errors(form.nom) }}</span>
+			</div>
+			<div class="relative mb-4" data-te-input-wrapper-init>
+				<p class="text-md text-gray-900 mb-2">Traduction anglais</p>
+				{{ form_widget(form.en, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+				<span class="text-sm text-red-700">{{ form_errors(form.nom) }}</span>
+			</div>
+			
+			<div class="relative mb-4" data-te-input-wrapper-init>
+				<p class="text-md text-gray-900 mb-2">Province</p>
+				{{ form_widget(form.categorie, {'attr': {'class': '  text-gray-900 text-lg  focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 block w-full p-2.5 '}}) }}
+				<span class="text-sm text-red-700">{{ form_errors(form.categorie) }}</span>
+			</div>
+			<div class="relative mb-4 text-right" data-te-input-wrapper-init>
+				<button type="submit" class="text-white  bg-blue-600 border-0 py-2 px-6 focus:outline-none hover:bg-blue-700 rounded-sm text-lg">{{action == 1 ? "Sauvegarder" : "Mettre à jour" }}</button>
+			</div>
+
+
+			{{ form_end(form)}}
+		</div>
+	</div>
+
+
+{% endblock %}

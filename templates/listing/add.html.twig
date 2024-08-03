@@ -135,7 +135,19 @@
 					<span class="text-sm text-red-700">{{ form_errors(form.telephone) }}</span>
 				</div>
 			</div>
-
+			
+			<div class="relative mb-4 w-full md:w-full" data-te-input-wrapper-init>
+				<p class="text-md text-gray-900 mb-2">Tags</p>
+				<div class="flex flex-wrap">
+					{% for checktags in form.tags %}
+						<div class="flex items-center mb-2 w-1/2 md:w-1/4 mt-4">
+							{{ form_widget(checktags, {'attr': {'class': 'text-gray-900 text-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-700 focus:ring-opacity-0 p-2.5'}}) }}
+							<span class="ml-2">{{ form_label(checktags) }}</span>
+						</div>
+					{% endfor %}
+				</div>
+				<span class="text-sm text-red-700">{{ form_errors(form.tags) }}</span>
+			</div>
 
 			<div class="relative mb-4" data-te-input-wrapper-init>
 				<p class="text-md text-gray-900 mb-2">Description</p>

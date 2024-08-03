@@ -48,7 +48,11 @@ class HomeController extends AbstractController
         $amnitiesForm->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
-            $resultats = $repoListing->findBySearch($donnees,$filtreDonnees);
+            $tagId = intval($request->get('queryId')) != null ? intval($request->get('queryId'))  : null ;
+
+         
+          
+            $resultats = $repoListing->findBySearchTags($donnees,$filtreDonnees,$tagId);
           
             $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
             $donnees->page = $request->query->getInt('page', 1);  

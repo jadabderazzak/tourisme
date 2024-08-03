@@ -59,13 +59,25 @@ const searchResults = document.getElementById('search-results');
 
 searchForm.addEventListener('input', function () {
     const query = searchForm.value;
+/********************* Traitement de la chaine ***/ 
+let queryf;
+
+if (query.includes(',')) {
+  const elements = query.split(',');
+  queryf = elements[elements.length - 1];
+} else {
+  queryf = query;
+}
+
 
                         if (searchForm && searchForm.value.trim() !== "") {
                         $.ajax({
-                                url: '/search/query/'+query,
+                                url: '/search/query/'+queryf.trim() ,
                                 
                                 type: "POST",
                                         success: function (response) {
+
+                                       
 
                                         if( response !== null )
                                         {
@@ -96,17 +108,24 @@ function updateResults(results) {
 
     // Créez une liste non ordonnée
     const resultList = document.createElement('ul');
-
+  
     // Ajoutez les nouveaux résultats à la liste
     results.forEach(result => {
         const listItem = document.createElement('li');
+       
         listItem.textContent = result.name; // Utilisez le champ approprié ici
+         
         listItem.classList.add('py-2', 'px-2', 'cursor-pointer','border-b', 'border-gray-100','no-underline');
 
         // Ajoutez un gestionnaire d'événements pour mettre à jour le champ de recherche
         listItem.addEventListener('click', function () {
-            searchForm.value = result.name;
+        searchForm.value = searchForm.value.slice(0, -1);
+        searchForm.value +=  result.name + ", ";
+         searchForm.value = removeDuplicates(searchForm.value);
+            document.getElementById('queryId').value = result.id;
             searchResults.classList.add('hidden');
+            searchForm.focus();
+    searchForm.setSelectionRange(searchForm.value.length, searchForm.value.length);
         });
 
         resultList.appendChild(listItem);
@@ -122,6 +141,52 @@ function updateResults(results) {
     });
 });
 
+function removeDuplicates(inputString) {
+    // Divisez la chaîne en éléments en utilisant une virgule comme délimiteur
+    const elements = inputString.split(',').map(item => item.trim()).filter(item => item !== '');
+
+    // Créez un ensemble pour éliminer les doublons tout en conservant l'ordre
+    const seen = new Set();
+    const uniqueElements = elements.filter(item => {
+        if (seen.has(item)) {
+            return false;
+        }
+        seen.add(item);
+        return true;
+    });
+
+    // Assurez-vous que la chaîne finale contient toujours une virgule
+    let resultString = uniqueElements.join(', ');
+
+    // Ajoutez une virgule à la fin si la chaîne unique n'est pas vide
+    if (resultString) {
+        resultString += ',';
+    }
+
+    return resultString;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+ const input = document.getElementById('search_query');
+
+        // Empêche la saisie d'espaces multiples
+        input.addEventListener('input', function(event) {
+            // Remplace les espaces multiples ou les espaces en début/fin par un seul espace
+            event.target.value = event.target.value
+                .replace(/^\s+|\s+$/g, '')   // Supprime les espaces en début et fin
+                .replace(/\s{2,}/g, ' ');    // Remplace les espaces multiples par un seul espace
+        });
+
+        // Empêche le collage de texte avec des espaces multiples
+        input.addEventListener('paste', function(event) {
+            event.preventDefault();
+            const pasteData = (event.clipboardData || window.clipboardData).getData('text');
+            // Nettoie les espaces multiples dans les données collées
+            input.value += pasteData
+                .replace(/^\s+|\s+$/g, '')
+                .replace(/\s{2,}/g, ' ');
+        });
+         });
 </script>
     {% endblock %}
   </head>
