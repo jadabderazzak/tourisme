@@ -15,6 +15,26 @@
       {{ encore_entry_link_tags('app') }}
       <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="{{ asset('template/css/custumselect.css')}}" crossorigin="anonymous"/>
+<style>
+#dropdown-container.active .group-hover\\:scale-100 {
+    scale: 100%;
+}
+
+/* Par défaut, les effets de survol sont activés */
+.group-hover\\:scale-100 {
+    transform: scale(1);
+}
+
+/* Menu caché par défaut */
+#dropdown-menu.scale-0 {
+    transform: scale(0);
+}
+
+/* Menu visible lorsqu'il est activé */
+#dropdown-menu.scale-100 {
+    transform: scale(1);
+}
+</style>
     {% endblock %}
 
     {% block javascripts %}
@@ -29,16 +49,21 @@
       	<script>
 			
 
+  let isDropdownOpen = false;
+
 function toggleDropdown() {
-    var dropdown = document.getElementById("dropdown-menu");
-    var arrowIcon = document.getElementById("arrow-icon");
-    if (dropdown.style.transform === "scale(0)") {
-        dropdown.style.transform = "scale(1)";
-        arrowIcon.classList.add("rotate-180");
+    const menu = document.getElementById('dropdown-menu');
+    const container = document.getElementById('dropdown-container');
+    
+    if (isDropdownOpen) {
+        menu.classList.remove('scale-100');
+        menu.classList.add('scale-0');
     } else {
-        dropdown.style.transform = "scale(0)";
-        arrowIcon.classList.remove("rotate-180");
+        menu.classList.remove('scale-0');
+        menu.classList.add('scale-100');
     }
+    
+    isDropdownOpen = !isDropdownOpen;
 }
 
 function onChangeLanguage(value)

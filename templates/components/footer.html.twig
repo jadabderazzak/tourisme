@@ -1,3 +1,4 @@
+
 <footer class="w-full border-t-2 border-gray-100 mt-12">
 	<div
 		class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -9,7 +10,7 @@
 
 				</a>
 				<p class="py-8 text-md text-gray-500 lg:max-w-xs text-center lg:text-left">{{"Vous avez des questions ? n'hésitez pas à nous contactez" | trans}}</p>
-				<a href="javascript:;" class="py-2.5 px-5 h-9 block w-fit bg-orange-500 hover:bg-orange-800 rounded-full shadow-sm text-sm text-white mx-auto transition-all  duration-500  lg:mx-0">
+				<a href="{{ path('page_contact')}}" class="py-2.5 px-5 h-9 block w-fit bg-orange-500 hover:bg-orange-800 rounded-full shadow-sm text-sm text-white mx-auto transition-all  duration-500  lg:mx-0">
 					{{"Contactez-nous" | trans}}
 				</a>
 			</div>
@@ -18,16 +19,16 @@
 				<h4 class="text-lg text-gray-900 font-semibold mb-7">{{"SMART" | trans }}</h4>
 				<ul class="text-md  transition-all duration-500">
 					<li class="mb-6">
-						<a href="javascript:;" class="text-gray-600 hover:text-gray-900">{{"Mission et vision" | trans }}</a>
+						<a href="{{ path('page_mission')}}" class="text-gray-600 hover:text-gray-900">{{"Mission et vision" | trans }}</a>
 					</li>
 					<li class="mb-6">
-						<a href="javascript:;" class=" text-gray-600 hover:text-gray-900">{{"Equipe" | trans }}</a>
+						<a href="{{ path('page_equipe')}}" class=" text-gray-600 hover:text-gray-900">{{"Equipes" | trans }}</a>
 					</li>
 					<li class="mb-6">
-						<a href="javascript:;" class=" text-gray-600 hover:text-gray-900">{{"Partenaire" | trans }}</a>
+						<a href="javascript:;" class=" text-gray-600 hover:text-gray-900">{{"Partenaires" | trans }}</a>
 					</li>
 					<li>
-						<a href="javascript:;" class=" text-gray-600 hover:text-gray-900">{{"Contact" | trans }}</a>
+						<a href="{{ path('page_contact')}}" class=" text-gray-600 hover:text-gray-900">{{"Contact" | trans }}</a>
 					</li>
 				</ul>
 			</div>

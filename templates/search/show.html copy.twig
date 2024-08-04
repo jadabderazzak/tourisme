@@ -245,13 +245,13 @@
 
 	</div>
 	{% if listing.link != "" %}
-		{# <div class="fixed top-1/2 left-4 transform -translate-y-1/2 flex flex-col items-end">
+		<div class="fixed top-1/2 left-4 transform -translate-y-1/2 flex flex-col items-end">
 			<div class="flex flex-col items-start rotate-90 origin-left">
-				<button class="bg-blue-500 text-white py-2.5 px-4 rounded mb-2 text-lg" id="scrollForm3">
-					{{"Soumettre des avis" | trans}}
+				<button class="bg-blue-500 text-white py-2.5 px-4 rounded mb-2 text-lg" id="scrollBook">
+					{{"Réserve maintenant" | trans}}
 				</button>
 			</div>
-		</div> #}
+		</div>
 	{% endif %}
 {% endblock %}
 {% block javascripts %}
@@ -499,7 +499,6 @@ el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rec
 document.addEventListener('DOMContentLoaded', function () {
 var button = document.getElementById('scrollForm');
 var button1 = document.getElementById('scrollForm1');
-var button3 = document.getElementById('scrollForm3');
 var button2 = document.getElementById('scrollForm2');
 var form = document.getElementById('reviewForm');
 
@@ -512,14 +511,6 @@ form.scrollIntoView({behavior: 'smooth'});
 console.error('Element not found: Check if IDs are correct');
 }
 
-if (button3 && form) {
-button3.addEventListener('click', function (e) {
-e.preventDefault();
-form.scrollIntoView({behavior: 'smooth'});
-});
-} else {
-console.error('Element not found: Check if IDs are correct');
-}
 
 
 if (button2 && form) {
@@ -610,22 +601,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var locale = '{{ app.request.locale }}';
         var currentLocale = localeOptions[locale] || localeOptions['en'];
-var initialStartDate = moment().startOf('day');
-var initialEndDate = initialStartDate.clone().add(1, 'days');
+
        $('input[name="daterange"]').daterangepicker({
 				opens: 'center',
 				minDate: today,
 				endDate: tomorrow,
 				locale: currentLocale
 			}, function (start, end, label) {
-				
 				var link = '{{ listing.link | raw }}'; // Ajoutez cette ligne pour définir la variable link
-				 var startDate = start.format('YYYY-MM-DD');
-    var endDate = end.format('YYYY-MM-DD');
-    var dayCount = end.diff(start, 'days');
-				//createLink(link);
+				createLink(link);
 				   $('#backdrop').hide();
-				   
 			});
     var $backdrop = $('<div id="backdrop" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: none;"></div>').appendTo('body');
 		 
@@ -648,28 +633,26 @@ var initialEndDate = initialStartDate.clone().add(1, 'days');
         $backdrop.hide();
     });
 
-$('input[name="daterange"]').on('apply.daterangepicker', function (event, picker) {
-
-     var startDate = picker.startDate.format('YYYY-MM-DD');
+ $('input[name="daterange"]').on('apply.daterangepicker', function (event, picker) {
+    var startDate = picker.startDate.format('YYYY-MM-DD');
     var endDate = picker.endDate.format('YYYY-MM-DD');
     var dayCount = picker.endDate.diff(picker.startDate, 'days');
-	
-    
-  
 
     if (dayCount > 0) {
-        var link = '{{ listing.link | raw }}'; // Assurez-vous que cette variable est définie correctement
-        createLink(link, startDate, endDate, dayCount); // Assurez-vous que la fonction utilise les bonnes dates
-		        $backdrop.hide(); // Masquer le backdrop
+        var link = '{{ listing.link | raw }}'; // Assure-toi que cette variable est définie correctement
+        createLink(link, startDate, endDate, dayCount);
+        $backdrop.hide(); // Masquer le backdrop
     } else {
-        alert('Please select a valid date range.');
+        alert('Please select a valid date range.'); // Optionnel : avertir l'utilisateur si la sélection est invalide
     }
-    
-    // Fermer le calendrier après application
-    var daterangepickerInstance = $(this).data('daterangepicker');
-    if (daterangepickerInstance) {
-        daterangepickerInstance.hide();
-    }
+});
+
+  $('input[name="daterange"]').on('apply.daterangepicker', function () {
+    // Ne pas réinitialiser les dates ici si on souhaite conserver la sélection
+	
+	
+    $backdrop.hide(); // Masquer le backdrop
+    $(this).data('daterangepicker').hide(); // Masquer le calendrier
 });
 
 // Fonction pour réinitialiser les dates et cacher le calendrier après l'annulation
@@ -684,9 +667,9 @@ $('input[name="daterange"]').on('cancel.daterangepicker', function () {
 
 // Réinitialiser les dates lors de l'ouverture du calendrier
 $('input[name="daterange"]').on('show.daterangepicker', function () {
-	
-    // $(this).data('daterangepicker').setStartDate(initialStartDate);
-    // $(this).data('daterangepicker').setEndDate(initialEndDate);
+		$(this).data('daterangepicker').css('display', 'none');
+    $(this).data('daterangepicker').setStartDate(initialStartDate);
+    $(this).data('daterangepicker').setEndDate(initialEndDate);
 
 
 });
@@ -714,11 +697,17 @@ function centerCalendar() {
 
 }); });
 
-function createLink(link, startDate, endDate, dayCount) {
-	
+function createLink(link) {
+    var daterange = document.getElementById('daterange').value;
+    var dates = daterange.split(' - ');
+    var startDateStr = dates[0].trim();
+    var endDateStr = dates[1].trim();
+    var startDate = formatDate(startDateStr);
+    var endDate = formatDate(endDateStr);
+    var dayCount = calculateDayCount(startDate, endDate);
     var url = `https://${link}.hotelrunner.com/bv3/search?search={"checkin_date":"${startDate}","checkout_date":"${endDate}","day_count":${dayCount}}`;
-     window.open(url, '_blank');
 
+    window.open(url, '_blank');
 }
 
 function formatDate(dateStr) {

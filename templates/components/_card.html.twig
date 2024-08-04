@@ -7,17 +7,17 @@
 			<div class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-500 opacity-5"></div>
 		</a>
 		{# <a href="#!">
-
-			<div class="text-xs absolute top-0 right-0 bg-transparent px-4 py-2 text-white mt-3 mr-3   transition duration-500 ease-in-out">
-				<button type="button" class="text-blue-700 shadow-md bg-gray-900/50 hover:bg-white/50 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
-					<svg class="w-[24px] h-[24px] text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
-						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"/>
-					</svg>
-
-
-				</button>
-			</div>
-		</a> #}
+		
+					<div class="text-xs absolute top-0 right-0 bg-transparent px-4 py-2 text-white mt-3 mr-3   transition duration-500 ease-in-out">
+						<button type="button" class="text-blue-700 shadow-md bg-gray-900/50 hover:bg-white/50 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+							<svg class="w-[24px] h-[24px] text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
+								<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"/>
+							</svg>
+		
+		
+						</button>
+					</div>
+				</a> #}
 	</div>
 	<div class="px-6 mt-4 mb-2">
 		<a href="{{ path('app_search_listing_show',{slug : listing.slug})}}" class="font-medium text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">
@@ -25,15 +25,15 @@
 
 			{# stars rating #}
 			<div class="flex items-center">
-			{% set roundedNote = listing.note|round %}
+				{% set roundedNote = listing.note|round %}
 				{% if roundedNote > 0 %}
-				{% for i in 1.. roundedNote %}
-					<svg class="w-5 h-5 text-orange-500 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 22 20">
-						<path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-					</svg>
-				{% endfor %}
+					{% for i in 1.. roundedNote %}
+						<svg class="w-5 h-5 text-orange-500 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 22 20">
+							<path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+						</svg>
+					{% endfor %}
 				{% endif %}
-				
+
 				{% if listing.note < 5 %}
 					{% for i in range(4, roundedNote, -1) %}
 						<svg class="w-5 h-5 ms-1 text-gray-500 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 22 20">
@@ -46,11 +46,11 @@
 
 		</a>
 
-		
+
 	</div>
 	{% set sizetext = dirs == ' rtl' ? "text-xs" : "text-md" %}
-	<div class="px-6 mb-2 flex flex-row items-center justify-between ">
-		<a  dir={{dirs}} href="{{ path('app_search_localite',{ slug : listing.ville.slug})}}" class="py-1 {{sizetext}} font-regular text-gray-900 mr-1 flex flex-row items-center">
+	<div class="px-2 mb-2 flex flex-row items-center justify-between ">
+		<a dir={{dirs}} href="{{ path('app_search_localite',{ slug : listing.ville.slug})}}" class="py-1 {{sizetext}} font-regular text-gray-900 mr-1 flex flex-row items-center">
 			<svg class="h-5 text-gray-800 dark:text-white ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
 				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"/>
@@ -59,30 +59,204 @@
 
 			<span class="ml-1">{{ listing.ville.nom | raw | trans | upper}}</span>
 		</a>
+		{% if listing.link !=  "" %}
+		{% set today = "now"|date("m/d/Y") %}
+		{% set tomorrow = "now"|date_modify("+1 day")|date("m/d/Y") %}
+		<button id="scrollForm{{listing.id}}" dir={{dirs}}  class=" {{sizetext}}  px-3 py-2 text-xs font-medium text-center text-white bg-blue-900/90 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 ">
+			{{"Réserve maintenant" | trans}}
+		</button>
 		
-		<a dir={{dirs}} href="{{ path('app_search_categorie',{ slug : listing.categorie.slug})}}" class="py-1 underline {{sizetext}} font-regular text-gray-900 mr-1 flex flex-row items-center">
-			<img src="{{ asset('template/images/category.png')}}" class="object-cover h-3 ml-2 mr-1"/>
-			<span class="ml-1">{{ listing.categorie.nom | raw | trans | upper}}</span>
-		</a>
+		<input type="text" id="daterange{{listing.id}}" name="daterange{{listing.id}}" class="hidden"/>
+		{% endif %}
 	</div>
 	<div class="px-6 py-2 flex flex-row items-center justify-between border border-t-1 border-gray-100">
-	{% if listing.telephone != "" %}
-		<a  dir={{dirs}} href="tel: {{ listing.telephone | raw }} " class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
-			<svg class="h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
-				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.427 14.768 17.2 13.542a1.733 1.733 0 0 0-2.45 0l-.613.613a1.732 1.732 0 0 1-2.45 0l-1.838-1.84a1.735 1.735 0 0 1 0-2.452l.612-.613a1.735 1.735 0 0 0 0-2.452L9.237 5.572a1.6 1.6 0 0 0-2.45 0c-3.223 3.2-1.702 6.896 1.519 10.117 3.22 3.221 6.914 4.745 10.12 1.535a1.601 1.601 0 0 0 0-2.456Z"/>
-			</svg>
+		{% if listing.telephone != "" %}
+			<a dir={{dirs}} href="tel: {{ listing.telephone | raw }} " class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
+				<svg class="h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
+					<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.427 14.768 17.2 13.542a1.733 1.733 0 0 0-2.45 0l-.613.613a1.732 1.732 0 0 1-2.45 0l-1.838-1.84a1.735 1.735 0 0 1 0-2.452l.612-.613a1.735 1.735 0 0 0 0-2.452L9.237 5.572a1.6 1.6 0 0 0-2.45 0c-3.223 3.2-1.702 6.896 1.519 10.117 3.22 3.221 6.914 4.745 10.12 1.535a1.601 1.601 0 0 0 0-2.456Z"/>
+				</svg>
 
-			<span class="ml-1 mr-1  {{sizetext}}">{{"Appeler" | trans}}</span>
-		</a>
-	{% endif %}
-	
-		<a  dir={{dirs}} href="https://www.google.com/maps?q={{listing.latitude | raw}},{{listing.longitude | raw}}"  target="_blank"  class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
+				<span class="ml-1 mr-1  {{sizetext}}">{{"Appeler" | trans}}</span>
+			</a>
+		{% endif %}
+
+		<a dir={{dirs}} href="https://www.google.com/maps?q={{listing.latitude | raw}},{{listing.longitude | raw}}" target="_blank" class="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
 			<svg class="w-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
 				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.153 19 21 12l-4.847-7H3l4.848 7L3 19h13.153Z"/>
 			</svg>
 
 			<span class="ml-1 mr-1  {{sizetext}}">{{"Direction" | trans}}</span>
 		</a>
-	
+
 	</div>
 </div>
+<script>
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    $(function () {
+        var today = moment().startOf('day');
+        var tomorrow = today.clone().add(1, 'days');
+	
+        var localeOptions = {
+            'ar': {
+                format: 'DD/MM/YYYY',
+                applyLabel: 'تطبيق',
+                cancelLabel: 'إلغاء',
+                fromLabel: 'من',
+                toLabel: 'إلى',
+                customRangeLabel: 'نطاق مخصص',
+                daysOfWeek: ['أحد', 'اثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'],
+                monthNames: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+                firstDay: 0
+            },
+            'en': {
+                format: 'DD/MM/YYYY',
+                applyLabel: 'Apply',
+                cancelLabel: 'Cancel',
+                fromLabel: 'From',
+                toLabel: 'To',
+                customRangeLabel: 'Custom Range',
+                daysOfWeek: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                firstDay: 0
+            },
+            'fr': {
+                format: 'DD/MM/YYYY',
+                applyLabel: 'Appliquer',
+                cancelLabel: 'Annuler',
+                fromLabel: 'De',
+                toLabel: 'À',
+                customRangeLabel: 'Plage personnalisée',
+                daysOfWeek: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+                monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                firstDay: 1
+            }
+        };
+
+        var locale = '{{ app.request.locale }}';
+        var currentLocale = localeOptions[locale] || localeOptions['en'];
+var initialStartDate = moment().startOf('day');
+var initialEndDate = initialStartDate.clone().add(1, 'days');
+       $('input[name="daterange{{listing.id}}"]').daterangepicker({
+				opens: 'center',
+				minDate: today,
+				endDate: tomorrow,
+				locale: currentLocale
+			}, function (start, end, label) {
+				
+				var link = '{{ listing.link | raw }}'; // Ajoutez cette ligne pour définir la variable link
+				 var startDate = start.format('YYYY-MM-DD');
+				var endDate = end.format('YYYY-MM-DD');
+				var dayCount = end.diff(start, 'days');
+				//createLink(link);
+				   $('#backdrop').hide();
+			});
+    var $backdrop = $('<div id="backdrop" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: none;"></div>').appendTo('body');
+		 
+		 
+		 
+		 let nam = "scrollForm"+{{listing.id}}
+		var $button = $('#' + nam);
+	
+		$button.on('click', function () {
+		
+        $backdrop.show();
+        $('input[name="daterange{{listing.id}}"]').trigger('click'); 
+		
+        centerCalendar();
+    });
+
+    // Cacher le calendrier et le backdrop lorsque le backdrop est cliqué
+    $backdrop.on('click', function () {
+        var daterangepicker = $('input[name="daterange{{listing.id}}"]').data('daterangepicker');
+        if (daterangepicker) {
+            daterangepicker.hide();
+        }
+        $backdrop.hide();
+    });
+
+$('input[name="daterange{{listing.id}}"]').on('apply.daterangepicker', function (event, picker) {
+     var startDate = picker.startDate.format('YYYY-MM-DD');
+    var endDate = picker.endDate.format('YYYY-MM-DD');
+    var dayCount = picker.endDate.diff(picker.startDate, 'days');
+    
+  
+
+    if (dayCount > 0) {
+        var link = '{{ listing.link | raw }}'; // Assurez-vous que cette variable est définie correctement
+        createLink(link, startDate, endDate, dayCount); // Assurez-vous que la fonction utilise les bonnes dates
+		        $backdrop.hide(); // Masquer le backdrop
+    } else {
+        alert('Please select a valid date range.');
+    }
+    
+    // Fermer le calendrier après application
+    var daterangepickerInstance = $(this).data('daterangepicker');
+
+    if (daterangepickerInstance) {
+        daterangepickerInstance.hide();
+    }
+});
+
+// Fonction pour réinitialiser les dates et cacher le calendrier après l'annulation
+$('input[name="daterange{{listing.id}}"]').on('cancel.daterangepicker', function () {
+    // Réinitialiser les dates à l'état initial
+    $(this).data('daterangepicker').setStartDate(initialStartDate);
+    $(this).data('daterangepicker').setEndDate(initialEndDate);
+    $backdrop.hide(); // Masquer le backdrop
+    
+	 $('#daterangepicker').trigger('hide.daterangepicker');
+});
+
+// Réinitialiser les dates lors de l'ouverture du calendrier
+$('input[name="daterange"]').on('show.daterangepicker', function () {
+	
+    // $(this).data('daterangepicker').setStartDate(initialStartDate);
+    // $(this).data('daterangepicker').setEndDate(initialEndDate);
+
+
+});
+
+function centerCalendar() {
+    var daterangepickerInstance = $('input[name="daterange{{listing.id}}"]').data('daterangepicker');
+
+    if (daterangepickerInstance) {
+        var $calendarContainer = daterangepickerInstance.container;
+        var viewportWidth = $(window).width();
+        var viewportHeight = $(window).height();
+        var calendarWidth = $calendarContainer.outerWidth();
+        var calendarHeight = $calendarContainer.outerHeight();
+
+        $calendarContainer.css({
+            position: 'absolute',
+            top: (viewportHeight - calendarHeight) / 2 + 'px',
+            left: (viewportWidth - calendarWidth) / 2 + 'px'
+        });
+
+        $calendarContainer.show();
+    }
+}
+
+
+
+}); });
+
+function createLink(link, startDate, endDate, dayCount) {
+	
+    var url = `https://${link}.hotelrunner.com/bv3/search?search={"checkin_date":"${startDate}","checkout_date":"${endDate}","day_count":${dayCount}}`;
+     window.open(url, '_blank');
+
+}
+
+function formatDate(dateStr) {
+    var parts = dateStr.split('/');
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+}
+
+function calculateDayCount(startDate, endDate) {
+    var start = moment(startDate, 'YYYY-MM-DD');
+    var end = moment(endDate, 'YYYY-MM-DD');
+    return end.diff(start, 'days');
+}
+	</script>

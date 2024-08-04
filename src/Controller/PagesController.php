@@ -101,4 +101,34 @@ class PagesController extends AbstractController
             'categories' => $categories
         ]);
     }
+
+    #[Route('/section/mission', name: 'page_mission')]
+    public function mission(): Response
+    {
+       
+        return $this->render('pages/mission.html.twig', [
+            
+        ]);
+    }
+
+    #[Route('/section/contact', name: 'page_contact')]
+    public function contact(): Response
+    {
+       
+     
+       
+        return $this->render('pages/contact.html.twig', [
+          
+        ]);
+    }
+
+    #[Route('/section/equipe', name: 'page_equipe')]
+    public function equipe(): Response
+    {
+       
+        return $this->render('pages/equipe.html.twig', [
+            
+        ]);
+    }
+
 }
