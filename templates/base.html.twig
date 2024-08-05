@@ -15,6 +15,9 @@
       {{ encore_entry_link_tags('app') }}
       <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="{{ asset('template/css/custumselect.css')}}" crossorigin="anonymous"/>
+	<link rel="stylesheet" href="{{ asset('template/css/dataTables.min.css')}}" crossorigin="anonymous"/>
+			<link rel="stylesheet" href="{{ asset('template/css/datatablesResponsive.css')}}" crossorigin="anonymous"/>
+			<link rel="stylesheet" href="{{ asset('template/css/datatablesrowReorder.css')}}" crossorigin="anonymous"/>
 <style>
 #dropdown-container.active .group-hover\\:scale-100 {
     scale: 100%;
@@ -41,6 +44,8 @@
       {{ encore_entry_script_tags('app') }}
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
    <script src="{{asset('template/js/select2.min.js')}}" defer></script>
+   	<script src="{{asset('template/js/rowReorder.dataTables.js')}}" crossorigin="anonymous"></script>
+			<script src="{{asset('template/js/responsive.dataTables.js')}}" crossorigin="anonymous"></script>
     <script>
           $(window).on('load', function() {
             $('.js-example-basic-single').select2();

@@ -4,4 +4,217 @@
 
 {% block body %}
 
+<div class="flex w-full  justify-center items-center h-full mt-16 mb-40">
+
+
+		<div class="px-4 md:px-0 w-full md:w-[80%] shadow-sm ">
+			<div class="flex flex-col md:flex-row gap-4 w-full">
+				{% for cat, nb in categories_number %}
+
+					<a href="javascript:;" aria-label="card 2" class="bg-white w-full  rounded  focus:ring-2 focus:ring-offset-2 focus:ring-[#FA7127] focus:outline-none focus:bg-gray-100 hover:bg-gray-100">
+						<div class=" shadow px-8 py-6 flex items-center">
+							
+							<div class="ml-6 w-full text-center">
+								<h3 class="mb-1 leading-5 text-gray-800 dark:text-gray-100 font-bold text-xl">{{ cat | raw | upper}}</h3>
+								<p class=" dark:text-gray-400 text-4xl tracking-normal text-center font-bold text-[#FA7127] leading-5 mt-4">
+									{{ nb}}</p>
+							</div>
+						</div>
+					</a>
+				{% endfor %}
+
+			</div>
+            <div class="mt-10 overflow-x-auto ">
+				<p class="text-center text-black font-bold text-sm">
+					Nombre d'entités par catégorie
+				</p>
+				<table id="example2" class="display w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
+					<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+						<tr>
+							<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Localité
+							</th>
+							
+							<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Nombre d'entités</th>
+
+
+						</tr>
+					</thead>
+					<tbody>
+						  {% for name, value in categories_number %}
+							<tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+								<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ name | upper | raw }}</td>
+						
+								<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ value | upper | raw }}</td>
+
+
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			<div id="chart" class="  mt-20"></div>
+
+            <div class="mt-10 overflow-x-auto ">
+				<p class="text-center text-black font-bold text-sm">
+					Nombre d'entités par localité
+				</p>
+				<table id="example" class="display w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
+					<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+						<tr>
+							<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Localité
+							</th>
+							
+							<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Nombre d'entités</th>
+
+
+						</tr>
+					</thead>
+					<tbody>
+						{% for infoc in infogenerale %}
+							<tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+								<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ infoc.nom | upper | raw }}</td>
+						
+								<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ infoc.nb_listing | upper | raw }}</td>
+
+
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			<div id="generale" class="  mt-20"></div>
+			<div class="mt-10 overflow-x-auto ">
+				<p class="text-center text-black font-bold text-sm">
+					Nombre d'entités par Catégorie par localité
+				</p>
+				<table id="example1" class="display w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
+					<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+						<tr>
+							<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Localité
+							</th>
+							<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Catégorie</th>
+							<th class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">Nombre d'entités</th>
+
+
+						</tr>
+					</thead>
+					<tbody>
+						{% for infog in infogeneralecategorie %}
+							<tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+								<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ infog.ville | upper | raw }}</td>
+								<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ infog.categorie | upper | raw }}</td>
+								<td class="text-left px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-sm">{{ infog.nb_listing | upper | raw }}</td>
+
+
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+
+	</div>
+
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+
+	<script src="{{ asset('template/js/apexcharts/dist/apexcharts.min.js') }}"></script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+
+var options = {
+series: {{ json | raw }},
+legend: {
+show: false
+},
+colors: [
+'#FA7127', '#E45C2B', '#643916', '#F77720'
+],
+chart: {
+height: 350,
+type: 'treemap'
+},
+title: {
+text: 'Nombre d\'entité par catégorie',
+align: 'center'
+}
+};
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
+
+
+/********************************************/
+var options = {
+series: {{ infogeneralejson | raw }},
+legend: {
+show: false
+},
+colors: [
+'#FA7127', '#E45C2B', '#643916', '#F77720'
+],
+chart: {
+height: 350,
+type: 'treemap'
+},
+title: {
+text: 'Nombre d\'entité par localité',
+align: 'center'
+}
+};
+
+var chart = new ApexCharts(document.querySelector("#generale"), options);
+chart.render();
+
+	
+$('#example').DataTable({
+responsive: true,
+ lengthChange: false,
+rowReorder: {
+selector: 'td:nth-child(2)'
+},
+"language": {
+"url": "{{ asset('template/js/fr.json') }}" // si vous souhaitez localiser DataTables en français
+},
+"order": [], // Désactive le tri par défaut
+
+
+});
+
+$('#example1').DataTable({
+responsive: true,
+ lengthChange: false,
+rowReorder: {
+selector: 'td:nth-child(2)'
+},
+"language": {
+"url": "{{ asset('template/js/fr.json') }}" // si vous souhaitez localiser DataTables en français
+},
+"order": [], // Désactive le tri par défaut
+
+
+});
+
+$('#example2').DataTable({
+responsive: true,
+ lengthChange: false,
+rowReorder: {
+selector: 'td:nth-child(2)'
+},
+"language": {
+"url": "{{ asset('template/js/fr.json') }}" // si vous souhaitez localiser DataTables en français
+},
+"order": [], // Désactive le tri par défaut
+
+
+});
+
+
+
+
+});
+	</script>
 {% endblock %}

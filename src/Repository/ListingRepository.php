@@ -415,5 +415,71 @@ class ListingRepository extends ServiceEntityRepository
             return $listings;
 
     }
+
+    public function getInfoGenerals()
+    {
+       $dql = $this->createQueryBuilder('p')
+            ->select('count(p) as nb_listing, v.nom')
+            ->addSelect('p','v','c','pr')
+           
+            ->innerJoin('p.ville','v')
+            ->innerJoin('p.categorie','c')
+            ->innerJoin('v.province','pr')
+          
+
+          
+       
+          
+            ->groupBy('v.id')
+            ->getQuery();
+            
+             return $dql->getResult()
+        ;
+    }
+
+    public function getInfoGeneralCategory()
+    {
+       $dql = $this->createQueryBuilder('p')
+            ->select('count(p) as nb_listing, v.nom as ville , c.nom as categorie')
+            ->addSelect('p','v','c','pr')
+           
+            ->innerJoin('p.ville','v')
+            ->innerJoin('p.categorie','c')
+            ->innerJoin('v.province','pr')
+          
+
+          
+       
+          
+            ->groupBy('v.id')
+            ->addGroupBy('c.id')
+            ->orderBy('v.nom',"ASC")
+            ->getQuery();
+            
+             return $dql->getResult()
+        ;
+    }
+
+    public function getInfoGeneralsByLocalite($localite)
+    {
+       $dql = $this->createQueryBuilder('p')
+            ->select('count(p) as nb_listing, v.nom')
+            ->addSelect('p','v','c','pr')
+           
+            ->innerJoin('p.ville','v')
+            ->innerJoin('p.categorie','c')
+            ->innerJoin('v.province','pr')
+          
+            ->andWhere('p.ville = :val')
+            ->setParameter('val', $localite)
+          
+       
+          
+            ->groupBy('v.id')
+            ->getQuery();
+            
+             return $dql->getResult()
+        ;
+    }
    
 }

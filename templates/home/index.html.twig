@@ -71,6 +71,11 @@
 %}{% include "components/places.html.twig" with {
 		'listings' : listings
 }
+	%}
+	{% include "components/_tags.html.twig" with {
+		'tags' : tags
+	}
+
 %}{% include "components/heading.html.twig" %}{% include "components/temoignage.html.twig" %}{% include "components/blog.html.twig" with {
 		'blogs' : blogs
 }

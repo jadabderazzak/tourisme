@@ -12,6 +12,7 @@ use App\Repository\ListingRepository;
 use App\Repository\CategorieRepository;
 use App\Repository\PartenaireRepository;
 use App\Repository\ActionnaireRepository;
+use App\Repository\TagsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,13 +22,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(CategorieRepository $repoCat, ListingRepository $repoListing, PaginatorInterface $paginator, Request $request,ActionnaireRepository $repoAct, ListingRepository $repoList, BlogRepository $repoBlog, PartenaireRepository $repoPart): Response
+    public function index(CategorieRepository $repoCat, TagsRepository $repoTags, ListingRepository $repoListing, PaginatorInterface $paginator, Request $request,ActionnaireRepository $repoAct, ListingRepository $repoList, BlogRepository $repoBlog, PartenaireRepository $repoPart): Response
     {
         $api_maps = $this->getParameter('API_MAPS');
         $categories = $repoCat->findAll();
         $listings = $repoList->getActiveListings(8);
         $partenaires = $repoPart->findAll();
         $actionnaires = $repoAct->findAll();
+        $tags = $repoTags->findAll();
         $categories_name = [];
         foreach($categories as $cat )
         {
@@ -66,6 +68,7 @@ class HomeController extends AbstractController
                 'form' => $form->createView(),
                 'amnitiesForm' => $amnitiesForm->createView(),
                 'categories' => $categories,
+                'tags' => $tags,
                 'api_maps' => $api_maps
             ]);
         }
@@ -86,6 +89,7 @@ class HomeController extends AbstractController
                'form' => $form->createView(),
                'amnitiesForm' => $amnitiesForm->createView(),
                'categories' => $categories,
+               'tags' => $tags,
                'api_maps' => $api_maps
            ]);
         }
@@ -95,6 +99,7 @@ class HomeController extends AbstractController
             'blogs'=> $blogs,
             'partenaires' => $partenaires,
             'actionnaires' => $actionnaires,
+            'tags' => $tags,
             'categories_name' => $categories_names,
             'form' => $form->createView()
         ]);
