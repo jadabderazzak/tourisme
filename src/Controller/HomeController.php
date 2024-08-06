@@ -56,7 +56,7 @@ class HomeController extends AbstractController
           
             $resultats = $repoListing->findBySearchTags($donnees,$filtreDonnees,$tagId);
           
-            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
             $donnees->page = $request->query->getInt('page', 1);  
           
             
@@ -77,7 +77,7 @@ class HomeController extends AbstractController
           
            $resultats = $repoListing->findByFilter($filtreDonnees);
          
-           $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 4); 
+           $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
            $donnees->page = $request->query->getInt('page', 1);  
          
            

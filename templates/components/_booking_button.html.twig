@@ -1,7 +1,9 @@
 
 {% set today = "now"|date("m/d/Y") %}
 	{% set tomorrow = "now"|date_modify("+1 day")|date("m/d/Y") %}
+<div class="{{mtb}}">
 <button id="scrollForm1" class="bg-blue-900/90 h-[60px] text-center text-white text-lg py-2.5 px-4 rounded w-[210px] md:w-[250px]">
 	{{"Réserve maintenant" | trans}}
 </button>
 <input type="text" id="daterange" name="daterange" class="hidden"/>
+</div>
