@@ -125,6 +125,12 @@
 	<script>
 		function initMap() {
 const mapOptions = {
+  mapTypeControlOptions: {
+       mapTypeIds: []
+    },
+     disableDefaultUI: true,
+     mapTypeControl: true,
+    scaleControl: true,
 zoom: 6,
 center: new google.maps.LatLng(29.54619, -7.36133),
 mapTypeId: google.maps.MapTypeId.SATELLITE

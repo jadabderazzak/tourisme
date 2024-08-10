@@ -17,30 +17,27 @@
 				</a>
 			</div>
 		</div>
-		<div class="grid lg:grid-cols-4 md:grid-cols-4 gap-6 max-md:max-w-lg mx-auto ">
+		<div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-md:max-w-lg mx-auto">
+    {% for cat in categories %}
+        {% set chemin = cat.image != "" ? "template/uploadsAll/" ~ cat.image : 'template/images/home.jpg' %}
+        <div class="relative grid h-[15rem] w-full max-w-[28rem] flex flex-col items-end overflow-hidden bg-white bg-clip-border text-center text-gray-700">
+            <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-clip-border bg-center text-gray-700 shadow-none blur-sm transition duration-200 group-hover:scale-110" style="background-image: url('{{ asset(chemin) }}');">
+                <div class="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-t from-black/80 via-black/50"></div>
+            </div>
+            <div class="relative flex flex-col h-full p-6 px-6 py-14 md:px-12">
+                <h2 class="mb-6 text-4xl font-medium leading-[1.5] tracking-normal text-white antialiased">
+                    {{ cat.nom | raw | capitalize | trans }}
+                </h2>
+                <!-- Positionner le bouton en bas avec absolute -->
+                <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+                    <a href="{{ path('app_search_categorie', { slug: cat.slug }) }}" class="select-none rounded-lg text-white border border-white hover:border-orange-500 py-3 px-6 text-center align-middle text-xs font-bold uppercase transition-all focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+                        {{ "Consulter" | trans }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 
-			{% for cat in categories %}
-				{% set chemin = cat.image != "" ? "template/uploadsAll/" ~ cat.image : 'template/images/home.jpg' %}
-				<div class="relative grid h-[15rem] w-full max-w-[28rem] flex-col items-end justify-center overflow-hidden  bg-white bg-clip-border text-center text-gray-700">
-					<div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent  bg-cover bg-clip-border bg-center text-gray-700 shadow-none blur-sm transition duration-200 group-hover:scale-110" style="background-image: url('{{asset(chemin) }}'); ">
-						<div class="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-t from-black/80 via-black/50"></div>
-					</div>
-					<div class="relative p-6 px-6 py-14 md:px-12">
-						<h2 class="mb-6 block text-4xl font-medium leading-[1.5] tracking-normal text-white antialiased">
-							{{ cat.nom | raw | capitalize | trans}}
-						</h2>
-
-						<div class="p-0 mt-12">
-							<a href="{{ path('app_search_categorie',{ slug : cat.slug})}}" class="select-none rounded-lg text-white border border-white hover:border-orange-500 py-3 px-6 text-center align-middle  text-xs font-bold uppercase  transition-all  focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
-								{{"Consulter" | trans}}
-							</a>
-						</div>
-					</div>
-
-				</div>
-			{% endfor %}
-
-
-		</div>
 	</div>
 </div>
