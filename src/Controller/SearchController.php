@@ -6,10 +6,11 @@ use DateTime;
 use App\Entity\Listing;
 use App\Entity\Reviews;
 use App\Entity\Localite;
+use App\Entity\Province;
 use App\Form\FiltreType;
 use App\Form\ReviewType;
-use App\Form\SearchType;
 
+use App\Form\SearchType;
 use App\Entity\Categorie;
 use App\Model\FiltreDonnee;
 use App\Model\RechercheDonnee;
@@ -23,8 +24,8 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SearchController extends AbstractController
 {
@@ -395,6 +396,93 @@ class SearchController extends AbstractController
         return $this->json(count($formattedResults) > 0 ? $formattedResults : null, 200);
     }
 
+
+
+    #[Route('/recherche/province/{slug}', name: 'app_search_province')]
+    public function province(Province $province, CategorieRepository $repoCat, ListingRepository $repoListing, PaginatorInterface $paginator, Request $request, ListingRepository $repoList): Response
+    {
+
+        $api_maps = $this->getParameter('API_MAPS');
+        $categories = $repoCat->findAll();
+        $listings = [];
+      
+        $categories_name = [];
+        foreach($categories as $cat )
+        {
+            $categories_name[] = mb_strtoupper($cat->getNom(), 'UTF-8');
+        }
+       
+      
+       
+       
+
+        /**************** Form  */
+        $donnees = new RechercheDonnee();
+        $donnees->ville = null;
+        $form = $this->createForm(SearchType::class, $donnees);
+        $filtreDonnees = new FiltreDonnee();
+        $filtreDonnees->ville = null;
+
+       
+        $amnitiesForm = $this->createForm(FiltreType::class,$filtreDonnees);
+        $form->handleRequest($request);
+        $amnitiesForm->handleRequest($request);
+
+
+        $resultats = $repoListing->findByProvince($donnees,$province,$filtreDonnees);
+        
+        $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $resultats = $repoListing->findByProvince($donnees,$province,$filtreDonnees);
+          
+            $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
+            $donnees->page = $request->query->getInt('page', 1);  
+          
+            
+            return $this->render('search/province.html.twig', [
+               
+                'listings' => $listings,
+                'donnees' => $donnees,
+                'filtreDonnees' => $filtreDonnees,
+                'form' => $form->createView(),
+                'amnitiesForm' => $amnitiesForm->createView(),
+                'categories' => $categories,
+                'api_maps' => $api_maps
+            ]);
+        }
+        if (  $amnitiesForm->isSubmitted() && $amnitiesForm->isValid() )
+        {
+          
+           $resultats = $repoListing->findByFilter($filtreDonnees);
+         
+           $listings = $paginator->paginate($resultats, $request->query->getInt('page', 1), 20); 
+           $donnees->page = $request->query->getInt('page', 1);  
+         
+           
+           return $this->render('search/province.html.twig', [
+              
+               'listings' => $listings,
+               'donnees' => $donnees,
+               'filtreDonnees' => $filtreDonnees,
+               'form' => $form->createView(),
+               'amnitiesForm' => $amnitiesForm->createView(),
+               'categories' => $categories,
+               'api_maps' => $api_maps
+           ]);
+        }
+
+     
+        return $this->render('search/province.html.twig', [
+            'listings' => $listings,
+               'donnees' => $donnees,
+               'filtreDonnees' => $filtreDonnees,
+               'form' => $form->createView(),
+               'amnitiesForm' => $amnitiesForm->createView(),
+               'categories' => $categories,
+               'api_maps' => $api_maps
+        ]);
+    }
 
   
 

@@ -481,5 +481,102 @@ class ListingRepository extends ServiceEntityRepository
              return $dql->getResult()
         ;
     }
+
+
+    public function findByProvince($data, $province,$amnitiesData) 
+    {
+
+       
+        $locale = $this->requestStack->getCurrentRequest()->getLocale();
+       
+        $keywords =  array_filter(array_map('trim', explode(',', $data->query)));
+        $listings = $this->createQueryBuilder('l')
+                        
+                        ->addSelect('l','v','c','pr','ps','la','a','t','lt')
+                        ->leftJoin('l.listingTags', 'lt') 
+                        ->leftJoin('lt.tags', 't')
+                        ->leftJoin('l.ville','v')
+                        ->leftJoin('l.categorie','c')
+                        ->leftJoin('v.province','pr')
+                        ->leftJoin('l.listingamnities', 'la') 
+                        ->leftJoin('la.amnities', 'a')
+                        ->leftJoin('l.pension','ps');
+                        if($province != null)
+                        {
+                            $listings = $listings
+                                                 ->andWhere('pr.id =  :prov')
+                                                 ->setParameter('prov', $province->getId());
+                                                
+                        }
+
+                     
+                      
+                        if (trim($data->query) !== "") {
+                            $field = 't.nom';
+                            if ($locale === 'ar') {
+                                $field = 't.ar';
+                            } elseif ($locale === 'en') {
+                                $field = 't.en';
+                            }
+                        
+                            // Construire les conditions `LIKE` combinées avec `OR`
+                            $orX = $listings->expr()->orX();
+                            foreach ($keywords as $index => $keyword) {
+                                $orX->add($listings->expr()->like($field, ':param' . $index));
+                                $listings->setParameter(':param' . $index, '%' . trim($keyword) . '%');
+                            }
+                        
+                            // Appliquer les conditions
+                            if ($orX->count() > 0) {
+                                $listings->andWhere($orX);
+                            }
+                        }
+
+            if($data->categorie != null)
+            {
+                $listings = $listings
+                                     ->andWhere('l.categorie =  :cat')
+                                     ->setParameter('cat', $data->categorie);
+                                    
+            }
+            
+            
+            if($data->ville != null)
+            {
+             
+                $listings = $listings
+                                     ->andWhere('v.id =  :ville')
+                                     ->setParameter('ville', $data->ville->getId());
+            }
+
+            $listings = $listings
+                        ->andWhere('l.afficher =  :aff')
+                        ->setParameter('aff', true);
+            
+            /************* Gestion de la latitude et longitude */
+            $listings = $listings
+                        ->andWhere('l.latitude  <>  :lat')
+                        ->setParameter('lat', "" )
+                        ->andWhere('l.longitude  <>  :long')
+                        ->setParameter('long', "" );
+
+                    
+            if ($amnitiesData->getAmnities() !== null && count($amnitiesData->getAmnities())> 0  ) {               
+                 $listings = $listings
+                ->andWhere('a IN (:amnities)')
+                ->setParameter('amnities', $amnitiesData->getAmnities());
+                
+            }   
+
+            $listings = $listings
+                             
+                                ->addOrderBy('l.id','ASC')
+                                 ->addOrderBy('l.createdAt','DESC')
+                                
+                                ;
+            
+            return $listings;
+
+    }
    
 }

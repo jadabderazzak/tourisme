@@ -39,11 +39,48 @@
 							{% set modals = '' %}
 							{% for prov in provinces %}
 								<li>
-									<a href="{{ path('app_search_province',{slug : prov.slug})}}"  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+									<a href="javascript:;" onclick="hideDropdown()" data-modal-target="default-modal{{prov.id}}" data-modal-toggle="default-modal{{prov.id}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
 
 										{{ prov.nom | raw  | trans}}</a>
 								</li>
-							{% endfor %}		
+								{% set modalContent = '' %}
+
+								{% for localite in prov.Localites %}
+
+									{% set modalContent = modalContent ~ '<a href="' ~ path('app_search_localite', { slug: localite.slug }) ~ '" class="bg-white text-black hover:bg-gray-100 hover:border hover:border-gray-900 shadow-xl text-md font-medium me-2 px-3.5 py-2 rounded ">' ~ localite.nom | trans ~ '</a>' %}
+								{% endfor %}
+								
+								{% set modalContent = modalContent == "" ? "<span class='text-black'>" ~ 'Aucune location trouvée pour cette province' | trans ~ "<span>": modalContent %}
+								{% set modals = modals ~ '
+										<div id="default-modal' ~ prov.id ~ '" tabindex="-1" aria-hidden="true" class="hidden z-[50] bg-black/70 fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-screen max-h-full" dir='~ dirs ~'>
+											<div class="relative p-4 w-full max-w-2xl max-h-full">
+												<!-- Modal content -->
+												<div class="relative bg-white/70 rounded-lg shadow dark:bg-gray-700">
+													<!-- Modal header -->
+													<div class="flex items-center justify-between p-2 md:p-3 border-b rounded-t dark:border-gray-600">
+														<h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+															' ~ "Choisissez une location" | trans ~ '
+														</h3>
+														<button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal' ~ prov.id ~ '">
+															<svg class="w-3 h-3 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 14 14">
+																<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+															</svg>
+															<span class="sr-only">Close modal</span>
+														</button>
+													</div>
+													<!-- Modal body -->
+													<div class="p-4 md:p-5 space-y-4">
+													<p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+															
+															 ' ~ modalContent|raw ~ '
+														</p>
+												</div>
+											
+
+												</div>
+										</div>
+									</div>' %}
+							{% endfor %}
 
 						</ul>
 
